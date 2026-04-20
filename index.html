@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XP On — Hub Estratégico</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --xp-blue:       #0E1DAA;
+  --xp-blue-dark:  #0a1580;
+  --xp-blue-soft:  rgba(14,29,170,0.06);
+  --xp-blue-mid:   rgba(14,29,170,0.12);
+  --xp-cyan:       #4DA4C7;
+  --grad-brand:    linear-gradient(135deg, #4DA4C7 0%, #0E1DAA 100%);
+
+  --bg:            #F0F2F5;
+  --surface:       #FFFFFF;
+  --surface-2:     #F8F9FB;
+  --border:        #E2E6ED;
+  --border-h:      #0E1DAA;
+
+  --text:          #0a0e1f;
+  --text-mid:      #4B5563;
+  --text-muted:    #9CA3AF;
+
+  --axis-colab:    #2980a0;
+  --axis-ciber:    #c0392b;
+  --axis-infra:    #0d8f50;
+  --axis-serv:     #0E1DAA;
+
+  --success:       #0F9D58;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HEADER */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.logo-mark { width: 28px; height: 28px; flex-shrink: 0; }
+.logo-wordmark { font-size: 16px; font-weight: 700; letter-spacing: -.02em; color: var(--text); }
+.logo-wordmark span { background: var(--grad-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.logo-tag { font-size: 9.5px; color: var(--text-muted); letter-spacing: .1em; text-transform: uppercase; margin-top: 1px; }
+.header-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 11px; border-radius: 100px;
+  background: var(--xp-blue-soft);
+  border: 1px solid var(--xp-blue-mid);
+  font-size: 11px; font-weight: 600;
+  color: var(--xp-blue); letter-spacing: .04em;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; flex-shrink: 0; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* MAIN */
+main { flex: 1; max-width: 1060px; margin: 0 auto; width: 100%; padding: 44px 48px 64px; }
+
+/* HERO */
+.hero { margin-bottom: 36px; }
+.eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--xp-cyan); margin-bottom: 10px; }
+.hero h1 { font-size: 34px; font-weight: 700; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 12px; }
+.hero h1 span { background: var(--grad-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero p { font-size: 14px; color: var(--text-mid); max-width: 480px; line-height: 1.75; }
+
+/* EIXOS */
+.eixos-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 36px; }
+.eixo { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 100px; font-size: 11px; font-weight: 600; border: 1px solid; }
+.eixo svg { width: 11px; height: 11px; stroke-width: 2.5; }
+.eixo-colab { background: rgba(77,164,199,.07); color: var(--axis-colab); border-color: rgba(77,164,199,.25); }
+.eixo-ciber { background: rgba(192,57,43,.06); color: var(--axis-ciber); border-color: rgba(192,57,43,.22); }
+.eixo-infra { background: rgba(13,143,80,.06); color: var(--axis-infra); border-color: rgba(13,143,80,.22); }
+.eixo-serv  { background: var(--xp-blue-soft); color: var(--axis-serv); border-color: var(--xp-blue-mid); }
+
+/* SECTION LABEL */
+.section-label { font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+
+/* GRIDS */
+.grid    { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 32px; }
+.grid-sm { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 32px; }
+@media (max-width: 820px) { .grid, .grid-sm { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 540px) { .grid, .grid-sm { grid-template-columns: 1fr; } main { padding: 28px 20px 48px; } header { padding: 0 20px; } }
+
+/* CARDS */
+.card {
+  display: block; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px; text-decoration: none; color: inherit;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+  position: relative; overflow: hidden;
+}
+.card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent, var(--grad-brand)); opacity: 0; transition: opacity .15s; }
+.card:hover { border-color: var(--border-h); box-shadow: 0 4px 16px rgba(14,29,170,.07); transform: translateY(-1px); }
+.card:hover::after { opacity: 1; }
+
+.card-icon { width: 32px; height: 32px; border-radius: 7px; background: var(--xp-blue-soft); display: flex; align-items: center; justify-content: center; color: var(--xp-blue); margin-bottom: 12px; }
+.card-icon svg { width: 15px; height: 15px; stroke-width: 1.75; }
+.card-label { font-size: 9px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.card-title { font-size: 14px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 6px; color: var(--text); }
+.card-desc { font-size: 12.5px; color: var(--text-mid); line-height: 1.65; }
+.card-arrow { position: absolute; bottom: 18px; right: 18px; color: var(--text-muted); transition: color .15s, transform .15s; }
+.card-arrow svg { width: 13px; height: 13px; stroke-width: 2; }
+.card:hover .card-arrow { color: var(--xp-blue); transform: translateX(3px); }
+
+/* SMALL CARDS */
+.card-sm { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; text-decoration: none; color: inherit; transition: border-color .15s, box-shadow .15s; }
+.card-sm:hover { border-color: var(--border-h); box-shadow: 0 2px 10px rgba(14,29,170,.06); }
+.card-sm-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--xp-blue-soft); display: flex; align-items: center; justify-content: center; color: var(--xp-blue); margin-bottom: 10px; }
+.card-sm-icon svg { width: 13px; height: 13px; stroke-width: 2; }
+.card-sm-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+.card-sm-desc  { font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+
+/* DIVIDER */
+.divider { height: 1px; background: var(--border); margin: 0 0 32px; }
+
+/* FOOTER */
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 14px 48px; display: flex; align-items: center; justify-content: space-between; }
+.footer-text { font-size: 11px; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <svg class="logo-mark" viewBox="340 335 580 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <linearGradient id="lg" x1="340" y1="540" x2="910" y2="540" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#4DA4C7"/><stop offset="1" stop-color="#0E1DAA"/>
+        </linearGradient>
+        <linearGradient id="lg2" x1="340" y1="424" x2="518" y2="424" xlink:href="#lg"/>
+      </defs>
+      <path fill="url(#lg)" d="M380.71,744.87c-10.32,0-20.64-3.94-28.52-11.81-15.75-15.75-15.75-41.28,0-57.03l329.09-329.09c7.56-7.56,17.82-11.81,28.52-11.81s20.95,4.25,28.52,11.81l159.64,159.64c15.75,15.75,15.75,41.28,0,57.03l-168.18,168.18c-7.56,7.56-17.82,11.81-28.52,11.81s-20.95-4.25-28.52-11.81l-84.82-84.82c-15.75-15.75-15.75-41.29,0-57.04,15.75-15.75,41.29-15.75,57.04,0l56.3,56.3,111.15-111.15-102.61-102.61-300.57,300.57c-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+      <path fill="url(#lg2)" d="M477.95,513.02c-10.32,0-20.64-3.94-28.52-11.81l-97.24-97.24c-15.75-15.75-15.75-41.29,0-57.03,15.75-15.75,41.29-15.75,57.04,0l97.24,97.24c15.75,15.75,15.75,41.29,0,57.03-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+    </svg>
+    <div>
+      <div class="logo-wordmark">XP<span>ON</span></div>
+      <div class="logo-tag">Intelligent Collaboration Services</div>
+    </div>
+  </div>
+  <div class="header-badge"><span class="status-dot"></span>Hub Estratégico · 2026</div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="eyebrow">Hub Digital — Planejamento Estratégico 2026</div>
+    <h1>Seus painéis,<br><span>num só lugar.</span></h1>
+    <p>Central estratégica da XP On — KPIs, eventos, marketing, gestão comercial e identidade visual em painéis interativos prontos para uso.</p>
+  </div>
+
+  <div class="eixos-row">
+    <span class="eixo eixo-colab"><i data-lucide="users"></i>Colaboração</span>
+    <span class="eixo eixo-ciber"><i data-lucide="shield"></i>Cibersegurança</span>
+    <span class="eixo eixo-infra"><i data-lucide="globe"></i>Infraestrutura e Redes</span>
+    <span class="eixo eixo-serv"><i data-lucide="settings"></i>Serviços</span>
+  </div>
+
+  <div class="section-label">Painéis principais</div>
+  <div class="grid">
+
+    <a href="xpon_kpis.html" class="card" style="--accent:var(--grad-brand)">
+      <div class="card-icon"><i data-lucide="bar-chart-2"></i></div>
+      <div class="card-label">Performance · 2026</div>
+      <div class="card-title">KPIs & Calendário de Eventos</div>
+      <div class="card-desc">16 eventos mapeados — 12 webinars e 4 presenciais. Gerencie datas, status e metas.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+    <a href="xpon_marketing.html" class="card" style="--accent:linear-gradient(135deg,#7c3aed,#a855f7)">
+      <div class="card-icon" style="background:rgba(124,58,237,.07);color:#7c3aed"><i data-lucide="target"></i></div>
+      <div class="card-label">Planejamento</div>
+      <div class="card-title">Marketing</div>
+      <div class="card-desc">Mídias sociais, orçamento R$30k, mídia paga, newsletter e campanhas Q1–Q4.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+    <a href="xpon_gestao.html" class="card" style="--accent:linear-gradient(135deg,#10b981,#059669)">
+      <div class="card-icon" style="background:rgba(16,185,129,.07);color:#059669"><i data-lucide="layers"></i></div>
+      <div class="card-label">Comercial</div>
+      <div class="card-title">Gestão Comercial</div>
+      <div class="card-desc">Fluxo B2B completo, detalhamento por nicho e modelo MSP de recorrência.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+    <a href="xpon_crm.html" class="card" style="--accent:linear-gradient(135deg,#f59e0b,#d97706)">
+      <div class="card-icon" style="background:rgba(245,158,11,.07);color:#d97706"><i data-lucide="kanban"></i></div>
+      <div class="card-label">Pipeline · Leads</div>
+      <div class="card-title">CRM Kanban</div>
+      <div class="card-desc">Pipeline drag-and-drop, 6 etapas do funil, leads Intelbras pré-carregados e integração Google Sheets.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+    <a href="xpon_inteligencia.html" class="card" style="--accent:linear-gradient(135deg,#ec4899,#9333ea)">
+      <div class="card-icon" style="background:rgba(236,72,153,.07);color:#9333ea"><i data-lucide="lightbulb"></i></div>
+      <div class="card-label">Comercial · Estratégia</div>
+      <div class="card-title">Inteligência Comercial</div>
+      <div class="card-desc">ICPs por segmento, portfólio por eixo, concorrentes e modelos de resposta a objeções.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">Estratégia & Marca</div>
+  <div class="grid" style="margin-bottom:32px">
+
+    <a href="xpon_visao.html" class="card" style="--accent:var(--grad-brand)">
+      <div class="card-icon"><i data-lucide="compass"></i></div>
+      <div class="card-label">Empresa</div>
+      <div class="card-title">Visão Geral Estratégica</div>
+      <div class="card-desc">Os 4 eixos, modelo de negócio, jornada do cliente e crescimento por ecossistema.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+    <a href="xpon_visao.html#identidade" class="card" style="--accent:linear-gradient(135deg,#f59e0b,#d97706)">
+      <div class="card-icon" style="background:rgba(245,158,11,.07);color:#d97706"><i data-lucide="book-open"></i></div>
+      <div class="card-label">Marca</div>
+      <div class="card-title">Identidade Visual</div>
+      <div class="card-desc">Logos SVG, paleta oficial #0E1DAA, gradiente e tipografia do design system.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+    <a href="xpon_midias.html" class="card" style="--accent:linear-gradient(135deg,#ec4899,#9333ea)">
+      <div class="card-icon" style="background:rgba(236,72,153,.07);color:#9333ea"><i data-lucide="share-2"></i></div>
+      <div class="card-label">Canais</div>
+      <div class="card-title">Mídias Sociais</div>
+      <div class="card-desc">LinkedIn e Instagram, pauta editorial, personas ICP e estrutura de conteúdo.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">Business Intelligence</div>
+  <div class="grid" style="margin-bottom:32px">
+
+    <a href="bi_xpon_clientes.html" class="card" style="--accent:linear-gradient(135deg,#0F9D58,#0a7a44)">
+      <div class="card-icon" style="background:rgba(15,157,88,.07);color:#0d8f50"><i data-lucide="users"></i></div>
+      <div class="card-label">BI · Carteira Zoom</div>
+      <div class="card-title">Clientes & Renovação</div>
+      <div class="card-desc">169 clientes mapeados — portfólio, renovações, vencimentos e análise comercial da carteira Zoom.</div>
+      <span class="card-arrow"><i data-lucide="arrow-right"></i></span>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">Ferramentas & Recursos</div>
+  <div class="grid-sm">
+
+    <a href="xpon_eventos.html" class="card-sm">
+      <div class="card-sm-icon"><i data-lucide="calendar"></i></div>
+      <div class="card-sm-title">Registro de Eventos</div>
+      <div class="card-sm-desc">Input de participantes, contatos e segmentos. Gráfico de correlação por perfil.</div>
+    </a>
+
+    <a href="xpon_downloads.html" class="card-sm">
+      <div class="card-sm-icon"><i data-lucide="download"></i></div>
+      <div class="card-sm-title">Downloads & Recursos</div>
+      <div class="card-sm-desc">Logos SVG, documentos estratégicos e repositório de identidade visual.</div>
+    </a>
+
+    <a href="https://xpon-design-system.netlify.app/" target="_blank" class="card-sm">
+      <div class="card-sm-icon" style="background:rgba(14,29,170,.08);color:#0E1DAA"><i data-lucide="layers"></i></div>
+      <div class="card-sm-title">Design System</div>
+      <div class="card-sm-desc">Marca, cores, tipografia, componentes e voz da XP On em um só lugar.</div>
+    </a>
+
+    <a href="https://www.xpon.com.br" target="_blank" class="card-sm">
+      <div class="card-sm-icon"><i data-lucide="external-link"></i></div>
+      <div class="card-sm-title">Site XP On</div>
+      <div class="card-sm-desc">xpon.com.br — institucional, blog, cases e contato.</div>
+    </a>
+
+  </div>
+
+</main>
+
+<footer>
+  <span class="footer-text"><span class="status-dot"></span>Todos os painéis operacionais</span>
+  <span class="footer-text">XP On · Hub Estratégico · 2026</span>
+</footer>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

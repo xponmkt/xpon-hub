@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XP On — KPIs & Eventos 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--xp-blue:#0E1DAA;--xp-blue-soft:rgba(14,29,170,0.06);--xp-blue-mid:rgba(14,29,170,0.12);--xp-cyan:#4DA4C7;--grad-brand:linear-gradient(135deg,#4DA4C7 0%,#0E1DAA 100%);--bg:#F0F2F5;--surface:#FFFFFF;--surface-2:#F8F9FB;--border:#E2E6ED;--border-h:#0E1DAA;--text:#0a0e1f;--text-mid:#4B5563;--text-muted:#9CA3AF;--success:#0F9D58;--warning:#E2A614;--danger:#D93025;--radius:10px}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:15px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 48px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.back{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);transition:opacity .15s}.back:hover{opacity:.75}
+.logo-mark{width:28px;height:28px;flex-shrink:0}
+.logo-wordmark{font-size:16px;font-weight:700;letter-spacing:-.02em}.logo-wordmark span{background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-label{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-top:1px}
+.back-link{font-size:11px;color:var(--text-muted);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;font-weight:600;transition:color .15s}.back-link:hover{color:var(--xp-blue)}
+nav.tabs{position:sticky;top:58px;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);display:flex;padding:0 48px;overflow-x:auto}
+.tab{padding:12px 18px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;font-family:inherit}.tab:hover{color:var(--text)}.tab.active{color:var(--xp-blue);border-bottom-color:var(--xp-blue);font-weight:600}
+main{flex:1;padding:36px 48px 64px;max-width:1200px;margin:0 auto;width:100%}
+.panel{display:none}.panel.active{display:block}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:900px){.kpi-grid{grid-template-columns:1fr 1fr}}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px}
+.kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px}
+.kpi-value{font-size:26px;font-weight:700;color:var(--text);margin-bottom:2px}
+.kpi-value.accent{background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-sub{font-size:12px;color:var(--text-muted)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:18px}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--xp-cyan);font-weight:600;margin-bottom:14px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 12px;color:var(--text-muted);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);background:var(--surface-2)}
+td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text-mid)}
+td:first-child{color:var(--text);font-weight:500}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--xp-blue-soft)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:600;border:1px solid}
+.s-planejado{background:rgba(156,163,175,.1);color:#6B7280;border-color:rgba(156,163,175,.3)}
+.s-execucao{background:rgba(226,166,20,.1);color:#b45309;border-color:rgba(226,166,20,.3)}
+.s-confirmado{background:var(--xp-blue-soft);color:var(--xp-blue);border-color:var(--xp-blue-mid)}
+.s-executado{background:rgba(15,157,88,.1);color:#0d8f50;border-color:rgba(15,157,88,.3)}
+.t-webinar{background:var(--xp-blue-soft);color:var(--xp-blue);border-color:var(--xp-blue-mid)}
+.t-presencial{background:rgba(77,164,199,.08);color:#2980a0;border-color:rgba(77,164,199,.25)}
+.btn-cycle{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:4px 9px;border-radius:6px;font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}.btn-cycle:hover{border-color:var(--xp-blue);color:var(--xp-blue)}
+input[type=date]{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:4px 8px;font-size:11px;font-family:inherit;outline:none;transition:border-color .15s}.input[type=date]:focus{border-color:var(--xp-blue)}
+.timeline{display:flex;flex-wrap:wrap;gap:10px;padding-top:4px}
+.tl-month{flex:1;min-width:110px}
+.tl-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:6px}
+.tl-event{border-radius:6px;padding:7px 9px;margin-bottom:5px;border-left:3px solid}
+.tl-event-name{font-size:10px;font-weight:600;margin-bottom:3px;line-height:1.3;color:var(--text)}
+.tl-w{background:var(--xp-blue-soft);border-left-color:var(--xp-blue)}
+.tl-p{background:rgba(77,164,199,.08);border-left-color:var(--xp-cyan)}
+input[type=number],textarea,select{background:var(--surface-2);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:8px 11px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s}
+input[type=number]:focus,textarea:focus,select:focus{border-color:var(--xp-blue)}
+.btn{background:var(--xp-blue);color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .15s}.btn:hover{opacity:.88}
+footer{background:var(--surface);border-top:1px solid var(--border);padding:14px 48px;display:flex;justify-content:space-between;align-items:center}
+.footer-text{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+.footer-text a{color:var(--text-muted);text-decoration:none}.footer-text a:hover{color:var(--xp-blue)}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+@media(max-width:560px){main{padding:24px 20px 48px}header,footer{padding-left:20px;padding-right:20px}nav.tabs{padding:0 20px}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="back">
+    <svg class="logo-mark" viewBox="340 335 580 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs><linearGradient id="lg" x1="340" y1="540" x2="910" y2="540" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4DA4C7"/><stop offset="1" stop-color="#0E1DAA"/></linearGradient><linearGradient id="lg2" x1="340" y1="424" x2="518" y2="424" xlink:href="#lg"/></defs>
+      <path fill="url(#lg)" d="M380.71,744.87c-10.32,0-20.64-3.94-28.52-11.81-15.75-15.75-15.75-41.28,0-57.03l329.09-329.09c7.56-7.56,17.82-11.81,28.52-11.81s20.95,4.25,28.52,11.81l159.64,159.64c15.75,15.75,15.75,41.28,0,57.03l-168.18,168.18c-7.56,7.56-17.82,11.81-28.52,11.81s-20.95-4.25-28.52-11.81l-84.82-84.82c-15.75-15.75-15.75-41.29,0-57.04,15.75-15.75,41.29-15.75,57.04,0l56.3,56.3,111.15-111.15-102.61-102.61-300.57,300.57c-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+      <path fill="url(#lg2)" d="M477.95,513.02c-10.32,0-20.64-3.94-28.52-11.81l-97.24-97.24c-15.75-15.75-15.75-41.29,0-57.03,15.75-15.75,41.29-15.75,57.04,0l97.24,97.24c15.75,15.75,15.75,41.29,0,57.03-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+    </svg>
+    <div>
+      <div class="logo-wordmark">XP<span>ON</span></div>
+      <div class="page-label">KPIs & Calendário de Eventos</div>
+    </div>
+  </a>
+  <a href="index.html" class="back-link">← Hub</a>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="showPanel('p-kpis',this)">KPIs de Mídia</button>
+  <button class="tab" onclick="showPanel('p-calendario',this)">Calendário 2026</button>
+  <button class="tab" onclick="showPanel('p-timeline',this)">Linha do Tempo</button>
+  <button class="tab" onclick="showPanel('p-relatorio',this)">Relatório de Eventos</button>
+</nav>
+
+<main>
+
+  <!-- KPIs -->
+  <div id="p-kpis" class="panel active">
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">CTR Meta</div><div class="kpi-value accent">≥2,5%</div><div class="kpi-sub">Taxa de clique nas campanhas</div></div>
+      <div class="kpi-card"><div class="kpi-label">CPC Meta</div><div class="kpi-value accent">≤R$3</div><div class="kpi-sub">Custo por clique</div></div>
+      <div class="kpi-card"><div class="kpi-label">CPL Meta</div><div class="kpi-value accent">≤R$80</div><div class="kpi-sub">Custo por lead qualificado</div></div>
+      <div class="kpi-card"><div class="kpi-label">ROAS Meta</div><div class="kpi-value accent">≥3:1</div><div class="kpi-sub">Retorno sobre ads</div></div>
+      <div class="kpi-card"><div class="kpi-label">Leads/mês</div><div class="kpi-value">≥10</div><div class="kpi-sub">Volume mínimo de leads</div></div>
+      <div class="kpi-card"><div class="kpi-label">Webinar — Inscritos</div><div class="kpi-value">≥60</div><div class="kpi-sub">≥40% ao vivo · ≥10 MQLs</div></div>
+      <div class="kpi-card"><div class="kpi-label">Jantar — Presença</div><div class="kpi-value">≥80%</div><div class="kpi-sub">12–20 convidados VIP</div></div>
+      <div class="kpi-card"><div class="kpi-label">NPS Eventos</div><div class="kpi-value">≥85</div><div class="kpi-sub">Net Promoter Score</div></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Budget de Mídia Paga 2026</div>
+      <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:center">
+        <div style="flex:1;min-width:200px;height:160px"><canvas id="chart-budget"></canvas></div>
+        <div style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:0">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:13px;font-weight:600">LinkedIn Ads</div><div style="font-size:11px;color:var(--text-muted)">Prioritário · B2B</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700">R$ 1.000<span style="font-size:11px;color:var(--text-muted)">/mês</span></div><div style="font-size:11px;color:var(--text-muted)">R$ 12.000/ano</div></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:13px;font-weight:600">Google Ads</div><div style="font-size:11px;color:var(--text-muted)">Search + Display</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700">R$ 900<span style="font-size:11px;color:var(--text-muted)">/mês</span></div><div style="font-size:11px;color:var(--text-muted)">R$ 10.800/ano</div></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:13px;font-weight:600">Meta Ads</div><div style="font-size:11px;color:var(--text-muted)">Instagram + Facebook</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700">R$ 600<span style="font-size:11px;color:var(--text-muted)">/mês</span></div><div style="font-size:11px;color:var(--text-muted)">R$ 7.200/ano</div></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0"><div style="font-size:13px;font-weight:700;color:var(--xp-cyan)">Total Anual</div><div style="font-size:22px;font-weight:700;background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">R$ 30.000</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDÁRIO -->
+  <div id="p-calendario" class="panel">
+    <div class="card">
+      <div class="card-title">Calendário Estratégico de Eventos 2026</div>
+      <div style="display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+        <span class="badge t-webinar">Webinar</span><span style="font-size:12px;color:var(--text-muted)">Evento online</span>
+        <span class="badge t-presencial">Presencial</span><span style="font-size:12px;color:var(--text-muted)">Jantar / Encontro VIP</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--text-muted)">Clique em → para avançar status</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Mês</th><th>Data</th><th>Tipo</th><th>Tema</th><th>Parceiro</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div id="p-timeline" class="panel">
+    <div class="card">
+      <div class="card-title">Linha do Tempo — 2026</div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </div>
+
+  <!-- RELATÓRIO -->
+  <div id="p-relatorio" class="panel">
+    <div class="card">
+      <div class="card-title">Registrar Resultado de Evento</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">Evento</div><select id="r-evento" onchange="fillEventoData()" style="width:100%"><option value="">Selecione o evento...</option></select></div>
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">Data Realização</div><input type="date" id="r-data" style="width:100%"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px">
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">Inscritos</div><input type="number" id="r-inscritos" min="0" placeholder="Ex: 17" style="width:100%"></div>
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">Participantes ao Vivo</div><input type="number" id="r-participantes" min="0" placeholder="Ex: 19" style="width:100%"></div>
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">Duração (min)</div><input type="number" id="r-duracao" min="0" placeholder="Ex: 105" style="width:100%"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px">
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">Convidados Externos</div><input type="number" id="r-externos" min="0" placeholder="Ex: 4" style="width:100%"></div>
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">Perguntas Q&A</div><input type="number" id="r-qa" min="0" placeholder="Ex: 1" style="width:100%"></div>
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">MQLs Gerados</div><input type="number" id="r-mqls" min="0" placeholder="Ex: 4" style="width:100%"></div>
+      </div>
+      <div style="margin-bottom:14px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:6px">Observações</div><textarea id="r-notas" rows="2" placeholder="Principais temas, engajamento, feedbacks, próximos passos..." style="width:100%"></textarea></div>
+      <button class="btn" onclick="salvarRelatorio()">Salvar Relatório</button>
+      <span id="r-msg" style="font-size:12px;color:var(--success);margin-left:12px"></span>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Histórico de Relatórios</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Evento</th><th>Data</th><th>Inscritos</th><th>Participantes</th><th>% Presença</th><th>Duração</th><th>Externos</th><th>Q&A</th><th>MQLs</th><th></th></tr></thead>
+          <tbody id="relatorio-tbody"></tbody>
+        </table>
+      </div>
+      <div id="relatorio-empty" style="text-align:center;padding:32px;color:var(--text-muted);font-size:13px;display:none">Nenhum relatório registrado ainda.</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="footer-text"><a href="index.html">← Hub</a></span>
+  <span class="footer-text">XP On · KPIs & Eventos · 2026</span>
+</footer>
+
+<script>
+const EV=[
+  {mes:'Janeiro',data:'2026-01-15',tipo:'webinar',tema:'Kickoff Comercial',parceiro:'Interno',status:'executado'},
+  {mes:'Fevereiro',data:'2026-02-25',tipo:'webinar',tema:'Ambientes Corporativos Conectados',parceiro:'Intelbras',status:'executado',inscritos:17,participantes:19,duracao:105,mqls:4},
+  {mes:'Março',data:'2026-03-19',tipo:'webinar',tema:'Cibersegurança Corporativa',parceiro:'Kaspersky',status:'confirmado'},
+  {mes:'Março',data:'2026-03-26',tipo:'presencial',tema:'Jantar Colaboração & IA',parceiro:'Zoom',status:'planejado'},
+  {mes:'Abril',data:'2026-04-16',tipo:'webinar',tema:'Infraestrutura de Redes',parceiro:'Cisco',status:'planejado'},
+  {mes:'Maio',data:'2026-05-14',tipo:'webinar',tema:'Cloud & Data Center',parceiro:'TrustedData + HP',status:'planejado'},
+  {mes:'Junho',data:'2026-06-11',tipo:'webinar',tema:'Salas Inteligentes',parceiro:'HP|Poly',status:'planejado'},
+  {mes:'Junho',data:'2026-06-25',tipo:'presencial',tema:'Jantar Ambientes Conectados',parceiro:'Intelbras',status:'planejado'},
+  {mes:'Julho',data:'2026-07-09',tipo:'webinar',tema:'Experiência Híbrida',parceiro:'Zoom',status:'planejado'},
+  {mes:'Agosto',data:'2026-08-06',tipo:'webinar',tema:'Equipamentos UX Salas',parceiro:'Logitech',status:'planejado'},
+  {mes:'Agosto',data:'2026-08-20',tipo:'presencial',tema:'Encontro Intelligent Collaboration',parceiro:'Zoom + Logitech',status:'planejado'},
+  {mes:'Setembro',data:'2026-09-10',tipo:'webinar',tema:'ROI Ambientes Colaborativos',parceiro:'XP On + Cliente',status:'planejado'},
+  {mes:'Outubro',data:'2026-10-08',tipo:'webinar',tema:'Integração & Tendências 2027',parceiro:'Multimarcas',status:'planejado'},
+  {mes:'Novembro',data:'2026-11-05',tipo:'webinar',tema:'Retrospectiva Técnica',parceiro:'Todos os parceiros',status:'planejado'},
+  {mes:'Novembro',data:'2026-11-19',tipo:'presencial',tema:'XP On Forward 2026',parceiro:'Todos os parceiros',status:'planejado'},
+  {mes:'Dezembro',data:'2026-12-10',tipo:'webinar',tema:'Casebook XP On — Encerramento',parceiro:'Digital / Todos',status:'planejado'},
+];
+const SO=['planejado','em execução','confirmado','executado'];
+const SC={'planejado':'s-planejado','em execução':'s-execucao','confirmado':'s-confirmado','executado':'s-executado'};
+const SI={'planejado':'','em execução':'','confirmado':'✓','executado':'✔'};
+
+function renderTable(){
+  document.getElementById('tbody').innerHTML=EV.map((e,i)=>`<tr>
+    <td style="font-weight:600">${e.mes}</td>
+    <td><input type="date" value="${e.data}" onchange="EV[${i}].data=this.value;renderTL()" style="background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--text);padding:3px 7px;font-size:11px;font-family:inherit;outline:none"></td>
+    <td><span class="badge ${e.tipo==='presencial'?'t-presencial':'t-webinar'}">${e.tipo==='presencial'?'Presencial':'Webinar'}</span></td>
+    <td style="max-width:220px;color:var(--text)">${e.tema}</td>
+    <td style="color:var(--text-muted);font-size:12px">${e.parceiro}</td>
+    <td><span class="badge ${SC[e.status]}" id="sb${i}">${SI[e.status]} ${e.status}</span></td>
+    <td><button class="btn-cycle" onclick="cycle(${i})">→</button></td>
+  </tr>`).join('');
+}
+function cycle(i){EV[i].status=SO[(SO.indexOf(EV[i].status)+1)%SO.length];const b=document.getElementById('sb'+i);if(b){b.className='badge '+SC[EV[i].status];b.textContent=SI[EV[i].status]+' '+EV[i].status}renderTL();}
+function renderTL(){
+  const meses=[...new Set(EV.map(e=>e.mes))];
+  document.getElementById('timeline').innerHTML=meses.map(m=>{
+    const evs=EV.filter(e=>e.mes===m);
+    return`<div class="tl-month"><div class="tl-label">${m.substring(0,3)}</div>${evs.map(e=>`<div class="tl-event ${e.tipo==='presencial'?'tl-p':'tl-w'}"><div class="tl-event-name">${e.tema.substring(0,32)}${e.tema.length>32?'…':''}</div><span class="badge ${SC[e.status]}" style="font-size:9px;padding:1px 6px">${e.status}</span></div>`).join('')}</div>`;
+  }).join('');
+}
+function showPanel(id,btn){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}
+
+const RELATORIO_KEY='xpon-relatorios';
+let relatorios=[];
+function loadRelatorios(){try{const s=localStorage.getItem(RELATORIO_KEY);relatorios=s?JSON.parse(s):[];if(!relatorios.length){relatorios=[{id:'rel-001',evento:'Ambientes Corporativos Conectados',parceiro:'Intelbras',data:'2026-02-25',inscritos:17,participantes:19,duracao:105,externos:4,qa:1,mqls:4,notas:'Webinar Intelbras. Externos: Vanessa Croccia, Rogério Camelo, Eduardo Carrasco, Alison da Cruz.'}];localStorage.setItem(RELATORIO_KEY,JSON.stringify(relatorios));}}catch(e){relatorios=[];}}
+function saveRelatorios(){localStorage.setItem(RELATORIO_KEY,JSON.stringify(relatorios));}
+function populateEventoSelect(){const sel=document.getElementById('r-evento');if(!sel)return;sel.innerHTML='<option value="">Selecione o evento...</option>';EV.forEach((e,i)=>{const opt=document.createElement('option');opt.value=i;opt.textContent=`${e.mes} — ${e.tema}`;sel.appendChild(opt);});}
+function fillEventoData(){const idx=document.getElementById('r-evento').value;if(idx==='')return;const e=EV[idx];document.getElementById('r-data').value=e.data;if(e.inscritos)document.getElementById('r-inscritos').value=e.inscritos;if(e.participantes)document.getElementById('r-participantes').value=e.participantes;if(e.duracao)document.getElementById('r-duracao').value=e.duracao;if(e.mqls)document.getElementById('r-mqls').value=e.mqls;}
+function salvarRelatorio(){const idx=document.getElementById('r-evento').value;if(idx===''){alert('Selecione um evento.');return;}const e=EV[idx];const inscritos=parseInt(document.getElementById('r-inscritos').value)||0;const participantes=parseInt(document.getElementById('r-participantes').value)||0;const rel={id:'rel-'+Date.now(),evento:e.tema,parceiro:e.parceiro,data:document.getElementById('r-data').value,inscritos,participantes,duracao:parseInt(document.getElementById('r-duracao').value)||0,externos:parseInt(document.getElementById('r-externos').value)||0,qa:parseInt(document.getElementById('r-qa').value)||0,mqls:parseInt(document.getElementById('r-mqls').value)||0,notas:document.getElementById('r-notas').value};const ex=relatorios.findIndex(r=>r.evento===e.tema&&r.data===rel.data);if(ex>=0)relatorios[ex]=rel;else relatorios.unshift(rel);saveRelatorios();renderRelatorios();document.getElementById('r-msg').textContent='✓ Relatório salvo!';setTimeout(()=>document.getElementById('r-msg').textContent='',3000);}
+function deleteRelatorio(id){if(!confirm('Remover este relatório?'))return;relatorios=relatorios.filter(r=>r.id!==id);saveRelatorios();renderRelatorios();}
+function renderRelatorios(){const tbody=document.getElementById('relatorio-tbody');const empty=document.getElementById('relatorio-empty');if(!relatorios.length){tbody.innerHTML='';empty.style.display='block';return;}empty.style.display='none';tbody.innerHTML=relatorios.map(r=>{const presenca=r.inscritos>0?Math.round((r.participantes/r.inscritos)*100):0;const ps=presenca>=60?'color:#0d8f50':presenca>=40?'color:#b45309':'color:#c0392b';const h=Math.floor(r.duracao/60);const m=r.duracao%60;const dur=h>0?`${h}h${m.toString().padStart(2,'0')}`:`${r.duracao}min`;return`<tr><td style="max-width:200px">${r.evento}<div style="font-size:11px;color:var(--text-muted)">${r.parceiro}</div></td><td style="white-space:nowrap">${r.data?r.data.split('-').reverse().join('/'):'—'}</td><td style="text-align:center">${r.inscritos}</td><td style="text-align:center">${r.participantes}</td><td style="text-align:center;font-weight:700;${ps}">${presenca}%</td><td style="text-align:center">${dur}</td><td style="text-align:center">${r.externos}</td><td style="text-align:center">${r.qa}</td><td style="text-align:center;font-weight:700;color:var(--xp-blue)">${r.mqls}</td><td><button class="btn-cycle" onclick="deleteRelatorio('${r.id}')">✕</button></td></tr>`;}).join('');}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  renderTable();renderTL();loadRelatorios();populateEventoSelect();renderRelatorios();
+  const ctx=document.getElementById('chart-budget');
+  if(ctx)new Chart(ctx,{type:'doughnut',data:{labels:['LinkedIn Ads','Google Ads','Meta Ads'],datasets:[{data:[12000,10800,7200],backgroundColor:['#0E1DAA','#4DA4C7','#6B7280'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#6B7280',font:{size:11},padding:12}}}}});
+});
+</script>
+</body>
+</html>

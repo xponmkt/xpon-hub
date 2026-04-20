@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XP On — CRM Pipeline</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0F2F5;--bg-alt:#F8F9FB;--surface:#FFFFFF;--surface-2:#F8F9FB;
+  --border:#E2E6ED;--border-h:#0E1DAA;
+  --xp-blue:#0E1DAA;--xp-blue-soft:rgba(14,29,170,0.06);--xp-blue-mid:rgba(14,29,170,0.12);--xp-cyan:#4DA4C7;--grad:linear-gradient(135deg,#4DA4C7 0%,#0E1DAA 100%);
+  --text:#0a0e1f;--text-mid:#4B5563;--text-muted:#9CA3AF;--radius:8px;
+  --col-w:280px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+
+/* HEADER */
+header{padding:18px 48px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;background:var(--surface);}
+.back{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+.logo-mark{width:30px;height:30px}
+.logo-text{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.page-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:1px;font-weight:500}
+.back-link{font-size:11px;color:var(--text-muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;font-weight:500;transition:color .2s}
+.back-link:hover{color:var(--xp-blue)}
+
+/* NAV TABS */
+nav.tabs{position:sticky;top:61px;z-index:100;background:var(--surface);;border-bottom:1px solid var(--border);display:flex;gap:0;padding:0 48px;overflow-x:auto}
+.tab{padding:14px 20px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;font-family:inherit}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--xp-blue);border-bottom-color:var(--xp-blue)}
+
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:20px 32px;background:var(--surface-2);border-bottom:1px solid var(--border);flex-shrink:0}
+.stat{text-align:center}
+.stat-value{font-size:22px;font-weight:700;color:var(--text)}
+.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);font-weight:600;margin-top:2px}
+.stat-value.cyan{color:var(--xp-cyan)}
+.stat-value.green{color:#34d399}
+
+/* MAIN */
+main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.panel{display:none;flex:1;flex-direction:column}
+.panel.active{display:flex}
+
+/* KANBAN */
+.kanban-wrap{flex:1;overflow-x:auto;padding:24px 24px 32px}
+.kanban{display:flex;gap:14px;min-height:500px;align-items:flex-start}
+
+.col{flex-shrink:0;width:var(--col-w);display:flex;flex-direction:column;gap:0}
+.col-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.col-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.col-count{background:rgba(14,29,170,0.07);color:var(--xp-cyan);border-radius:100px;padding:2px 8px;font-size:11px;font-weight:700}
+.col-body{background:rgba(13,21,69,0.6);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:10px;min-height:400px;display:flex;flex-direction:column;gap:8px;transition:background .2s}
+.col-body.drag-over{background:rgba(9,168,238,0.08);border-color:var(--xp-cyan)}
+
+/* CARD */
+.lead-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;cursor:grab;transition:all .2s;position:relative}
+.lead-card:active{cursor:grabbing}
+.lead-card:hover{border-color:var(--border-h);box-shadow:0 4px 20px rgba(14,29,170,0.06)}
+.lead-card.dragging{opacity:.4}
+.lead-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.lead-company{font-size:11px;color:var(--xp-cyan);margin-bottom:8px;font-weight:500}
+.lead-eixo{display:inline-block;font-size:10px;padding:2px 8px;border-radius:100px;font-weight:600;margin-bottom:8px}
+.lead-meta{font-size:11px;color:var(--text-muted);display:flex;flex-direction:column;gap:3px}
+.lead-meta span{display:flex;align-items:center;gap:5px}
+.lead-actions{display:flex;gap:6px;margin-top:10px}
+.btn-sm{border:1px solid var(--border);background:transparent;color:var(--text-muted);padding:4px 8px;border-radius:5px;font-size:10px;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-sm:hover{border-color:var(--xp-cyan);color:var(--xp-cyan)}
+.btn-sm.danger:hover{border-color:#f87171;color:#f87171}
+.tag-origem{font-size:9px;padding:1px 6px;background:rgba(14,29,170,0.06);border:1px solid rgba(9,168,238,0.2);color:var(--xp-cyan);border-radius:100px;margin-left:auto;font-weight:600}
+
+/* ADD CARD BTN */
+.btn-add-card{width:100%;background:transparent;border:1px dashed rgba(9,29,176,0.4);color:var(--text-muted);border-radius:6px;padding:8px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .2s;text-align:center;margin-top:4px}
+.btn-add-card:hover{border-color:var(--xp-cyan);color:var(--xp-cyan)}
+
+/* SHEETS PANEL */
+.sheets-panel{padding:32px 48px;max-width:900px;margin:0 auto;width:100%}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--xp-cyan);font-weight:600;margin-bottom:16px}
+input[type=text],input[type=url],select,textarea{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:10px 14px;font-size:13px;font-family:inherit;outline:none;transition:border .2s;margin-bottom:12px}
+input[type=text]:focus,input[type=url]:focus,select:focus,textarea:focus{border-color:var(--xp-cyan)}
+label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;display:block;margin-bottom:5px}
+.btn-primary{background:var(--grad-brand);color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.03em;transition:opacity .2s}
+.btn-primary:hover{opacity:.9}
+.btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text-mid);border-radius:6px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-secondary:hover{border-color:var(--xp-cyan);color:var(--xp-cyan)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+.alert{padding:12px 16px;border-radius:6px;font-size:12px;margin-bottom:12px}
+.alert-info{background:rgba(14,29,170,0.06);border:1px solid rgba(9,168,238,0.2);color:var(--xp-cyan)}
+.alert-success{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#4ade80}
+
+/* SHEETS GUIDE */
+.steps-guide{display:flex;flex-direction:column;gap:12px}
+.step-item{display:flex;gap:14px;align-items:flex-start;padding:14px;background:var(--surface-2);border-radius:var(--radius);border:1px solid var(--border)}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--grad-brand);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px}
+.step-text{flex:1}
+.step-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.step-desc{font-size:12px;color:var(--text-mid);line-height:1.5}
+.step-code{font-family:monospace;font-size:11px;background:rgba(14,29,170,0.1);padding:4px 8px;border-radius:4px;color:var(--xp-cyan);margin-top:4px;display:inline-block}
+.col-table{width:100%;border-collapse:collapse;font-size:12px}
+.col-table th{text-align:left;padding:8px 12px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.col-table td{padding:9px 12px;border-bottom:1px solid rgba(14,29,170,0.07);vertical-align:top}
+.col-table tr:last-child td{border-bottom:none}
+.col-table tr:hover td{background:rgba(9,29,176,0.06)}
+.col-name{font-weight:700;color:var(--xp-cyan);font-family:monospace;font-size:12px}
+.col-type{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface-2);color:var(--text-muted);display:inline-block}
+.col-req{font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(239,68,68,0.12);color:#f87171;display:inline-block}
+.col-opt{font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(14,29,170,0.06);color:var(--xp-cyan);display:inline-block}
+.col-vals{font-size:11px;color:var(--text-mid);font-family:monospace;line-height:1.6}
+.sync-status-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:6px 12px;border-radius:20px;font-weight:600}
+.badge-ok{background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.3)}
+.badge-err{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25)}
+.badge-wait{background:rgba(9,168,238,0.12);color:var(--xp-cyan);border:1px solid rgba(9,168,238,0.25)}
+.dual-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:700px){.dual-cards{grid-template-columns:1fr}}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(7,13,42,0.85);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:20px}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+/* EIXO COLORS */
+.eixo-colab{background:rgba(14,29,170,0.07);color:var(--xp-cyan);border:1px solid rgba(9,168,238,0.3)}
+.eixo-ciber{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3)}
+.eixo-infra{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.3)}
+.eixo-serv{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3)}
+.ret-positivo{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.3)}
+.ret-negativo{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3)}
+.ret-andamento{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.ret-pendente{background:rgba(107,114,128,0.12);color:#9ca3af;border:1px solid rgba(107,114,128,0.3)}
+
+/* FOOTER */
+footer{padding:18px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.footer-text{font-size:10px;letter-spacing:.12em;color:var(--text-muted);text-transform:uppercase;font-weight:500}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="back">
+    <svg class="logo-mark" viewBox="340 335 580 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs><linearGradient id="lg" x1="340" y1="540" x2="910" y2="540" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4DA4C7"/><stop offset="1" stop-color="#0E1DAA"/></linearGradient><linearGradient id="lg2" x1="340" y1="424" x2="518" y2="424" xlink:href="#lg"/></defs>
+      <path fill="url(#lg)" d="M380.71,744.87c-10.32,0-20.64-3.94-28.52-11.81-15.75-15.75-15.75-41.28,0-57.03l329.09-329.09c7.56-7.56,17.82-11.81,28.52-11.81s20.95,4.25,28.52,11.81l159.64,159.64c15.75,15.75,15.75,41.28,0,57.03l-168.18,168.18c-7.56,7.56-17.82,11.81-28.52,11.81s-20.95-4.25-28.52-11.81l-84.82-84.82c-15.75-15.75-15.75-41.29,0-57.04,15.75-15.75,41.29-15.75,57.04,0l56.3,56.3,111.15-111.15-102.61-102.61-300.57,300.57c-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+      <path fill="url(#lg2)" d="M477.95,513.02c-10.32,0-20.64-3.94-28.52-11.81l-97.24-97.24c-15.75-15.75-15.75-41.29,0-57.03,15.75-15.75,41.29-15.75,57.04,0l97.24,97.24c15.75,15.75,15.75,41.29,0,57.03-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+    </svg>
+    <div>
+      <div class="logo-text">XP<span style="background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">ON</span></div>
+      <div class="page-label">CRM Pipeline</div>
+    </div>
+  </a>
+  <div style="display:flex;align-items:center;gap:16px">
+    <button onclick="openModal()" class="btn-primary" style="padding:8px 16px;font-size:12px">+ Novo Lead</button>
+    <a href="index.html" class="back-link">← Hub</a>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="showPanel('p-kanban',this)">🗂 Kanban Pipeline</button>
+  <button class="tab" onclick="showPanel('p-sheets',this)">📊 Google Sheets</button>
+</nav>
+
+<!-- STATS BAR -->
+<div class="stats-bar" id="stats-bar">
+  <div class="stat"><div class="stat-value cyan" id="st-total">0</div><div class="stat-label">Total Pipeline</div></div>
+  <div class="stat"><div class="stat-value" id="st-ativos">0</div><div class="stat-label">Leads Ativos</div></div>
+  <div class="stat"><div class="stat-value" id="st-proposta">0</div><div class="stat-label">Em Proposta</div></div>
+  <div class="stat"><div class="stat-value green" id="st-clientes">0</div><div class="stat-label">Clientes</div></div>
+</div>
+
+<main>
+  <!-- KANBAN -->
+  <div id="p-kanban" class="panel active">
+    <div class="kanban-wrap">
+      <div class="kanban" id="kanban">
+        <!-- Columns rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SHEETS -->
+  <div id="p-sheets" class="panel">
+    <div class="sheets-panel">
+
+      <!-- STEP BY STEP -->
+      <div class="card">
+        <div class="card-title">Como Configurar a Sincronização</div>
+        <div class="steps-guide">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <div class="step-title">Baixe o template e abra no Google Sheets</div>
+              <div class="step-desc">Clique em "Baixar Template CSV" abaixo → importe no Google Sheets (Arquivo → Importar) ou copie os dados diretamente. O template já tem os 13 cabeçalhos corretos.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <div class="step-title">Preencha a planilha com seus leads</div>
+              <div class="step-desc">Adicione um lead por linha. Os campos <strong>nome</strong> e <strong>empresa</strong> são obrigatórios. Veja a tabela de referência abaixo para os valores válidos de cada coluna.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <div class="step-title">Publique a planilha como CSV público</div>
+              <div class="step-desc">No Google Sheets: <strong>Arquivo → Compartilhar → Publicar na web</strong> → selecione a aba desejada → formato <strong>CSV</strong> → Publicar. Copie a URL gerada.</div>
+              <div class="step-code">https://docs.google.com/spreadsheets/d/[ID]/pub?gid=0&single=true&output=csv</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-text">
+              <div class="step-title">Cole a URL no Hub e sincronize</div>
+              <div class="step-desc">Cole a URL no campo abaixo e clique "Sincronizar". Novos leads serão adicionados ao Kanban sem sobrescrever existentes (deduplicação por e-mail). Para atualizações, exporte o CSV do Hub, edite e reimporte.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- URL SYNC -->
+      <div class="card">
+        <div class="card-title">Sincronizar do Google Sheets → Hub</div>
+        <label>URL da Planilha Publicada (CSV público)</label>
+        <input type="url" id="sheets-url" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv" />
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn-primary" onclick="syncSheets()">🔄 Sincronizar Agora</button>
+          <button class="btn-secondary" onclick="saveSheetUrl()">💾 Salvar URL</button>
+        </div>
+        <div id="sheets-status" style="margin-top:14px"></div>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:10px;line-height:1.6">
+          ⚠️ A sincronização é <strong>unidirecional</strong>: Sheets → Hub. Para atualizar dados já existentes no Hub, edite diretamente no Kanban. Para enviar o pipeline de volta ao Sheets, use o botão "Exportar CSV" e importe manualmente na planilha.
+        </p>
+      </div>
+
+      <!-- COLUMN REFERENCE -->
+      <div class="card">
+        <div class="card-title">Estrutura da Planilha — 13 Colunas</div>
+        <div style="overflow-x:auto">
+          <table class="col-table">
+            <thead>
+              <tr>
+                <th>Coluna</th>
+                <th>Status</th>
+                <th>Valores Válidos / Exemplos</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="col-name">nome</span></td>
+                <td><span class="col-req">Obrigatório</span></td>
+                <td style="color:var(--text-mid)">João Silva</td>
+              </tr>
+              <tr>
+                <td><span class="col-name">empresa</span></td>
+                <td><span class="col-req">Obrigatório</span></td>
+                <td style="color:var(--text-mid)">Tech Corp Ltda</td>
+              </tr>
+              <tr>
+                <td><span class="col-name">email</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td style="color:var(--text-mid)">joao@empresa.com — usado para deduplicação</td>
+              </tr>
+              <tr>
+                <td><span class="col-name">telefone</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td style="color:var(--text-mid)">(11) 99999-9999</td>
+              </tr>
+              <tr>
+                <td><span class="col-name">eixo</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td><span class="col-vals">Colaboração · Cibersegurança · Infraestrutura · Conectividade · Soluções Inteligentes</span></td>
+              </tr>
+              <tr>
+                <td><span class="col-name">coluna</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td><span class="col-vals">geracao · qualificacao · diagnostico · proposta · negociacao · cliente</span></td>
+              </tr>
+              <tr>
+                <td><span class="col-name">origem</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td style="color:var(--text-mid)">Evento · LinkedIn · Indicação · Cold · Sheets · Inbound</td>
+              </tr>
+              <tr>
+                <td><span class="col-name">valor</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td style="color:var(--text-mid)">R$ 150.000 (texto livre)</td>
+              </tr>
+              <tr>
+                <td><span class="col-name">account</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td><span class="col-vals">Marcos · Felipe · Thiago · Anderson · Outro</span></td>
+              </tr>
+              <tr>
+                <td><span class="col-name">produto</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td style="color:var(--text-mid)">Fortinet NGFW · Zoom Workplace · SD-WAN · MSP · IA Analytics…</td>
+              </tr>
+              <tr>
+                <td><span class="col-name">retorno</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td><span class="col-vals">positivo · negativo · em andamento · pendente</span></td>
+              </tr>
+              <tr>
+                <td><span class="col-name">notas</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td style="color:var(--text-mid)">Texto livre — evite vírgulas (use ponto e vírgula)</td>
+              </tr>
+              <tr>
+                <td><span class="col-name">criado</span></td>
+                <td><span class="col-opt">Opcional</span></td>
+                <td style="color:var(--text-mid)">dd/mm/aaaa — preenchido automaticamente se vazio</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TEMPLATE + EXPORT -->
+      <div class="dual-cards">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title">Baixar Template Vazio</div>
+          <p style="font-size:13px;color:var(--text-mid);margin-bottom:16px;line-height:1.5">Template CSV com os 13 cabeçalhos e 2 linhas de exemplo. Importe direto no Google Sheets.</p>
+          <button class="btn-primary" onclick="downloadTemplate()">📄 Baixar Template CSV</button>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title">Exportar Pipeline Atual → Sheets</div>
+          <p style="font-size:13px;color:var(--text-mid);margin-bottom:16px;line-height:1.5">Exporta todos os leads do Hub em CSV. Importe no Sheets para manter a planilha atualizada.</p>
+          <button class="btn-secondary" onclick="exportCSV()">📥 Exportar CSV Completo</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeOnOverlay(event)">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Novo Lead</div>
+    <div class="form-row">
+      <div>
+        <label>Nome *</label>
+        <input type="text" id="f-nome" placeholder="Ex: João Silva" />
+      </div>
+      <div>
+        <label>Empresa *</label>
+        <input type="text" id="f-empresa" placeholder="Ex: Tech Corp Ltda" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>E-mail</label>
+        <input type="text" id="f-email" placeholder="joao@empresa.com.br" />
+      </div>
+      <div>
+        <label>Telefone</label>
+        <input type="text" id="f-telefone" placeholder="(11) 9 0000-0000" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Eixo de Interesse</label>
+        <select id="f-eixo">
+          <option value="Colaboração">🤝 Colaboração</option>
+          <option value="Cibersegurança">🔒 Cibersegurança</option>
+          <option value="Infraestrutura">🌐 Infraestrutura</option>
+          <option value="Serviços">⚙️ Serviços</option>
+        </select>
+      </div>
+      <div>
+        <label>Etapa do Funil</label>
+        <select id="f-coluna">
+          <option value="geracao">🎯 Geração</option>
+          <option value="qualificacao">🔍 Qualificação</option>
+          <option value="diagnostico">📋 Diagnóstico</option>
+          <option value="proposta">📝 Proposta</option>
+          <option value="negociacao">🤝 Negociação</option>
+          <option value="cliente">✅ Cliente</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Origem</label>
+        <select id="f-origem">
+          <option value="Evento Intelbras">Evento Intelbras</option>
+          <option value="Webinar">Webinar</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="Indicação">Indicação</option>
+          <option value="Site">Site</option>
+          <option value="Cold Outreach">Cold Outreach</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+      <div>
+        <label>Valor Estimado (R$)</label>
+        <input type="text" id="f-valor" placeholder="Ex: 15.000" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Account Responsável</label>
+        <select id="f-account">
+          <option value="">Não informado</option>
+          <option value="Marcos">Marcos</option>
+          <option value="Felipe">Felipe</option>
+          <option value="Thiago">Thiago</option>
+          <option value="Anderson">Anderson</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+      <div>
+        <label>Retorno</label>
+        <select id="f-retorno">
+          <option value="pendente">⬜ Pendente</option>
+          <option value="em andamento">🔄 Em Andamento</option>
+          <option value="positivo">✅ Positivo</option>
+          <option value="negativo">❌ Negativo</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label>Produto Ofertado</label>
+      <select id="f-produto">
+        <option value="">Não informado</option>
+        <optgroup label="🤝 Colaboração">
+          <option value="Colaboração — Zoom Rooms">Zoom Rooms</option>
+          <option value="Colaboração — Poly / HP">Poly / HP Videoconferência</option>
+          <option value="Colaboração — Logitech">Logitech Salas</option>
+          <option value="Colaboração — Yealink">Yealink</option>
+          <option value="Colaboração — Audiocodes">Audiocodes</option>
+        </optgroup>
+        <optgroup label="🔒 Cibersegurança">
+          <option value="Cibersegurança — Fortinet">Fortinet Firewall/UTM</option>
+          <option value="Cibersegurança — Kaspersky">Kaspersky Endpoint</option>
+          <option value="Cibersegurança — SOC">SOC / vCISO</option>
+          <option value="Cibersegurança — LGPD">Consultoria LGPD</option>
+        </optgroup>
+        <optgroup label="🌐 Infraestrutura e Redes">
+          <option value="Infraestrutura — Cisco">Cisco Switching/Routing</option>
+          <option value="Infraestrutura — Intelbras">Intelbras Redes</option>
+          <option value="Infraestrutura — TrustedData/HP">TrustedData + HP Cloud</option>
+          <option value="Infraestrutura — Wi-Fi">Wi-Fi Gerenciado</option>
+        </optgroup>
+        <optgroup label="⚙️ Serviços">
+          <option value="Serviços — MSP">Serviço Gerenciado MSP</option>
+          <option value="Serviços — vCTO">vCTO / Consultoria TI</option>
+          <option value="Serviços — Suporte SLA">Suporte com SLA</option>
+          <option value="Serviços — Diagnóstico">Diagnóstico Gratuito</option>
+        </optgroup>
+      </select>
+    </div>
+    <label>Notas / Próximos Passos</label>
+    <textarea id="f-notas" rows="3" placeholder="Contexto do contato, próximos passos, observações..."></textarea>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveLead()">Salvar Lead</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-text">← <a href="index.html" style="color:var(--text-muted);text-decoration:none">Hub</a></span>
+  <span class="footer-text" id="last-save">XP On · CRM Pipeline · 2026</span>
+</footer>
+
+<script>
+// ── COLUMNS CONFIG ──
+const COLS = [
+  {id:'geracao',    label:'🎯 Geração',     color:'#6b7280'},
+  {id:'qualificacao',label:'🔍 Qualificação',color:'#f59e0b'},
+  {id:'diagnostico',label:'📋 Diagnóstico', color:'#0E1DAA'},
+  {id:'proposta',   label:'📝 Proposta',    color:'#8b5cf6'},
+  {id:'negociacao', label:'🤝 Negociação',  color:'#ec4899'},
+  {id:'cliente',    label:'✅ Cliente',     color:'#10b981'},
+];
+
+const EIXO_CLASS = {
+  'Colaboração':'eixo-colab',
+  'Cibersegurança':'eixo-ciber',
+  'Infraestrutura':'eixo-infra',
+  'Serviços':'eixo-serv',
+};
+
+// ── INITIAL DATA (Intelbras event leads) ──
+const DEFAULT_LEADS = [
+  {
+    id:'lead-001',nome:'Vanessa Croccia',empresa:'Nextpoint',
+    email:'',telefone:'',eixo:'Colaboração',coluna:'qualificacao',
+    origem:'Evento Intelbras',valor:'',account:'Marcos',produto:'Colaboração — Zoom Rooms',retorno:'em andamento',
+    notas:'Participou do webinar Ambientes Corporativos Conectados (25/02). Convidada externa — perfil comercial/TI.',
+    criado:'2026-02-25'
+  },
+  {
+    id:'lead-002',nome:'Rogério Camelo',empresa:'MPF — Ministério Público Federal',
+    email:'',telefone:'',eixo:'Infraestrutura',coluna:'qualificacao',
+    origem:'Evento Intelbras',valor:'',account:'Felipe',produto:'Infraestrutura — Switches Intelbras',retorno:'pendente',
+    notas:'Participou como convidado externo. Setor público — potencial para infraestrutura e segurança. Follow-up pendente.',
+    criado:'2026-02-25'
+  },
+  {
+    id:'lead-003',nome:'Eduardo Carrasco',empresa:'',
+    email:'',telefone:'',eixo:'Colaboração',coluna:'geracao',
+    origem:'Evento Intelbras',valor:'',account:'Marcos',produto:'',retorno:'pendente',
+    notas:'Convidado externo no webinar de fevereiro. Qualificar empresa e necessidade.',
+    criado:'2026-02-25'
+  },
+  {
+    id:'lead-004',nome:'Alison da Cruz',empresa:'Intelbras',
+    email:'',telefone:'',eixo:'Infraestrutura',coluna:'diagnostico',
+    origem:'Evento Intelbras',valor:'',account:'Felipe',produto:'Infraestrutura — Roteadores Intelbras',retorno:'positivo',
+    notas:'Representante Intelbras — parceiro estratégico. Presente no webinar como convidado. Explorar expansão de parceria.',
+    criado:'2026-02-25'
+  },
+];
+
+// ── STATE ──
+let leads = [];
+let editingId = null;
+let dragSrcId = null;
+
+function loadLeads(){
+  try{
+    const saved = localStorage.getItem('xpon-crm-leads');
+    leads = saved ? JSON.parse(saved) : [...DEFAULT_LEADS];
+  } catch(e){ leads = [...DEFAULT_LEADS]; }
+}
+function saveLeads(){
+  localStorage.setItem('xpon-crm-leads', JSON.stringify(leads));
+  const now = new Date();
+  document.getElementById('last-save').textContent = 'Salvo às ' + now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+
+// ── RENDER ──
+function render(){
+  const kanban = document.getElementById('kanban');
+  kanban.innerHTML = '';
+  COLS.forEach(col => {
+    const colLeads = leads.filter(l => l.coluna === col.id);
+    const colEl = document.createElement('div');
+    colEl.className = 'col';
+    colEl.innerHTML = `
+      <div class="col-header" style="border-top:3px solid ${col.color}">
+        <span class="col-title" style="color:${col.color}">${col.label}</span>
+        <span class="col-count">${colLeads.length}</span>
+      </div>
+      <div class="col-body" id="col-${col.id}"
+        ondragover="onDragOver(event)"
+        ondragleave="onDragLeave(event)"
+        ondrop="onDrop(event,'${col.id}')">
+        ${colLeads.map(l => renderCard(l)).join('')}
+        <button class="btn-add-card" onclick="openModal('${col.id}')">+ Adicionar</button>
+      </div>
+    `;
+    kanban.appendChild(colEl);
+  });
+  updateStats();
+}
+
+const RET_CLASS = {'positivo':'ret-positivo','negativo':'ret-negativo','em andamento':'ret-andamento','pendente':'ret-pendente'};
+const RET_ICON = {'positivo':'✅','negativo':'❌','em andamento':'🔄','pendente':'⬜'};
+
+function renderCard(l){
+  const eixoClass = EIXO_CLASS[l.eixo] || 'eixo-colab';
+  return `<div class="lead-card" id="card-${l.id}" draggable="true"
+    ondragstart="onDragStart(event,'${l.id}')"
+    ondragend="onDragEnd(event)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+      <div class="lead-name">${l.nome}</div>
+      <span class="tag-origem">${l.origem}</span>
+    </div>
+    <div class="lead-company">${l.empresa || '—'}</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px">
+      <span class="lead-eixo ${eixoClass}">${l.eixo}</span>
+      ${l.retorno ? `<span class="lead-eixo ${RET_CLASS[l.retorno]||'ret-pendente'}" style="font-size:10px">${RET_ICON[l.retorno]||'⬜'} ${l.retorno}</span>` : ''}
+      ${l.account ? `<span style="font-size:9px;color:var(--text-muted);padding:2px 7px;background:rgba(9,29,176,0.1);border-radius:100px;border:1px solid var(--border)">👤 ${l.account}</span>` : ''}
+    </div>
+    <div class="lead-meta">
+      ${l.email ? `<span>✉ ${l.email}</span>` : ''}
+      ${l.telefone ? `<span>📞 ${l.telefone}</span>` : ''}
+      ${l.valor ? `<span>💰 R$ ${l.valor}</span>` : ''}
+      ${l.notas ? `<span style="margin-top:4px;color:var(--text-mid);font-size:10px;line-height:1.5">${l.notas.substring(0,90)}${l.notas.length>90?'…':''}</span>` : ''}
+    </div>
+    <div class="lead-actions">
+      <button class="btn-sm" onclick="openModal(null,'${l.id}')">✏ Editar</button>
+      <button class="btn-sm danger" onclick="deleteLead('${l.id}')">✕</button>
+      <span style="margin-left:auto;font-size:9px;color:var(--text-muted)">${l.criado || ''}</span>
+    </div>
+  </div>`;
+}
+
+function updateStats(){
+  document.getElementById('st-total').textContent = leads.length;
+  document.getElementById('st-ativos').textContent = leads.filter(l => l.coluna !== 'cliente').length;
+  document.getElementById('st-proposta').textContent = leads.filter(l => l.coluna === 'proposta' || l.coluna === 'negociacao').length;
+  document.getElementById('st-clientes').textContent = leads.filter(l => l.coluna === 'cliente').length;
+}
+
+// ── DRAG & DROP ──
+function onDragStart(e, id){
+  dragSrcId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => {
+    const el = document.getElementById('card-' + id);
+    if(el) el.classList.add('dragging');
+  }, 0);
+}
+function onDragEnd(e){
+  document.querySelectorAll('.lead-card').forEach(c => c.classList.remove('dragging'));
+}
+function onDragOver(e){
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drag-over');
+}
+function onDragLeave(e){
+  e.currentTarget.classList.remove('drag-over');
+}
+function onDrop(e, colId){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(dragSrcId){
+    const lead = leads.find(l => l.id === dragSrcId);
+    if(lead && lead.coluna !== colId){
+      lead.coluna = colId;
+      saveLeads();
+      render();
+    }
+    dragSrcId = null;
+  }
+}
+
+// ── MODAL ──
+function openModal(colId = null, editId = null){
+  editingId = editId;
+  const modal = document.getElementById('modal');
+  const title = document.getElementById('modal-title');
+  if(editId){
+    const l = leads.find(x => x.id === editId);
+    if(!l) return;
+    title.textContent = 'Editar Lead';
+    document.getElementById('f-nome').value = l.nome;
+    document.getElementById('f-empresa').value = l.empresa;
+    document.getElementById('f-email').value = l.email;
+    document.getElementById('f-telefone').value = l.telefone;
+    document.getElementById('f-eixo').value = l.eixo;
+    document.getElementById('f-coluna').value = l.coluna;
+    document.getElementById('f-origem').value = l.origem;
+    document.getElementById('f-valor').value = l.valor;
+    document.getElementById('f-account').value = l.account || '';
+    document.getElementById('f-produto').value = l.produto || '';
+    document.getElementById('f-retorno').value = l.retorno || 'pendente';
+    document.getElementById('f-notas').value = l.notas;
+  } else {
+    title.textContent = 'Novo Lead';
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-empresa').value = '';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-telefone').value = '';
+    document.getElementById('f-eixo').value = 'Colaboração';
+    document.getElementById('f-coluna').value = colId || 'geracao';
+    document.getElementById('f-origem').value = 'Webinar';
+    document.getElementById('f-valor').value = '';
+    document.getElementById('f-account').value = '';
+    document.getElementById('f-produto').value = '';
+    document.getElementById('f-retorno').value = 'pendente';
+    document.getElementById('f-notas').value = '';
+  }
+  modal.classList.add('open');
+  document.getElementById('f-nome').focus();
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  editingId = null;
+}
+function closeOnOverlay(e){
+  if(e.target === document.getElementById('modal')) closeModal();
+}
+function saveLead(){
+  const nome = document.getElementById('f-nome').value.trim();
+  const empresa = document.getElementById('f-empresa').value.trim();
+  if(!nome){ alert('Nome é obrigatório.'); return; }
+  const data = {
+    nome, empresa,
+    email: document.getElementById('f-email').value.trim(),
+    telefone: document.getElementById('f-telefone').value.trim(),
+    eixo: document.getElementById('f-eixo').value,
+    coluna: document.getElementById('f-coluna').value,
+    origem: document.getElementById('f-origem').value,
+    valor: document.getElementById('f-valor').value.trim(),
+    account: document.getElementById('f-account').value,
+    produto: document.getElementById('f-produto').value,
+    retorno: document.getElementById('f-retorno').value,
+    notas: document.getElementById('f-notas').value.trim(),
+  };
+  if(editingId){
+    const idx = leads.findIndex(l => l.id === editingId);
+    if(idx >= 0){ leads[idx] = { ...leads[idx], ...data }; }
+  } else {
+    data.id = 'lead-' + Date.now();
+    data.criado = new Date().toLocaleDateString('pt-BR');
+    leads.push(data);
+  }
+  saveLeads();
+  render();
+  closeModal();
+}
+function deleteLead(id){
+  if(!confirm('Remover este lead?')) return;
+  leads = leads.filter(l => l.id !== id);
+  saveLeads();
+  render();
+}
+
+// ── PANEL SWITCH ──
+function showPanel(id, btn){
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── GOOGLE SHEETS SYNC ──
+function saveSheetUrl(){
+  const url = document.getElementById('sheets-url').value.trim();
+  localStorage.setItem('xpon-crm-sheets-url', url);
+  document.getElementById('sheets-status').innerHTML = '<span class="sync-status-badge badge-ok">✅ URL salva com sucesso</span>';
+}
+
+// Parse a CSV row respecting quoted fields (handles commas inside quotes)
+function parseCSVRow(row){
+  const result = [];
+  let current = '';
+  let inQuote = false;
+  for(let i = 0; i < row.length; i++){
+    const c = row[i];
+    if(c === '"'){
+      if(inQuote && row[i+1] === '"'){ current += '"'; i++; }
+      else { inQuote = !inQuote; }
+    } else if(c === ',' && !inQuote){
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += c;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+async function syncSheets(){
+  const url = document.getElementById('sheets-url').value.trim() || localStorage.getItem('xpon-crm-sheets-url');
+  if(!url){ alert('Cole a URL do CSV público primeiro.'); return; }
+  const el = document.getElementById('sheets-status');
+  el.innerHTML = '<span class="sync-status-badge badge-wait">⏳ Buscando planilha…</span>';
+  try{
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const lines = text.trim().split('\n');
+    if(lines.length < 2){ throw new Error('Planilha vazia ou sem dados'); }
+    // Map header positions dynamically
+    const headers = parseCSVRow(lines[0]).map(h => h.toLowerCase().trim());
+    const idx = f => headers.indexOf(f);
+    let added = 0, skipped = 0;
+    lines.slice(1).forEach(line => {
+      if(!line.trim()) return;
+      const cols = parseCSVRow(line);
+      const get = f => { const i = idx(f); return i >= 0 ? (cols[i] || '').trim() : ''; };
+      const nome = get('nome');
+      const email = get('email');
+      if(!nome) return;
+      // Deduplicate by email (if both have email) or by nome+empresa
+      const empresa = get('empresa');
+      const dup = leads.find(l =>
+        (email && l.email && l.email.toLowerCase() === email.toLowerCase()) ||
+        (l.nome.toLowerCase() === nome.toLowerCase() && l.empresa.toLowerCase() === empresa.toLowerCase())
+      );
+      if(dup){ skipped++; return; }
+      const coluna = get('coluna') || 'geracao';
+      const validCols = ['geracao','qualificacao','diagnostico','proposta','negociacao','cliente'];
+      leads.push({
+        id: 'lead-' + Date.now() + '-' + Math.random(),
+        nome,
+        empresa,
+        email,
+        telefone: get('telefone'),
+        eixo: get('eixo') || 'Colaboração',
+        coluna: validCols.includes(coluna) ? coluna : 'geracao',
+        origem: get('origem') || 'Sheets',
+        valor: get('valor'),
+        account: get('account'),
+        produto: get('produto'),
+        retorno: get('retorno') || 'pendente',
+        notas: get('notas'),
+        criado: get('criado') || new Date().toLocaleDateString('pt-BR')
+      });
+      added++;
+    });
+    saveLeads(); render();
+    el.innerHTML = `<span class="sync-status-badge badge-ok">✅ ${added} lead(s) importado(s)</span>${skipped > 0 ? `<span style="margin-left:8px;font-size:11px;color:var(--text-muted)">${skipped} duplicata(s) ignorada(s)</span>` : ''}`;
+  } catch(e){
+    el.innerHTML = `<span class="sync-status-badge badge-err">❌ Erro: ${e.message}</span><p style="font-size:11px;color:var(--text-muted);margin-top:8px">Verifique se a planilha está publicada como CSV e a URL é pública.</p>`;
+  }
+}
+
+function exportCSV(){
+  const header = 'nome,empresa,email,telefone,eixo,coluna,origem,valor,account,produto,retorno,notas,criado';
+  const rows = leads.map(l => [
+    l.nome, l.empresa, l.email, l.telefone, l.eixo, l.coluna, l.origem, l.valor,
+    l.account||'', l.produto||'', l.retorno||'pendente',
+    (l.notas||'').replace(/,/g,';'), l.criado
+  ].map(v => `"${(v||'').replace(/"/g,'""')}"`).join(','));
+  const csv = [header, ...rows].join('\n');
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8'}); // BOM for Excel
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `xpon-crm-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function downloadTemplate(){
+  const header = 'nome,empresa,email,telefone,eixo,coluna,origem,valor,account,produto,retorno,notas,criado';
+  const ex1 = '"João Silva","Tech Corp Ltda","joao@techcorp.com","(11) 99999-0001","Colaboração","qualificacao","Evento","R$ 120.000","Marcos","Zoom Workplace","em andamento","Participou do webinar Intelbras","03/03/2026"';
+  const ex2 = '"Ana Costa","Indústria ABC","ana@abc.com.br","(11) 99999-0002","Cibersegurança","diagnostico","LinkedIn","R$ 180.000","Felipe","Fortinet NGFW","positivo","Alta intenção de compra","03/03/2026"';
+  const csv = [header, ex1, ex2].join('\n');
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'xpon-crm-template.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', () => {
+  loadLeads();
+  render();
+  const savedUrl = localStorage.getItem('xpon-crm-sheets-url');
+  if(savedUrl) document.getElementById('sheets-url').value = savedUrl;
+});
+
+// Keyboard shortcut: N = novo lead
+document.addEventListener('keydown', e => {
+  if(e.key === 'n' && !document.querySelector('.modal-overlay.open') && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA'){
+    openModal();
+  }
+  if(e.key === 'Escape') closeModal();
+});
+</script>
+</body>
+</html>
