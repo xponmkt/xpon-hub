@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XP On — Eventos 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#F0F2F5;--bg-alt:#F8F9FB;--surface:#FFFFFF;--surface-2:#F8F9FB;
+  --border:#E2E6ED;--border-h:#0E1DAA;
+  --xp-blue:#0E1DAA;--xp-blue-soft:rgba(14,29,170,0.06);--xp-blue-mid:rgba(14,29,170,0.12);--xp-cyan:#4DA4C7;--grad:linear-gradient(135deg,#4DA4C7 0%,#0E1DAA 100%);
+  --text:#0a0e1f;--text-mid:#4B5563;--text-muted:#9CA3AF;--radius:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+
+/* HEADER */
+header{padding:18px 48px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;background:var(--surface);}
+.back{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);transition:opacity .2s}
+.back:hover{opacity:.85}
+.logo-mark{width:30px;height:30px}
+.logo-text{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.page-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:1px;font-weight:500}
+.back-link{font-size:11px;color:var(--text-muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;font-weight:500;transition:color .2s}
+.back-link:hover{color:var(--xp-blue)}
+
+/* TABS */
+nav.tabs{position:sticky;top:61px;z-index:100;background:var(--surface);;border-bottom:1px solid var(--border);display:flex;gap:0;padding:0 48px;overflow-x:auto}
+.tab{padding:14px 20px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;font-family:inherit}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--xp-blue);border-bottom-color:var(--xp-blue)}
+
+/* MAIN */
+main{flex:1;padding:40px 48px;max-width:1200px;margin:0 auto;width:100%}
+.panel{display:none}.panel.active{display:block}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--xp-cyan);font-weight:600;margin-bottom:16px}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:1000px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.kpi-grid{grid-template-columns:1fr 1fr}}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px}
+.kpi-label{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-muted);font-weight:700;margin-bottom:8px}
+.kpi-value{font-size:26px;font-weight:700;color:var(--text)}
+.kpi-sub{font-size:11px;color:var(--text-muted);margin-top:4px}
+
+/* STATUS BADGES */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600}
+.s-planejado{background:rgba(107,114,128,0.15);color:#9ca3af;border:1px solid rgba(107,114,128,0.3)}
+.s-execucao{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.s-confirmado{background:rgba(14,29,170,0.07);color:var(--xp-cyan);border:1px solid rgba(9,168,238,0.3)}
+.s-executado{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3)}
+.t-webinar{background:rgba(14,29,170,0.12);color:var(--xp-blue);border:1px solid rgba(9,29,176,0.4)}
+.t-presencial{background:rgba(14,29,170,0.07);color:var(--xp-cyan);border:1px solid rgba(9,168,238,0.35)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;color:var(--text-muted);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border)}
+td{padding:12px 12px;border-bottom:1px solid rgba(14,29,170,0.07);vertical-align:middle}
+tr:hover td{background:rgba(9,168,238,0.03)}
+.btn-cycle{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:5px 10px;border-radius:6px;font-family:inherit;font-size:11px;cursor:pointer;transition:all .2s}
+.btn-cycle:hover{border-color:var(--xp-cyan);color:var(--xp-cyan)}
+input[type=date],select,input[type=number],textarea{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:8px 12px;font-size:13px;font-family:inherit;outline:none;transition:border .2s}
+input[type=date]:focus,select:focus,input[type=number]:focus,textarea:focus{border-color:var(--xp-cyan)}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(0.7)}
+
+/* TIMELINE */
+.timeline{display:flex;flex-wrap:wrap;gap:10px}
+.tl-month{flex:1;min-width:100px}
+.tl-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:6px}
+.tl-event{border-radius:5px;padding:7px 9px;margin-bottom:5px;border-left:3px solid}
+.tl-event-name{font-size:10px;font-weight:600;margin-bottom:3px;line-height:1.3}
+.tl-w{background:rgba(14,29,170,0.1);border-left-color:var(--xp-blue)}
+.tl-p{background:rgba(14,29,170,0.07);border-left-color:var(--xp-cyan)}
+
+/* FORM STYLES */
+.form-section{margin-bottom:16px}
+.form-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;display:block;margin-bottom:5px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:700px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.btn-primary{background:var(--grad-brand);color:#fff;border:none;border-radius:6px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s}
+.btn-primary:hover{opacity:.9}
+
+/* FOOTER */
+footer{padding:18px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-text{font-size:10px;letter-spacing:.12em;color:var(--text-muted);text-transform:uppercase;font-weight:500}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="back">
+    <svg class="logo-mark" viewBox="340 335 580 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs><linearGradient id="lg" x1="340" y1="540" x2="910" y2="540" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4DA4C7"/><stop offset="1" stop-color="#0E1DAA"/></linearGradient><linearGradient id="lg2" x1="340" y1="424" x2="518" y2="424" xlink:href="#lg"/></defs>
+      <path fill="url(#lg)" d="M380.71,744.87c-10.32,0-20.64-3.94-28.52-11.81-15.75-15.75-15.75-41.28,0-57.03l329.09-329.09c7.56-7.56,17.82-11.81,28.52-11.81s20.95,4.25,28.52,11.81l159.64,159.64c15.75,15.75,15.75,41.28,0,57.03l-168.18,168.18c-7.56,7.56-17.82,11.81-28.52,11.81s-20.95-4.25-28.52-11.81l-84.82-84.82c-15.75-15.75-15.75-41.29,0-57.04,15.75-15.75,41.29-15.75,57.04,0l56.3,56.3,111.15-111.15-102.61-102.61-300.57,300.57c-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+      <path fill="url(#lg2)" d="M477.95,513.02c-10.32,0-20.64-3.94-28.52-11.81l-97.24-97.24c-15.75-15.75-15.75-41.29,0-57.03,15.75-15.75,41.29-15.75,57.04,0l97.24,97.24c15.75,15.75,15.75,41.29,0,57.03-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+    </svg>
+    <div>
+      <div class="logo-text">XP<span style="background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">ON</span></div>
+      <div class="page-label">Calendário & Gestão de Eventos</div>
+    </div>
+  </a>
+  <a href="index.html" class="back-link">← Hub</a>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="showPanel('p-dashboard',this)">📊 Dashboard</button>
+  <button class="tab" onclick="showPanel('p-calendario',this)">📅 Calendário 2026</button>
+  <button class="tab" onclick="showPanel('p-timeline',this)">🗓 Linha do Tempo</button>
+  <button class="tab" onclick="showPanel('p-relatorio',this)">📋 Registrar Resultado</button>
+  <button class="tab" onclick="showPanel('p-historico',this)">📁 Histórico</button>
+</nav>
+
+<main>
+
+<!-- ══════════ DASHBOARD ══════════ -->
+<div id="p-dashboard" class="panel active">
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid" id="ev-kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">Eventos 2026</div><div class="kpi-value" id="k-total">16</div><div class="kpi-sub">Planejados no calendário</div></div>
+    <div class="kpi-card"><div class="kpi-label">Executados</div><div class="kpi-value" style="color:#34d399" id="k-exec">0</div><div class="kpi-sub">Realizados até hoje</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" style="color:var(--xp-cyan)" id="k-insc">0</div><div class="kpi-sub">Soma de todos os eventos</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total Participantes</div><div class="kpi-value" style="color:var(--xp-cyan)" id="k-part">0</div><div class="kpi-sub">Ao vivo</div></div>
+    <div class="kpi-card"><div class="kpi-label">MQLs Gerados</div><div class="kpi-value" style="color:#a78bfa" id="k-mqls">0</div><div class="kpi-sub">De todos os eventos</div></div>
+  </div>
+
+  <!-- CHARTS -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Inscritos vs Participantes por Evento</div>
+      <canvas id="chart-ev-compare" height="220"></canvas>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Eventos por Tipo — 2026</div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <canvas id="chart-ev-tipo" height="120"></canvas>
+        <div style="display:flex;gap:16px;justify-content:center">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#091db0"></span><span class="badge t-webinar">Webinars</span><span style="font-size:13px;font-weight:700;margin-left:4px" id="cnt-webinar">12</span></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#09a8ee"></span><span class="badge t-presencial">Presenciais</span><span style="font-size:13px;font-weight:700;margin-left:4px" id="cnt-presencial">4</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROXIMOS EVENTOS -->
+  <div class="card" style="margin-bottom:0">
+    <div class="card-title">Próximos Eventos</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Data</th><th>Tema</th><th>Tipo</th><th>Parceiro</th><th>Status</th></tr></thead>
+        <tbody id="proximos-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ CALENDÁRIO ══════════ -->
+<div id="p-calendario" class="panel">
+  <div class="card">
+    <div class="card-title">Calendário Estratégico de Eventos 2026</div>
+    <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)"><span class="badge t-webinar">📡 Webinar</span> Evento online</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)"><span class="badge t-presencial">🍽 Presencial</span> Jantar / Encontro VIP</div>
+      <div style="margin-left:auto;font-size:11px;color:var(--text-muted)">Clique → para avançar status</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Mês</th><th>Data</th><th>Tipo</th><th>Tema</th><th>Parceiro</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="cal-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TIMELINE ══════════ -->
+<div id="p-timeline" class="panel">
+  <div class="card">
+    <div class="card-title">Linha do Tempo — 2026</div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+  <div class="card" style="margin-bottom:0">
+    <div class="card-title">Legenda de Status</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <span class="badge s-planejado">⬜ Planejado</span>
+      <span class="badge s-execucao">🔄 Em Execução</span>
+      <span class="badge s-confirmado">✅ Confirmado</span>
+      <span class="badge s-executado">✔ Executado</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ REGISTRAR RESULTADO ══════════ -->
+<div id="p-relatorio" class="panel">
+  <div class="card">
+    <div class="card-title">Registrar Resultado de Evento (Padrão Zoom Export)</div>
+
+    <div class="grid-2" style="margin-bottom:14px">
+      <div>
+        <label class="form-label">Evento *</label>
+        <select id="r-evento" onchange="fillEventoData()" style="width:100%">
+          <option value="">Selecione o evento...</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Data de Realização</label>
+        <input type="date" id="r-data" style="width:100%">
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:14px">
+      <div>
+        <label class="form-label">Inscritos Aprovados</label>
+        <input type="number" id="r-inscritos" min="0" placeholder="Ex: 17" style="width:100%">
+      </div>
+      <div>
+        <label class="form-label">Participantes ao Vivo</label>
+        <input type="number" id="r-participantes" min="0" placeholder="Ex: 19" style="width:100%">
+      </div>
+      <div>
+        <label class="form-label">Duração Real (min)</label>
+        <input type="number" id="r-duracao" min="0" placeholder="Ex: 105" style="width:100%">
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:14px">
+      <div>
+        <label class="form-label">Convidados Externos</label>
+        <input type="number" id="r-externos" min="0" placeholder="Ex: 4" style="width:100%">
+      </div>
+      <div>
+        <label class="form-label">Perguntas Q&A</label>
+        <input type="number" id="r-qa" min="0" placeholder="Ex: 1" style="width:100%">
+      </div>
+      <div>
+        <label class="form-label">MQLs Gerados</label>
+        <input type="number" id="r-mqls" min="0" placeholder="Ex: 4" style="width:100%">
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <label class="form-label">Observações / Destaques</label>
+      <textarea id="r-notas" rows="2" placeholder="Temas abordados, engajamento, feedbacks, leads identificados..." style="width:100%;resize:vertical"></textarea>
+    </div>
+
+    <button onclick="salvarRelatorio()" class="btn-primary">Salvar Relatório</button>
+    <span id="r-msg" style="font-size:12px;color:#34d399;margin-left:12px"></span>
+  </div>
+</div>
+
+<!-- ══════════ HISTÓRICO ══════════ -->
+<div id="p-historico" class="panel">
+  <div class="card" style="margin-bottom:0">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div class="card-title" style="margin-bottom:0">Histórico de Resultados</div>
+      <button onclick="exportHistorico()" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .2s" onmouseover="this.style.borderColor='#0E1DAA';this.style.color='#0E1DAA'" onmouseout="this.style.borderColor='#E2E6ED';this.style.color='#6b7280'">📥 Exportar CSV</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Evento</th><th>Data</th><th>Inscritos</th><th>Participantes</th><th>% Presença</th><th>Duração</th><th>Externos</th><th>Q&A</th><th>MQLs</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="hist-tbody"></tbody>
+      </table>
+    </div>
+    <div id="hist-empty" style="text-align:center;padding:32px;color:var(--text-muted);font-size:13px;display:none">
+      Nenhum resultado registrado ainda. Use a aba "Registrar Resultado".
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <span class="footer-text">← <a href="index.html" style="color:var(--text-muted);text-decoration:none">Hub</a></span>
+  <span class="footer-text">XP On · Eventos 2026</span>
+</footer>
+
+<script>
+// ── EVENTOS DATA ──
+const EV = [
+  {mes:'Janeiro',  data:'2026-01-15',tipo:'webinar',   tema:'Kickoff Comercial',                 parceiro:'Interno',             status:'executado'},
+  {mes:'Fevereiro',data:'2026-02-25',tipo:'webinar',   tema:'Ambientes Corporativos Conectados', parceiro:'Intelbras',           status:'executado', inscritos:17, participantes:19, duracao:105, mqls:4},
+  {mes:'Março',    data:'2026-03-25',tipo:'webinar',   tema:'Cibersegurança Corporativa',        parceiro:'Kaspersky',           status:'confirmado'},
+  {mes:'Março',    data:'2026-03-26',tipo:'presencial',tema:'Jantar Colaboração & IA',           parceiro:'Zoom',                status:'planejado'},
+  {mes:'Abril',    data:'2026-04-16',tipo:'webinar',   tema:'Infraestrutura de Redes',           parceiro:'Cisco',               status:'planejado'},
+  {mes:'Maio',     data:'2026-05-14',tipo:'webinar',   tema:'Cloud & Data Center',               parceiro:'TrustedData + HP',    status:'planejado'},
+  {mes:'Junho',    data:'2026-06-11',tipo:'webinar',   tema:'Salas Inteligentes',                parceiro:'HP|Poly',             status:'planejado'},
+  {mes:'Junho',    data:'2026-06-25',tipo:'presencial',tema:'Jantar Ambientes Conectados',       parceiro:'Intelbras',           status:'planejado'},
+  {mes:'Julho',    data:'2026-07-09',tipo:'webinar',   tema:'Experiência Híbrida',               parceiro:'Zoom',                status:'planejado'},
+  {mes:'Agosto',   data:'2026-08-06',tipo:'webinar',   tema:'Equipamentos UX Salas',             parceiro:'Logitech',            status:'planejado'},
+  {mes:'Agosto',   data:'2026-08-20',tipo:'presencial',tema:'Encontro Intelligent Collaboration',parceiro:'Zoom + Logitech',     status:'planejado'},
+  {mes:'Setembro', data:'2026-09-10',tipo:'webinar',   tema:'ROI Ambientes Colaborativos',       parceiro:'XPon + Cliente',      status:'planejado'},
+  {mes:'Outubro',  data:'2026-10-08',tipo:'webinar',   tema:'Integração & Tendências 2027',      parceiro:'Multimarcas',         status:'planejado'},
+  {mes:'Novembro', data:'2026-11-05',tipo:'webinar',   tema:'Retrospectiva Técnica',             parceiro:'Todos os parceiros',  status:'planejado'},
+  {mes:'Novembro', data:'2026-11-19',tipo:'presencial',tema:'XPon Forward 2026',                 parceiro:'Todos os parceiros',  status:'planejado'},
+  {mes:'Dezembro', data:'2026-12-10',tipo:'webinar',   tema:'Casebook XPon — Encerramento',      parceiro:'Digital / Todos',     status:'planejado'},
+];
+
+const SO = ['planejado','em execução','confirmado','executado'];
+const SC = {'planejado':'s-planejado','em execução':'s-execucao','confirmado':'s-confirmado','executado':'s-executado'};
+const SI = {'planejado':'⬜','em execução':'🔄','confirmado':'✅','executado':'✔'};
+
+// ── RELATÓRIOS ──
+const REL_KEY = 'xpon-relatorios';
+let relatorios = [];
+
+function loadRelatorios(){
+  try{
+    const saved = localStorage.getItem(REL_KEY);
+    relatorios = saved ? JSON.parse(saved) : [];
+    if(relatorios.length === 0){
+      relatorios = [{
+        id:'rel-001', evento:'Ambientes Corporativos Conectados', parceiro:'Intelbras',
+        data:'2026-02-25', inscritos:17, participantes:19, duracao:105, externos:4, qa:1, mqls:4,
+        notas:'Webinar sobre roteadores e switches Intelbras. Participantes externos: Vanessa Croccia (Nextpoint), Rogério Camelo (MPF), Eduardo Carrasco, Alison da Cruz (Intelbras). Q&A sobre portfólio de roteadores respondida por Anderson Oliveira.'
+      }];
+      localStorage.setItem(REL_KEY, JSON.stringify(relatorios));
+    }
+  } catch(e){ relatorios = []; }
+}
+function saveRelatorios(){ localStorage.setItem(REL_KEY, JSON.stringify(relatorios)); }
+
+// ── PANEL SWITCH ──
+function showPanel(id, btn){
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if(id === 'p-dashboard') renderDashboard();
+  if(id === 'p-historico') renderHistorico();
+}
+
+// ── CALENDAR TABLE ──
+function renderCalendar(){
+  document.getElementById('cal-tbody').innerHTML = EV.map((e,i) => `<tr>
+    <td style="font-weight:600">${e.mes}</td>
+    <td><input type="date" value="${e.data}" onchange="EV[${i}].data=this.value;renderTL()" style="font-size:11px"></td>
+    <td><span class="badge ${e.tipo==='presencial'?'t-presencial':'t-webinar'}">${e.tipo==='presencial'?'🍽 Presencial':'📡 Webinar'}</span></td>
+    <td style="max-width:220px">${e.tema}</td>
+    <td style="color:var(--text-muted);font-size:12px">${e.parceiro}</td>
+    <td><span class="badge ${SC[e.status]}" id="csb${i}">${SI[e.status]} ${e.status}</span></td>
+    <td><button class="btn-cycle" onclick="cycle(${i})">→</button></td>
+  </tr>`).join('');
+}
+function cycle(i){
+  EV[i].status = SO[(SO.indexOf(EV[i].status)+1)%SO.length];
+  const b = document.getElementById('csb'+i);
+  if(b){ b.className='badge '+SC[EV[i].status]; b.textContent=SI[EV[i].status]+' '+EV[i].status; }
+  renderTL();
+}
+
+// ── TIMELINE ──
+function renderTL(){
+  const meses = [...new Set(EV.map(e => e.mes))];
+  document.getElementById('timeline').innerHTML = meses.map(m => {
+    const evs = EV.filter(e => e.mes === m);
+    return `<div class="tl-month">
+      <div class="tl-label">${m.substring(0,3)}</div>
+      ${evs.map(e => `<div class="tl-event ${e.tipo==='presencial'?'tl-p':'tl-w'}">
+        <div class="tl-event-name">${e.tipo==='presencial'?'🍽':'📡'} ${e.tema.substring(0,30)}${e.tema.length>30?'…':''}</div>
+        <span class="badge ${SC[e.status]}" style="font-size:9px;padding:1px 7px">${e.status}</span>
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+// ── PRÓXIMOS EVENTOS ──
+function renderProximos(){
+  const today = new Date().toISOString().split('T')[0];
+  const proximos = EV.filter(e => e.data >= today && e.status !== 'executado').slice(0,5);
+  const tbody = document.getElementById('proximos-tbody');
+  if(!proximos.length){ tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px">Todos os eventos foram realizados ou não há próximos eventos.</td></tr>`; return; }
+  tbody.innerHTML = proximos.map(e => `<tr>
+    <td style="font-weight:600;white-space:nowrap">${e.data.split('-').reverse().join('/')}</td>
+    <td>${e.tema}</td>
+    <td><span class="badge ${e.tipo==='presencial'?'t-presencial':'t-webinar'}">${e.tipo==='presencial'?'🍽':'📡'} ${e.tipo}</span></td>
+    <td style="color:var(--text-muted);font-size:12px">${e.parceiro}</td>
+    <td><span class="badge ${SC[e.status]}">${SI[e.status]} ${e.status}</span></td>
+  </tr>`).join('');
+}
+
+// ── DASHBOARD ──
+let dashCharts = {};
+function destroyChart(k){ if(dashCharts[k]){ dashCharts[k].destroy(); delete dashCharts[k]; } }
+
+function renderDashboard(){
+  // KPI stats from relatorios
+  const execCount = EV.filter(e => e.status === 'executado').length;
+  const totalInsc = relatorios.reduce((s,r) => s + (r.inscritos||0), 0);
+  const totalPart = relatorios.reduce((s,r) => s + (r.participantes||0), 0);
+  const totalMqls = relatorios.reduce((s,r) => s + (r.mqls||0), 0);
+  document.getElementById('k-exec').textContent = execCount;
+  document.getElementById('k-insc').textContent = totalInsc;
+  document.getElementById('k-part').textContent = totalPart;
+  document.getElementById('k-mqls').textContent = totalMqls;
+  document.getElementById('cnt-webinar').textContent = EV.filter(e => e.tipo==='webinar').length;
+  document.getElementById('cnt-presencial').textContent = EV.filter(e => e.tipo==='presencial').length;
+
+  // Eventos com dados
+  const comDados = relatorios.slice(0,6);
+  const labels = comDados.map(r => r.evento.substring(0,18)+'…');
+  const inscData = comDados.map(r => r.inscritos||0);
+  const partData = comDados.map(r => r.participantes||0);
+
+  destroyChart('compare');
+  const c1 = document.getElementById('chart-ev-compare');
+  if(c1) dashCharts['compare'] = new Chart(c1, {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:'Inscritos',data:inscData,backgroundColor:'rgba(9,29,176,0.6)',borderRadius:3},
+        {label:'Participantes',data:partData,backgroundColor:'rgba(9,168,238,0.7)',borderRadius:3}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9ca3af',font:{size:10}}}},scales:{x:{ticks:{color:'#6b7280',font:{size:9}}},y:{ticks:{color:'#6b7280',font:{size:10}},grid:{color:'rgba(14,29,170,0.08)'}}}}
+  });
+
+  destroyChart('tipo');
+  const c2 = document.getElementById('chart-ev-tipo');
+  const wCount = EV.filter(e=>e.tipo==='webinar').length;
+  const pCount = EV.filter(e=>e.tipo==='presencial').length;
+  if(c2) dashCharts['tipo'] = new Chart(c2, {
+    type:'doughnut',
+    data:{labels:['Webinar','Presencial'],datasets:[{data:[wCount,pCount],backgroundColor:['#091db0','#0E1DAA'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
+  });
+
+  renderProximos();
+}
+
+// ── FORM RELATÓRIO ──
+function populateSelect(){
+  const sel = document.getElementById('r-evento');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">Selecione o evento...</option>';
+  EV.forEach((e,i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${e.mes} — ${e.tema} (${e.parceiro})`;
+    sel.appendChild(opt);
+  });
+}
+
+function fillEventoData(){
+  const idx = document.getElementById('r-evento').value;
+  if(idx === '') return;
+  const e = EV[idx];
+  document.getElementById('r-data').value = e.data;
+  if(e.inscritos) document.getElementById('r-inscritos').value = e.inscritos;
+  if(e.participantes) document.getElementById('r-participantes').value = e.participantes;
+  if(e.duracao) document.getElementById('r-duracao').value = e.duracao;
+  if(e.mqls) document.getElementById('r-mqls').value = e.mqls;
+}
+
+function salvarRelatorio(){
+  const idx = document.getElementById('r-evento').value;
+  if(idx === ''){ alert('Selecione um evento.'); return; }
+  const e = EV[idx];
+  const inscritos = parseInt(document.getElementById('r-inscritos').value)||0;
+  const participantes = parseInt(document.getElementById('r-participantes').value)||0;
+  const rel = {
+    id:'rel-'+Date.now(), evento:e.tema, parceiro:e.parceiro,
+    data:document.getElementById('r-data').value, inscritos, participantes,
+    duracao:parseInt(document.getElementById('r-duracao').value)||0,
+    externos:parseInt(document.getElementById('r-externos').value)||0,
+    qa:parseInt(document.getElementById('r-qa').value)||0,
+    mqls:parseInt(document.getElementById('r-mqls').value)||0,
+    notas:document.getElementById('r-notas').value,
+  };
+  const existing = relatorios.findIndex(r => r.evento===e.tema && r.data===rel.data);
+  if(existing >= 0) relatorios[existing] = rel;
+  else relatorios.unshift(rel);
+  // Update EV status to executado
+  EV[idx].status = 'executado';
+  saveRelatorios();
+  document.getElementById('r-msg').textContent = '✅ Resultado salvo!';
+  setTimeout(() => document.getElementById('r-msg').textContent='', 3000);
+}
+
+function deleteRelatorio(id){
+  if(!confirm('Remover este registro?')) return;
+  relatorios = relatorios.filter(r => r.id !== id);
+  saveRelatorios();
+  renderHistorico();
+}
+
+// ── HISTÓRICO ──
+function renderHistorico(){
+  const tbody = document.getElementById('hist-tbody');
+  const empty = document.getElementById('hist-empty');
+  if(!relatorios.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = relatorios.map(r => {
+    const presenca = r.inscritos>0 ? Math.round((r.participantes/r.inscritos)*100) : 0;
+    const presStyle = presenca>=60 ? 'color:#34d399' : presenca>=40 ? 'color:#fbbf24' : 'color:#f87171';
+    const h = Math.floor(r.duracao/60);
+    const m = r.duracao%60;
+    const dur = h>0 ? `${h}h${String(m).padStart(2,'0')}` : `${r.duracao}min`;
+    return `<tr>
+      <td style="font-weight:600">${r.evento}<div style="font-size:11px;color:var(--text-muted)">${r.parceiro}</div></td>
+      <td style="white-space:nowrap">${r.data?r.data.split('-').reverse().join('/'):'—'}</td>
+      <td style="text-align:center">${r.inscritos}</td>
+      <td style="text-align:center">${r.participantes}</td>
+      <td style="text-align:center;font-weight:700;${presStyle}">${presenca}%</td>
+      <td style="text-align:center">${dur}</td>
+      <td style="text-align:center">${r.externos||0}</td>
+      <td style="text-align:center">${r.qa||0}</td>
+      <td style="text-align:center;font-weight:700;color:var(--xp-cyan)">${r.mqls||0}</td>
+      <td><button class="btn-cycle" onclick="deleteRelatorio('${r.id}')">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function exportHistorico(){
+  const hdr = 'evento,parceiro,data,inscritos,participantes,presenca_%,duracao_min,externos,qa,mqls,notas';
+  const rows = relatorios.map(r => {
+    const p = r.inscritos>0 ? Math.round((r.participantes/r.inscritos)*100) : 0;
+    return [r.evento,r.parceiro,r.data,r.inscritos,r.participantes,p,r.duracao,r.externos||0,r.qa||0,r.mqls||0,(r.notas||'').replace(/,/g,';')].map(v=>`"${v||''}"`).join(',');
+  });
+  const csv = [hdr,...rows].join('\n');
+  const blob = new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='xpon-eventos-historico.csv'; a.click();
+}
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', () => {
+  loadRelatorios();
+  populateSelect();
+  renderCalendar();
+  renderTL();
+  renderDashboard();
+  renderHistorico();
+});
+</script>
+</body>
+</html>
