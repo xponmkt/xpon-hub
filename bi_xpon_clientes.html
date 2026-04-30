@@ -5,167 +5,130 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XP On — BI Clientes & Renovação</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 <style>
 :root {
-  --xp-blue: #0E1DAA;
-  --xp-blue-dark: #0a1580;
-  --xp-blue-soft: rgba(14,29,170,0.06);
-  --xp-blue-mid: rgba(14,29,170,0.12);
-  --xp-cyan: #4DA4C7;
-  --grad-brand: linear-gradient(135deg,#4DA4C7 0%,#0E1DAA 100%);
-  --blue-dark: #0E1DAA;
-  --blue-med: #0E1DAA;
-  --blue-light: rgba(14,29,170,0.08);
-  --orange: #E07B39;
-  --green: #27AE60;
-  --red: #E74C3C;
-  --yellow: #F39C12;
-  --gray: #6C757D;
-  --bg: #F0F2F5;
-  --card: #FFFFFF;
-  --text: #1A2B3C;
-  --text2: #5A6A7A;
-  --radius: 10px;
-  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --xp-blue:#0E1DAA; --xp-blue-dark:#0a1580; --xp-blue-soft:rgba(14,29,170,.06);
+  --xp-blue-mid:rgba(14,29,170,.12); --xp-cyan:#4DA4C7;
+  --grad-brand:linear-gradient(135deg,#4DA4C7 0%,#0E1DAA 100%);
+  --orange:#E07B39; --green:#27AE60; --red:#E74C3C; --yellow:#F39C12; --gray:#6C757D;
+  --bg:#F0F2F5; --card:#FFFFFF; --text:#1A2B3C; --text2:#5A6A7A;
+  --radius:10px; --shadow:0 2px 8px rgba(0,0,0,.08);
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Space Grotesk',sans-serif; background:var(--bg); color:var(--text); font-size:14px; }
-
-/* HEADER */
-.header { background: var(--grad-brand); color:#fff; padding:20px 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; }
-.header-left h1 { font-size:20px; font-weight:700; letter-spacing:-0.3px; }
-.header-left p { font-size:12px; color:rgba(255,255,255,0.65); margin-top:2px; }
-.header-badge { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:20px; padding:6px 14px; font-size:12px; color:rgba(255,255,255,0.85); }
-.header-filters { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-.header-filters select { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:#fff; padding:6px 12px; border-radius:6px; font-size:12px; cursor:pointer; }
-.header-filters select option { background:var(--blue-dark); }
-
-/* LAYOUT */
-.container { max-width:1400px; margin:0 auto; padding:20px; }
-
-/* ALERT */
-.alert { background:#FFF3CD; border-left:4px solid var(--yellow); border-radius:var(--radius); padding:12px 18px; margin-bottom:20px; font-size:13px; color:#7D5A00; display:flex; gap:10px; align-items:flex-start; }
-.alert strong { display:block; margin-bottom:2px; }
-
-/* KPI ROW */
-.kpi-row { display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin-bottom:20px; }
-.kpi-card { background:var(--card); border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow); border-top:3px solid transparent; position:relative; overflow:hidden; }
-.kpi-card.blue { border-top-color:var(--xp-blue); }
-.kpi-card.green { border-top-color:var(--green); }
-.kpi-card.orange { border-top-color:var(--orange); }
-.kpi-card.red { border-top-color:var(--red); }
-.kpi-card.yellow { border-top-color:var(--yellow); }
-.kpi-label { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:6px; }
-.kpi-value { font-size:22px; font-weight:700; color:var(--text); line-height:1; margin-bottom:4px; }
-.kpi-sub { font-size:11px; color:var(--text2); }
-.kpi-change { font-size:11px; font-weight:600; margin-top:4px; }
-.kpi-change.pos { color:var(--green); }
-.kpi-change.neg { color:var(--red); }
-
-/* CHART GRID */
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
-.grid-3-1 { display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px; }
-.grid-1-2 { display:grid; grid-template-columns:1fr 2fr; gap:16px; margin-bottom:16px; }
-.chart-card { background:var(--card); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); }
-.chart-card.full { grid-column:1/-1; }
-.chart-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px; }
-.chart-sub { font-size:11px; color:var(--text2); margin-bottom:16px; }
-.chart-canvas { position:relative; }
-.chart-canvas canvas { max-height:260px; }
-.chart-canvas.tall canvas { max-height:340px; }
-.chart-canvas.short canvas { max-height:200px; }
-
-/* INSIGHTS */
-.insights { background: linear-gradient(135deg,#EBF4FF,#F0F4F8); border-radius:var(--radius); padding:20px 22px; margin-bottom:16px; border:1px solid #D0E4F5; }
-.insights h3 { font-size:13px; font-weight:700; color:var(--xp-blue); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-.insights-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.insight-item { background:#fff; border-radius:8px; padding:14px 16px; border-left:3px solid var(--xp-blue); box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-.insight-item.warn { border-left-color:var(--orange); }
-.insight-item.ok { border-left-color:var(--green); }
-.insight-item.tip { border-left-color:var(--yellow); }
-.insight-label { font-size:10px; text-transform:uppercase; letter-spacing:0.6px; color:var(--text2); margin-bottom:6px; font-weight:600; }
-.insight-text { font-size:12px; color:var(--text); line-height:1.5; }
-
-/* MARKETING SECTION */
-.mkt-section { background:var(--card); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:16px; }
-.mkt-section h3 { font-size:13px; font-weight:700; color:var(--xp-blue); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-.mkt-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
-.mkt-card { border-radius:8px; padding:14px 16px; }
-.mkt-card.c1 { background:#EBF4FF; border:1px solid #BDD6F0; }
-.mkt-card.c2 { background:#FEF3E8; border:1px solid #F5C99A; }
-.mkt-card.c3 { background:#E8F8F0; border:1px solid #9AE0BA; }
-.mkt-card.c4 { background:#F5F0FF; border:1px solid #C9B4F0; }
-.mkt-card-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text2); margin-bottom:6px; }
-.mkt-card-text { font-size:12px; color:var(--text); line-height:1.5; }
-
-/* TABLE */
-.table-card { background:var(--card); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:16px; overflow-x:auto; }
-.table-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
-.table-header h3 { font-size:13px; font-weight:700; color:var(--text); }
-.search-box { padding:7px 12px; border:1px solid #DDE3EA; border-radius:6px; font-size:12px; width:220px; color:var(--text); }
-.search-box:focus { outline:none; border-color:var(--xp-blue); }
-table { width:100%; border-collapse:collapse; font-size:12px; min-width:900px; }
-thead th { text-align:left; padding:9px 12px; border-bottom:2px solid #EEF2F7; color:var(--text2); font-size:11px; text-transform:uppercase; letter-spacing:0.5px; cursor:pointer; user-select:none; white-space:nowrap; }
-thead th:hover { color:var(--xp-blue); background:#F8FAFC; }
-tbody td { padding:9px 12px; border-bottom:1px solid #F0F4F8; color:var(--text); }
-tbody tr:hover { background:#F8FAFC; }
-.badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:600; }
-.badge-jud { background:#EBF4FF; color:#0E1DAA; }
-.badge-mp { background:#FEE9E9; color:#C0392B; }
-.badge-edu { background:#EBF5FB; color:#2980a0; }
-.badge-sau { background:#E8F8F0; color:#1E8449; }
-.badge-gov { background:#FEF9E8; color:#9A6700; }
-.badge-pri { background:#F4ECF7; color:#7D3C98; }
-.badge-out { background:#F2F3F4; color:#5D6D7E; }
-.val-pos { color:var(--green); font-weight:600; }
-.val-neg { color:var(--red); font-weight:600; }
-.pagination { display:flex; gap:6px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
-.pagination button { padding:5px 10px; border:1px solid #DDE3EA; border-radius:5px; background:#fff; color:var(--text); cursor:pointer; font-size:12px; }
-.pagination button.active { background:var(--xp-blue); color:#fff; border-color:var(--xp-blue); }
-.pagination button:hover:not(.active) { background:#F0F4F8; }
-.table-info { font-size:11px; color:var(--text2); margin-top:8px; text-align:center; }
-
-/* EXPIRATION */
-.exp-kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px; }
-.exp-kpi { border-radius:var(--radius); padding:16px 20px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
-.exp-kpi.vencido { background:#FEE9E9; border-left:4px solid #E74C3C; }
-.exp-kpi.critico { background:#FFF0E6; border-left:4px solid #E07B39; }
-.exp-kpi.urgente { background:#FEF9E8; border-left:4px solid #F39C12; }
-.exp-kpi.atencao { background:#EBF5FB; border-left:4px solid #4DA4C7; }
-.exp-kpi .kpi-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:6px; }
-.exp-kpi.vencido .kpi-label { color:#C0392B; }
-.exp-kpi.critico .kpi-label { color:#D35400; }
-.exp-kpi.urgente .kpi-label { color:#9A6700; }
-.exp-kpi.atencao .kpi-label { color:#2980a0; }
-.exp-kpi .kpi-value { font-size:28px; font-weight:700; color:var(--text); }
-.exp-kpi .kpi-sub { font-size:11px; color:var(--text2); margin-top:2px; }
-.exp-section-title { font-size:16px; font-weight:700; color:var(--xp-blue); margin:24px 0 14px; display:flex; align-items:center; gap:8px; border-left:4px solid var(--xp-blue); padding-left:12px; }
-.urg-badge { display:inline-block; padding:3px 9px; border-radius:20px; font-size:10px; font-weight:700; white-space:nowrap; }
-.urg-vencido { background:#FDECEA; color:#C0392B; border:1px solid #F1948A; }
-.urg-critico { background:#FEF0E6; color:#D35400; border:1px solid #F0A06A; }
-.urg-urgente { background:#FEF9E8; color:#9A6700; border:1px solid #F5C842; }
-.urg-atencao { background:#EBF5FB; color:#2980a0; border:1px solid #85C1E9; }
-.urg-planejamento { background:#EBF5EF; color:#1E8449; border:1px solid #7DCEA0; }
-.urg-longo { background:#F4ECF7; color:#7D3C98; border:1px solid #C39BD3; }
-.urg-estrategico { background:#EBF0FB; color:#1A3A8C; border:1px solid #85A5E9; }
-.dias-badge { font-size:12px; font-weight:700; }
-.dias-vencido { color:#C0392B; }
-.dias-critico { color:#D35400; }
-.dias-urgente { color:#9A6700; }
-.dias-atencao { color:#2980a0; }
-.dias-ok { color:#1E8449; }
-.filter-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; align-items:center; }
-.filter-row select { padding:7px 12px; border:1px solid #DDE3EA; border-radius:6px; font-size:12px; color:var(--text); background:#fff; }
-.filter-row select:focus { outline:none; border-color:var(--xp-blue); }
-
-/* FOOTER */
-.footer { text-align:center; padding:20px; font-size:11px; color:var(--text2); }
-
-@media (max-width:900px) {
-  .kpi-row { grid-template-columns:repeat(3,1fr); }
-  .grid-2,.grid-3,.grid-3-1,.grid-1-2,.insights-grid,.mkt-grid { grid-template-columns:1fr; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+.header{background:var(--grad-brand);color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.header-left h1{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.header-left p{font-size:12px;color:rgba(255,255,255,.65);margin-top:2px}
+.header-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:6px 14px;font-size:12px;color:rgba(255,255,255,.85)}
+.header-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.refresh-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:6px 16px;font-size:12px;color:#fff;cursor:pointer;font-family:inherit;transition:background .2s}
+.refresh-btn:hover{background:rgba(255,255,255,.25)}
+.subnav{background:#fff;border-bottom:1px solid #E2E6ED;padding:10px 28px;display:flex;align-items:center;justify-content:space-between}
+.subnav a{font-size:11px;font-weight:600;color:#9CA3AF;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;transition:color .15s}
+.subnav a:hover{color:#0E1DAA}
+.subnav span{font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em}
+.container{max-width:1400px;margin:0 auto;padding:20px}
+/* Loading */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:16px}
+.spinner{width:40px;height:40px;border:3px solid #E2E6ED;border-top-color:var(--xp-blue);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:var(--text2)}
+.error-box{background:#FEE9E9;border-left:4px solid #E74C3C;border-radius:var(--radius);padding:16px 20px;margin:20px 0;font-size:13px;color:#7D0000}
+/* Alert */
+.alert{background:#FFF3CD;border-left:4px solid var(--yellow);border-radius:var(--radius);padding:12px 18px;margin-bottom:20px;font-size:13px;color:#7D5A00;display:flex;gap:10px;align-items:flex-start}
+.alert strong{display:block;margin-bottom:2px}
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:20px}
+.kpi-card{background:var(--card);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid transparent;position:relative;overflow:hidden}
+.kpi-card.blue{border-top-color:var(--xp-blue)}.kpi-card.green{border-top-color:var(--green)}
+.kpi-card.orange{border-top-color:var(--orange)}.kpi-card.red{border-top-color:var(--red)}
+.kpi-card.yellow{border-top-color:var(--yellow)}.kpi-card.cyan{border-top-color:var(--xp-cyan)}
+.kpi-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.kpi-value{font-size:22px;font-weight:700;color:var(--text);line-height:1;margin-bottom:4px}
+.kpi-sub{font-size:11px;color:var(--text2)}
+.kpi-change{font-size:11px;font-weight:600;margin-top:4px}
+.kpi-change.pos{color:var(--green)}.kpi-change.neg{color:var(--red)}.kpi-change.warn{color:var(--orange)}
+/* Charts */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3-1{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+.chart-card{background:var(--card);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow)}
+.chart-card.full{grid-column:1/-1}
+.chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.chart-sub{font-size:11px;color:var(--text2);margin-bottom:16px}
+.chart-canvas{position:relative}.chart-canvas canvas{max-height:260px}
+.chart-canvas.tall canvas{max-height:340px}.chart-canvas.short canvas{max-height:200px}
+/* Insights */
+.insights{background:linear-gradient(135deg,#EBF4FF,#F0F4F8);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;border:1px solid #D0E4F5}
+.insights h3{font-size:13px;font-weight:700;color:var(--xp-blue);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.insight-item{background:#fff;border-radius:8px;padding:14px 16px;border-left:3px solid var(--xp-blue);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.insight-item.warn{border-left-color:var(--orange)}.insight-item.ok{border-left-color:var(--green)}.insight-item.tip{border-left-color:var(--yellow)}
+.insight-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);margin-bottom:6px;font-weight:600}
+.insight-text{font-size:12px;color:var(--text);line-height:1.5}
+/* Mkt */
+.mkt-section{background:var(--card);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);margin-bottom:16px}
+.mkt-section h3{font-size:13px;font-weight:700;color:var(--xp-blue);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.mkt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mkt-card{border-radius:8px;padding:14px 16px}
+.mkt-card.c1{background:#EBF4FF;border:1px solid #BDD6F0}.mkt-card.c2{background:#FEF3E8;border:1px solid #F5C99A}
+.mkt-card.c3{background:#E8F8F0;border:1px solid #9AE0BA}.mkt-card.c4{background:#F5F0FF;border:1px solid #C9B4F0}
+.mkt-card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:6px}
+.mkt-card-text{font-size:12px;color:var(--text);line-height:1.5}
+/* Table */
+.table-card{background:var(--card);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);margin-bottom:16px;overflow-x:auto}
+.table-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.table-header h3{font-size:13px;font-weight:700;color:var(--text)}
+.search-box{padding:7px 12px;border:1px solid #DDE3EA;border-radius:6px;font-size:12px;width:220px;color:var(--text)}
+.search-box:focus{outline:none;border-color:var(--xp-blue)}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:900px}
+thead th{text-align:left;padding:9px 12px;border-bottom:2px solid #EEF2F7;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;user-select:none;white-space:nowrap}
+thead th:hover{color:var(--xp-blue);background:#F8FAFC}
+tbody td{padding:9px 12px;border-bottom:1px solid #F0F4F8;color:var(--text)}
+tbody tr:hover{background:#F8FAFC}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.badge-jud{background:#EBF4FF;color:#0E1DAA}.badge-mp{background:#FEE9E9;color:#C0392B}
+.badge-edu{background:#EBF5FB;color:#2980a0}.badge-sau{background:#E8F8F0;color:#1E8449}
+.badge-gov{background:#FEF9E8;color:#9A6700}.badge-pri{background:#F4ECF7;color:#7D3C98}
+.badge-out{background:#F2F3F4;color:#5D6D7E}
+.val-pos{color:var(--green);font-weight:600}.val-neg{color:var(--red);font-weight:600}
+.pagination{display:flex;gap:6px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.pagination button{padding:5px 10px;border:1px solid #DDE3EA;border-radius:5px;background:#fff;color:var(--text);cursor:pointer;font-size:12px}
+.pagination button.active{background:var(--xp-blue);color:#fff;border-color:var(--xp-blue)}
+.pagination button:hover:not(.active){background:#F0F4F8}
+.table-info{font-size:11px;color:var(--text2);margin-top:8px;text-align:center}
+/* Expiry */
+.exp-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.exp-kpi{border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.exp-kpi.vencido{background:#FEE9E9;border-left:4px solid #E74C3C}
+.exp-kpi.critico{background:#FFF0E6;border-left:4px solid #E07B39}
+.exp-kpi.urgente{background:#FEF9E8;border-left:4px solid #F39C12}
+.exp-kpi.atencao{background:#EBF5FB;border-left:4px solid #4DA4C7}
+.exp-kpi .kpi-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.exp-kpi.vencido .kpi-label{color:#C0392B}.exp-kpi.critico .kpi-label{color:#D35400}
+.exp-kpi.urgente .kpi-label{color:#9A6700}.exp-kpi.atencao .kpi-label{color:#2980a0}
+.exp-kpi .kpi-value{font-size:28px;font-weight:700;color:var(--text)}
+.exp-kpi .kpi-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.exp-section-title{font-size:16px;font-weight:700;color:var(--xp-blue);margin:24px 0 14px;display:flex;align-items:center;gap:8px;border-left:4px solid var(--xp-blue);padding-left:12px}
+.urg-badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.urg-vencido{background:#FDECEA;color:#C0392B;border:1px solid #F1948A}
+.urg-critico{background:#FEF0E6;color:#D35400;border:1px solid #F0A06A}
+.urg-urgente{background:#FEF9E8;color:#9A6700;border:1px solid #F5C842}
+.urg-atencao{background:#EBF5FB;color:#2980a0;border:1px solid #85C1E9}
+.urg-planejamento{background:#EBF5EF;color:#1E8449;border:1px solid #7DCEA0}
+.urg-longo{background:#F4ECF7;color:#7D3C98;border:1px solid #C39BD3}
+.urg-estrategico{background:#EBF0FB;color:#1A3A8C;border:1px solid #85A5E9}
+.dias-badge{font-size:12px;font-weight:700}
+.dias-vencido{color:#C0392B}.dias-critico{color:#D35400}.dias-urgente{color:#9A6700}
+.dias-atencao{color:#2980a0}.dias-ok{color:#1E8449}
+.filter-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.filter-row select{padding:7px 12px;border:1px solid #DDE3EA;border-radius:6px;font-size:12px;color:var(--text);background:#fff}
+.filter-row select:focus{outline:none;border-color:var(--xp-blue)}
+.footer{text-align:center;padding:20px;font-size:11px;color:var(--text2)}
+@media(max-width:900px){
+  .kpi-row{grid-template-columns:repeat(3,1fr)}
+  .grid-2,.grid-3,.grid-3-1,.insights-grid,.mkt-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -173,739 +136,858 @@ tbody tr:hover { background:#F8FAFC; }
 
 <div class="header">
   <div class="header-left">
-    <h1>BI XP On · Clientes & Renovação</h1>
-    <p>Carteira Zoom · Renovações · Análise Comercial</p>
+    <h1>BI XP On · Clientes &amp; Renovação</h1>
+    <p>Carteira Zoom · Renovações · Análise Comercial · <span id="hdr-updated">Carregando...</span></p>
   </div>
-  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-    <span class="header-badge">169 clientes mapeados</span>
-    <span class="header-badge">Março 2026</span>
+  <div class="header-right">
+    <span class="header-badge" id="hdr-count">—</span>
+    <span class="header-badge" id="hdr-year">2026</span>
+    <button class="refresh-btn" onclick="loadData()">↻ Atualizar</button>
   </div>
 </div>
-<div style="background:#fff;border-bottom:1px solid #E2E6ED;padding:10px 28px;display:flex;align-items:center;justify-content:space-between"><a href="index.html" style="font-size:11px;font-weight:600;color:#9CA3AF;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;transition:color .15s" onmouseover="this.style.color='#0E1DAA'" onmouseout="this.style.color='#9CA3AF'">← Hub</a><span style="font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em">XP On · BI Clientes & Renovação · 2026</span></div>
+<div class="subnav">
+  <a href="index.html">← Hub</a>
+  <span>XP On · BI Clientes &amp; Renovação · <span id="hdr-date"></span></span>
+</div>
 
 <div class="container">
 
-  <div class="alert">
-    <span style="font-size:18px;">⚠️</span>
-    <div>
-      <strong>Atenção: dados de 2026 são parciais</strong>
-      A planilha captura contratos pelo mês de renovação. Como estamos em março de 2026, apenas os contratos com renovação em Jan–Mar/2026 já constam com valores. Os demais serão registrados ao longo do ano. O total de R$ 11,3M reflete apenas a carteira parcialmente atualizada.
-    </div>
+  <!-- LOADING -->
+  <div id="loading-wrap" class="loading-wrap">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando dados da planilha...</div>
   </div>
+  <div id="error-wrap" style="display:none"></div>
 
-  <!-- KPIs -->
-  <div class="kpi-row">
-    <div class="kpi-card blue">
-      <div class="kpi-label">Portfólio 2025</div>
-      <div class="kpi-value" id="kpi-t25"></div>
-      <div class="kpi-sub">Ano completo · Zoom</div>
-      <div class="kpi-change pos" id="kpi-g2425"></div>
-    </div>
-    <div class="kpi-card green">
-      <div class="kpi-label">Portfólio 2026 (parcial)</div>
-      <div class="kpi-value" id="kpi-t26"></div>
-      <div class="kpi-sub">Jan–Mar registrados</div>
-      <div class="kpi-change" id="kpi-g2526"></div>
-    </div>
-    <div class="kpi-card blue">
-      <div class="kpi-label">Portfólio 2024</div>
-      <div class="kpi-value" id="kpi-t24"></div>
-      <div class="kpi-sub">Base histórica</div>
-    </div>
-    <div class="kpi-card orange">
-      <div class="kpi-label">Clientes na Base</div>
-      <div class="kpi-value">169</div>
-      <div class="kpi-sub">46 com valor em 2026</div>
-    </div>
-    <div class="kpi-card yellow">
-      <div class="kpi-label">Markup Médio 2026</div>
-      <div class="kpi-value">1,64×</div>
-      <div class="kpi-sub">Variação: 1,04× a 2,36×</div>
-    </div>
-    <div class="kpi-card red">
-      <div class="kpi-label">Concentração MPF</div>
-      <div class="kpi-value">71,7%</div>
-      <div class="kpi-sub">do portfólio 2026 em 1 cliente</div>
-    </div>
-  </div>
+  <!-- MAIN CONTENT -->
+  <div id="main-content" style="display:none">
 
-  <!-- CHARTS ROW 1 -->
-  <div class="grid-3-1">
-    <div class="chart-card">
-      <div class="chart-title">Receita por Mês — 2025 vs 2026</div>
-      <div class="chart-sub">Comparativo mensal de valor de venda total (R$)</div>
-      <div class="chart-canvas tall"><canvas id="chart-monthly"></canvas></div>
+    <div class="alert" id="alert-box">
+      <span style="font-size:18px">⚠️</span>
+      <div id="alert-text"></div>
     </div>
-    <div class="chart-card">
-      <div class="chart-title">Evolução do Portfólio</div>
-      <div class="chart-sub">Valor total de venda por ano</div>
-      <div class="chart-canvas tall"><canvas id="chart-years"></canvas></div>
-    </div>
-  </div>
 
-  <!-- CHARTS ROW 2 -->
-  <div class="grid-2">
-    <div class="chart-card">
-      <div class="chart-title">Top 12 Clientes — Valor de Venda 2026</div>
-      <div class="chart-sub">Ordenado por receita. MPF excluído da escala para legibilidade.</div>
-      <div class="chart-canvas tall"><canvas id="chart-top12"></canvas></div>
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi-card blue">
+        <div class="kpi-label">Portfólio 2025</div>
+        <div class="kpi-value" id="kpi-t25">—</div>
+        <div class="kpi-sub">Ano completo · Zoom</div>
+        <div class="kpi-change" id="kpi-g2425"></div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Portfólio 2026</div>
+        <div class="kpi-value" id="kpi-t26">—</div>
+        <div class="kpi-sub" id="kpi-t26-sub">Contratos com valor registrado</div>
+        <div class="kpi-change" id="kpi-g2526"></div>
+      </div>
+      <div class="kpi-card cyan">
+        <div class="kpi-label">Portfólio 2027 (prev.)</div>
+        <div class="kpi-value" id="kpi-t27">—</div>
+        <div class="kpi-sub">Contratos já registrados</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">Portfólio 2024</div>
+        <div class="kpi-value" id="kpi-t24">—</div>
+        <div class="kpi-sub">Base histórica</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-label">Clientes na Base</div>
+        <div class="kpi-value" id="kpi-count">—</div>
+        <div class="kpi-sub" id="kpi-count-sub">—</div>
+      </div>
+      <div class="kpi-card yellow">
+        <div class="kpi-label">Markup Médio 2026</div>
+        <div class="kpi-value" id="kpi-mk">—</div>
+        <div class="kpi-sub" id="kpi-mk-sub">—</div>
+      </div>
     </div>
-    <div class="chart-card">
-      <div class="chart-title">Portfólio por Setor — 2025 vs 2026</div>
-      <div class="chart-sub">Comparativo de receita por segmento de mercado</div>
-      <div class="chart-canvas tall"><canvas id="chart-setor-bar"></canvas></div>
-    </div>
-  </div>
 
-  <!-- CHARTS ROW 3 -->
-  <div class="grid-3">
-    <div class="chart-card">
-      <div class="chart-title">Distribuição por Setor</div>
-      <div class="chart-sub">Número de clientes por segmento</div>
-      <div class="chart-canvas"><canvas id="chart-setor-donut"></canvas></div>
+    <!-- CHARTS ROW 1 -->
+    <div class="grid-3-1">
+      <div class="chart-card">
+        <div class="chart-title">Receita por Mês — 2025 vs 2026</div>
+        <div class="chart-sub">Comparativo mensal de valor de venda total (R$)</div>
+        <div class="chart-canvas tall"><canvas id="chart-monthly"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Evolução do Portfólio</div>
+        <div class="chart-sub">Valor total de venda por ano</div>
+        <div class="chart-canvas tall"><canvas id="chart-years"></canvas></div>
+      </div>
     </div>
-    <div class="chart-card">
-      <div class="chart-title">Tipo de Contrato</div>
-      <div class="chart-sub">Duração dos contratos ativos</div>
-      <div class="chart-canvas"><canvas id="chart-contrato"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Distribuição de Markup 2026</div>
-      <div class="chart-sub">Faixas de markup aplicado (contratos com valor)</div>
-      <div class="chart-canvas"><canvas id="chart-markup"></canvas></div>
-    </div>
-  </div>
 
-  <!-- INSIGHTS -->
-  <div class="insights">
-    <h3>📊 Análise e Pontos de Atenção</h3>
-    <div class="insights-grid">
-      <div class="insight-item warn">
-        <div class="insight-label">⚠ Risco de Concentração</div>
-        <div class="insight-text">MPF representa 71,7% do portfólio 2026 com R$ 8,1M. Um único contrato concentra a maior parte da receita. Diversificação de carteira é prioridade estratégica.</div>
+    <!-- CHARTS ROW 2 -->
+    <div class="grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Top 12 Clientes — Valor de Venda 2026</div>
+        <div class="chart-sub">Ordenado por receita</div>
+        <div class="chart-canvas tall"><canvas id="chart-top12"></canvas></div>
       </div>
-      <div class="insight-item ok">
-        <div class="insight-label">✅ Crescimento 2024→2025</div>
-        <div class="insight-text">A carteira cresceu 99% de 2024 para 2025, dobrando de R$ 9,5M para R$ 19M. Crescimento expressivo sustentado principalmente pelo setor público.</div>
-      </div>
-      <div class="insight-item warn">
-        <div class="insight-label">⚠ Judiciário: 55 clientes, 48 aguardando pregão</div>
-        <div class="insight-text">Grande parte dos TRTs está em "último aditivo aguardando novo pregão". Risco de perda de contratos por processo licitatório competitivo. Exige acompanhamento próximo.</div>
-      </div>
-      <div class="insight-item tip">
-        <div class="insight-label">💡 Oportunidade: Setor Privado</div>
-        <div class="insight-text">Apenas 7 clientes privados (Vale, BRF, Globo, BRB, Rota) com R$ 68K em 2026. O setor privado tem menor dependência de pregão e maior flexibilidade de negociação.</div>
-      </div>
-      <div class="insight-item tip">
-        <div class="insight-label">💡 Oportunidade: Workvivo</div>
-        <div class="insight-text">Apenas Petrobras tem Workvivo na carteira. Clientes com grande volume de licenças Zoom Enterprise (MPF, TRTs, UNIVAG) são candidatos naturais para expansão com Workvivo.</div>
-      </div>
-      <div class="insight-item ok">
-        <div class="insight-label">✅ Markup Saudável</div>
-        <div class="insight-text">Markup médio de 1,64× em 2026, com 37 contratos acima de 1,5×. Faixa 1,5–1,7× é a mais frequente (20 contratos). Sinal de boa posição de preço na maior parte da carteira.</div>
+      <div class="chart-card">
+        <div class="chart-title">Portfólio por Setor — 2025 vs 2026</div>
+        <div class="chart-sub">Comparativo de receita por segmento</div>
+        <div class="chart-canvas tall"><canvas id="chart-setor-bar"></canvas></div>
       </div>
     </div>
-  </div>
 
-  <!-- MARKETING SECTION -->
-  <div class="mkt-section">
-    <h3>🎯 Como o Marketing pode apoiar o Comercial nessa carteira</h3>
-    <div class="mkt-grid">
-      <div class="mkt-card c1">
-        <div class="mkt-card-title">Retenção — Judiciário</div>
-        <div class="mkt-card-text">Criar conteúdo técnico direcionado a gestores de TI dos TRTs antes dos pregões: casos de uso, comparativos de ROI, depoimentos de outros tribunais. Posicionar XP On como parceira de continuidade, não apenas fornecedora.</div>
+    <!-- CHARTS ROW 3 -->
+    <div class="grid-3">
+      <div class="chart-card">
+        <div class="chart-title">Distribuição por Setor</div>
+        <div class="chart-sub">Número de clientes por segmento</div>
+        <div class="chart-canvas"><canvas id="chart-setor-donut"></canvas></div>
       </div>
-      <div class="mkt-card c2">
-        <div class="mkt-card-title">Expansão — Setor Privado</div>
-        <div class="mkt-card-text">Construir uma régua de nutrição B2B via Apollo para empresas privadas com perfil similar a Vale e BRF. Foco em CTOs e gestores de infraestrutura. Ciclo de venda mais rápido e sem dependência de licitação.</div>
+      <div class="chart-card">
+        <div class="chart-title">Tipo de Pagamento Zoom</div>
+        <div class="chart-sub">Modalidade de pagamento dos contratos</div>
+        <div class="chart-canvas"><canvas id="chart-pgto"></canvas></div>
       </div>
-      <div class="mkt-card c3">
-        <div class="mkt-card-title">Upsell — Workvivo & Recursos Premium</div>
-        <div class="mkt-card-text">Criar campanha de cross-sell para clientes com 100+ licenças Enterprise: webinar sobre Workvivo + AI Companion, demonstrando produtividade real. MPF, TRT 2 e UNIVAG são os alvos imediatos.</div>
-      </div>
-      <div class="mkt-card c4">
-        <div class="mkt-card-title">Visibilidade — Cases e Provas Sociais</div>
-        <div class="mkt-card-text">Documentar cases de sucesso com TRTs e MPF para usar em novos pregões e propostas. Um case bem construído do Judiciário facilita a renovação e valida a XP On para outros tribunais ainda não na carteira.</div>
+      <div class="chart-card">
+        <div class="chart-title">Distribuição de Markup 2026</div>
+        <div class="chart-sub">Faixas de markup aplicado</div>
+        <div class="chart-canvas"><canvas id="chart-markup"></canvas></div>
       </div>
     </div>
-  </div>
 
-  <!-- TABLE -->
-  <div class="table-card">
-    <div class="table-header">
-      <h3>📋 Base Completa de Clientes</h3>
-      <input type="text" class="search-box" id="searchInput" placeholder="Buscar cliente, setor, produto..." onkeyup="filterTable()">
+    <!-- INSIGHTS -->
+    <div class="insights">
+      <h3>📊 Análise e Pontos de Atenção</h3>
+      <div class="insights-grid" id="insights-grid"></div>
     </div>
-    <table id="clientTable">
-      <thead>
-        <tr>
+
+    <!-- MARKETING -->
+    <div class="mkt-section">
+      <h3>🎯 Como o Marketing pode apoiar o Comercial nessa carteira</h3>
+      <div class="mkt-grid">
+        <div class="mkt-card c1">
+          <div class="mkt-card-title">Retenção — Judiciário</div>
+          <div class="mkt-card-text">Criar conteúdo técnico direcionado a gestores de TI dos TRTs antes dos pregões: casos de uso, comparativos de ROI, depoimentos de outros tribunais. Posicionar XP On como parceira de continuidade, não apenas fornecedora.</div>
+        </div>
+        <div class="mkt-card c2">
+          <div class="mkt-card-title">Expansão — Setor Privado</div>
+          <div class="mkt-card-text">Construir régua de nutrição B2B via Apollo para empresas com perfil similar a Vale e BRF. Foco em CTOs e gestores de infraestrutura. Ciclo de venda mais rápido e sem dependência de licitação.</div>
+        </div>
+        <div class="mkt-card c3">
+          <div class="mkt-card-title">Upsell — Workvivo &amp; Recursos Premium</div>
+          <div class="mkt-card-text">Criar campanha de cross-sell para clientes com 100+ licenças Enterprise: webinar sobre Workvivo + AI Companion, demonstrando produtividade real. MPF, TRTs e clientes educacionais são alvos imediatos.</div>
+        </div>
+        <div class="mkt-card c4">
+          <div class="mkt-card-title">Visibilidade — Cases e Provas Sociais</div>
+          <div class="mkt-card-text">Documentar cases de sucesso com TRTs e MPF para usar em novos pregões e propostas. Um case bem construído do Judiciário facilita a renovação e valida a XP On para outros tribunais ainda não na carteira.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENT TABLE -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3>📋 Base Completa de Clientes</h3>
+        <input type="text" class="search-box" id="searchInput" placeholder="Buscar cliente, setor, produto..." oninput="filterTable()">
+      </div>
+      <table id="clientTable">
+        <thead><tr>
           <th onclick="sortTable(0)">Cliente ↕</th>
           <th onclick="sortTable(1)">Setor ↕</th>
           <th onclick="sortTable(2)">Produto</th>
-          <th onclick="sortTable(3)">Contrato ↕</th>
+          <th onclick="sortTable(3)">Pgto Zoom ↕</th>
           <th onclick="sortTable(4)" style="text-align:right">Venda 2024 ↕</th>
           <th onclick="sortTable(5)" style="text-align:right">Venda 2025 ↕</th>
           <th onclick="sortTable(6)" style="text-align:right">Venda 2026 ↕</th>
           <th onclick="sortTable(7)" style="text-align:right">Markup 26 ↕</th>
-          <th onclick="sortTable(8)">Venc.</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-    <div id="tableInfo" class="table-info"></div>
-    <div class="pagination" id="pagination"></div>
-  </div>
-
-  <!-- ═══════════════════════════ VENCIMENTOS ═══════════════════════════ -->
-  <div class="exp-section-title">📅 Gestão de Vencimentos de Contratos</div>
-
-  <!-- Urgency KPIs -->
-  <div class="exp-kpi-row">
-    <div class="exp-kpi vencido">
-      <div class="kpi-label">⛔ Vencidos</div>
-      <div class="kpi-value">37</div>
-      <div class="kpi-sub">R$ 1,08M em base 2025 · requer verificação</div>
+          <th onclick="sortTable(8)">Validade</th>
+          <th>Status / Aditivo</th>
+        </tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div id="tableInfo" class="table-info"></div>
+      <div class="pagination" id="pagination"></div>
     </div>
-    <div class="exp-kpi critico">
-      <div class="kpi-label">🔴 Crítico — até 30 dias</div>
-      <div class="kpi-value">8</div>
-      <div class="kpi-sub">R$ 320K em risco imediato</div>
-    </div>
-    <div class="exp-kpi urgente">
-      <div class="kpi-label">🟡 Urgente — 31 a 90 dias</div>
-      <div class="kpi-value">19</div>
-      <div class="kpi-sub">R$ 427K · acionar agora</div>
-    </div>
-    <div class="exp-kpi atencao">
-      <div class="kpi-label">🔵 Atenção — 91 a 180 dias</div>
-      <div class="kpi-value">22</div>
-      <div class="kpi-sub">R$ 1,48M · iniciar negociação</div>
-    </div>
-  </div>
 
-  <!-- Timeline Chart -->
-  <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">Timeline de Vencimentos — próximos 24 meses</div>
-    <div class="chart-sub">Número de contratos e valor de base 2025 por mês de vencimento</div>
-    <div class="chart-canvas" style="position:relative"><canvas id="chart-timeline" style="max-height:280px"></canvas></div>
-  </div>
+    <!-- EXPIRY SECTION -->
+    <div class="exp-section-title">📅 Gestão de Vencimentos de Contratos</div>
 
-  <!-- Expiration Table -->
-  <div class="table-card">
-    <div class="table-header">
-      <h3>🗓️ Contratos por Prioridade de Renovação</h3>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <input type="text" class="search-box" id="expSearch" placeholder="Buscar cliente..." onkeyup="filterExpTable()" style="width:180px">
+    <div class="exp-kpi-row">
+      <div class="exp-kpi vencido">
+        <div class="kpi-label">⛔ Vencidos</div>
+        <div class="kpi-value" id="exp-count-vencido">—</div>
+        <div class="kpi-sub" id="exp-val-vencido">—</div>
+      </div>
+      <div class="exp-kpi critico">
+        <div class="kpi-label">🔴 Crítico — até 30 dias</div>
+        <div class="kpi-value" id="exp-count-critico">—</div>
+        <div class="kpi-sub" id="exp-val-critico">—</div>
+      </div>
+      <div class="exp-kpi urgente">
+        <div class="kpi-label">🟡 Urgente — 31 a 90 dias</div>
+        <div class="kpi-value" id="exp-count-urgente">—</div>
+        <div class="kpi-sub" id="exp-val-urgente">—</div>
+      </div>
+      <div class="exp-kpi atencao">
+        <div class="kpi-label">🔵 Atenção — 91 a 180 dias</div>
+        <div class="kpi-value" id="exp-count-atencao">—</div>
+        <div class="kpi-sub" id="exp-val-atencao">—</div>
       </div>
     </div>
-    <div class="filter-row">
-      <label style="font-size:12px;color:var(--text2);">Urgência:</label>
-      <select id="expFilter" onchange="filterExpTable()">
-        <option value="all">Todas</option>
-        <option value="Vencido">⛔ Vencidos</option>
-        <option value="Crítico">🔴 Crítico (até 30 dias)</option>
-        <option value="Urgente">🟡 Urgente (31–90 dias)</option>
-        <option value="Atenção">🔵 Atenção (91–180 dias)</option>
-        <option value="Planejamento">🟢 Planejamento (181–365 dias)</option>
-        <option value="Longo Prazo">🟣 Longo Prazo (1–3 anos)</option>
-        <option value="Estratégico">🔷 Estratégico (3+ anos)</option>
-      </select>
-      <select id="expSetor" onchange="filterExpTable()">
-        <option value="all">Todos os Setores</option>
-        <option value="Judiciário">Judiciário</option>
-        <option value="Ministério Público">Ministério Público</option>
-        <option value="Educação">Educação</option>
-        <option value="Saúde">Saúde</option>
-        <option value="Governo">Governo</option>
-        <option value="Privado">Privado</option>
-        <option value="Outros">Outros</option>
-      </select>
+
+    <!-- Timeline Chart -->
+    <div class="chart-card" style="margin-bottom:16px">
+      <div class="chart-title">Timeline de Vencimentos — próximos 24 meses</div>
+      <div class="chart-sub">Número de contratos e valor de base 2025 por mês de vencimento</div>
+      <div class="chart-canvas" style="position:relative"><canvas id="chart-timeline" style="max-height:280px"></canvas></div>
     </div>
-    <table id="expTable">
-      <thead>
-        <tr>
+
+    <!-- Expiry Table -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3>🗓️ Contratos por Prioridade de Renovação</h3>
+        <input type="text" class="search-box" id="expSearch" placeholder="Buscar cliente..." oninput="filterExpTable()" style="width:180px">
+      </div>
+      <div class="filter-row">
+        <label style="font-size:12px;color:var(--text2)">Urgência:</label>
+        <select id="expFilter" onchange="filterExpTable()">
+          <option value="all">Todas</option>
+          <option value="Vencido">⛔ Vencidos</option>
+          <option value="Crítico">🔴 Crítico (até 30 dias)</option>
+          <option value="Urgente">🟡 Urgente (31–90 dias)</option>
+          <option value="Atenção">🔵 Atenção (91–180 dias)</option>
+          <option value="Planejamento">🟢 Planejamento (181–365 dias)</option>
+          <option value="Longo Prazo">🟣 Longo Prazo (1–3 anos)</option>
+          <option value="Estratégico">🔷 Estratégico (3+ anos)</option>
+        </select>
+        <select id="expSetor" onchange="filterExpTable()">
+          <option value="all">Todos os Setores</option>
+          <option>Judiciário</option>
+          <option>Ministério Público</option>
+          <option>Educação</option>
+          <option>Saúde</option>
+          <option>Governo</option>
+          <option>Privado</option>
+          <option>Outros</option>
+        </select>
+      </div>
+      <table id="expTable">
+        <thead><tr>
           <th onclick="sortExpTable(0)">Cliente ↕</th>
           <th onclick="sortExpTable(1)">Setor ↕</th>
           <th onclick="sortExpTable(2)">Urgência ↕</th>
-          <th onclick="sortExpTable(3)">Vencimento ↕</th>
+          <th onclick="sortExpTable(3)">Validade Zoom ↕</th>
           <th onclick="sortExpTable(4)">Dias ↕</th>
           <th onclick="sortExpTable(5)" style="text-align:right">Base 2025 ↕</th>
-          <th onclick="sortExpTable(6)">Tipo</th>
+          <th>Pgto</th>
           <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="expTableBody"></tbody>
-    </table>
-    <div id="expTableInfo" class="table-info"></div>
-    <div class="pagination" id="expPagination"></div>
-  </div>
+        </tr></thead>
+        <tbody id="expTableBody"></tbody>
+      </table>
+      <div id="expTableInfo" class="table-info"></div>
+      <div class="pagination" id="expPagination"></div>
+    </div>
+
+  </div><!-- /main-content -->
 
   <div class="footer">
-    XP On · Dashboard Carteira Zoom · Gerado em Março 2026 · Dados: planilha operacional interna
+    XP On · Dashboard Carteira Zoom · Dados em tempo real via Google Sheets · <span id="footer-date"></span>
   </div>
-</div>
+
+</div><!-- /container -->
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────────────
-const KPIS = {t24:9591046.88,t25:19085341.07,t26:11359605.66,count:169,active26:46,avg_mk:1.64};
-const SETOR = {
-  labels:["Judiciário","Ministério Público","Educação","Saúde","Governo","Privado","Outros"],
-  v25:[4382337.2,9556597.07,1539225.0,133334.48,88369.08,359695.6,3025782.64],
-  v26:[2747871.47,8148960.0,222600.0,91467.9,14245.0,68598.57,65862.72],
-  count:[55,4,4,11,9,7,79]
-};
-const MONTHLY = {
-  labels:["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],
-  v25:[10077644.39,1907362.2,1051098.51,0,375906.2,1130607.62,753191.78,2278353.58,834963.23,395692.44,279014.12,1507.0],
-  v26:[9991095.12,575083.56,250971.28,0,0,8720.53,8708.51,51613.33,473413.33,0,0,0]
-};
-const YEARS = {labels:["2024","2025","2026*"],vals:[9591046.88,19085341.07,11359605.66]};
-const TOP12 = {
-  labels:["MPF","TRT 2","TJ Espírito Santo","TRT 4","UNIVAG","TRT 9","TRT 3","TRT1","TRT 18","TRT17","TRT 23","TRT 24"],
-  vals:[8148960.0,667850.0,466040.0,222851.0,222600.0,201058.0,176453.0,153403.55,133562.4,91384.8,70300.0,61161.0]
-};
-const CONTRATO = {labels:["Anual","2 Anos","3 Anos","5 Anos","Outros"],vals:[62,7,48,24,28]};
-const MARKUP_DIST = {labels:["1.0–1.3","1.3–1.5","1.5–1.7","1.7–2.0","2.0+"],vals:[1,4,20,15,2]};
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1qnsxC6J7khbrHgR9-3r0zXG-yyczy9FJTxRFfLkw1As/gviz/tq?tqx=out:csv&gid=549963140';
+const TODAY = new Date();
+const MESES_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MESES_ABBR = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
-const TABLE_DATA = [
-  {c:"MPF",s:"Ministério Público",p:"13.900 Enterprise PLUS",ct:"5 Anos",v24:0,v25:8148960,v26:8148960,mk:1.43,df:"22/05/2030",st:"Contrato 5 anos - Pagamento Mensal"},
-  {c:"TRT 2",s:"Judiciário",p:"950 Enterprise Essencial + 16 CRC",ct:"Anual",v24:384969.48,v25:403323.6,v26:667850,mk:1.55,df:"02/02/2027",st:"Aguardando novo pregão"},
-  {c:"TJ Espírito Santo",s:"Judiciário",p:"2.200 Enterprise",ct:"3 Anos",v24:0,v25:0,v26:466040,mk:0,df:"—",st:"—"},
-  {c:"TRT 4",s:"Judiciário",p:"317 Enterprise Essencial",ct:"Anual",v24:154833.74,v25:78729.07,v26:222851,mk:1.55,df:"26/01/2027",st:"—"},
-  {c:"UNIVAG",s:"Educação",p:"700 Educacional",ct:"2 Anos",v24:0,v25:222600,v26:222600,mk:1.04,df:"23/01/2027",st:"Parcelado 24x"},
-  {c:"TRT 9",s:"Judiciário",p:"304 Enterprise",ct:"Anual",v24:90142.08,v25:94364.64,v26:201058,mk:1.55,df:"24/02/2027",st:"Pgto mensal R$16.754,83"},
-  {c:"TRT 3",s:"Judiciário",p:"251 Enterprise Essential",ct:"Anual",v24:86281.25,v25:90485.5,v26:176453,mk:1.55,df:"04/03/2027",st:"Último aditivo - aguardando pregão"},
-  {c:"TRT1",s:"Judiciário",p:"472 Enterprise + 3 CRC",ct:"Outros",v24:0,v25:146336.8,v26:153403.55,mk:1.35,df:"27/12/2026",st:"Prorrogação Excepcional - 12 meses"},
-  {c:"TRT 18",s:"Judiciário",p:"184 Enterprise",ct:"Anual",v24:50403.38,v25:57080.48,v26:133562.4,mk:1.55,df:"23/02/2027",st:"—"},
-  {c:"TRT17",s:"Judiciário",p:"160 Enterprise",ct:"Anual",v24:0,v25:0,v26:91384.8,mk:1.55,df:"—",st:"—"},
-  {c:"TRT 23",s:"Judiciário",p:"100 Enterprise Essencial",ct:"Anual",v24:29652,v25:31041,v26:70300,mk:1.55,df:"21/01/2027",st:"Último aditivo - aguardando pregão"},
-  {c:"TRT 24",s:"Judiciário",p:"240 Enterprise",ct:"Anual",v24:78242.4,v25:61450.2,v26:61161,mk:1.55,df:"20/02/2027",st:"Último aditivo - aguardando pregão"},
-  {c:"Globo",s:"Privado",p:"7 Business + 2 CRC + 2 Zoom Room",ct:"2 Anos",v24:47806.7,v25:52352.34,v26:0,mk:0,df:"24/01/2027",st:"Contrato 2 anos - pago a vista 2025"},
-  {c:"Vale",s:"Privado",p:"41 Business + 2 LM 1000",ct:"Anual",v24:119888.23,v25:57462.24,v26:0,mk:0,df:"06/01/2028",st:"Houve downsale de 24 para 25"},
-  {c:"BRB Banco de Brasília",s:"Privado",p:"20 Business",ct:"5 Anos",v24:0,v25:21320,v26:21320,mk:1.48,df:"12/01/2028",st:"Pgto ZOOM anual - sem ação no CIGAM"},
-  {c:"IATEC / Adventista",s:"Educação",p:"35.000 Edu",ct:"Outros",v24:1249182,v25:1249182,v26:0,mk:0,df:"19/09/2026",st:"Contrato Original 48 meses"},
-  {c:"Rede Adventista",s:"Educação",p:"16.500 Enterprise + Webinar",ct:"2 Anos",v24:0,v25:1042020,v26:0,mk:0,df:"27/01/2026",st:"Contrato se encerra set/26"},
-  {c:"Petrobras Workvivo",s:"Privado",p:"Workvivo",ct:"Outros",v24:0,v25:0,v26:0,mk:0,df:"30/12/2029",st:"Vigência máxima 30/12/2029"},
-  {c:"TRT 4",s:"Judiciário",p:"317 Enterprise",ct:"Anual",v24:154833.74,v25:78729.07,v26:222851,mk:1.55,df:"26/01/2027",st:"—"},
-  {c:"COSEMS RJ",s:"Saúde",p:"5 Business",ct:"Anual",v24:4825.83,v25:5181.6,v26:6550,mk:1.57,df:"15/01/2027",st:"Contrato Anual"},
-  {c:"CONASEMS",s:"Saúde",p:"32 Enterprise",ct:"Anual",v24:29568,v25:36352.8,v26:39633,mk:1.86,df:"21/01/2027",st:"Contrato Anual"},
-  {c:"BRF",s:"Privado",p:"18 Business + 3 CRC",ct:"3 Anos",v24:0,v25:31331.57,v26:31331.57,mk:0,df:"31/12/2026",st:"Pagamento anual"},
-  {c:"Câmara dos Deputados",s:"Governo",p:"108 Enterprise",ct:"3 Anos",v24:0,v25:51120,v26:0,mk:0,df:"10/02/2029",st:"Novo pregão em andamento 2026"},
-  {c:"TST",s:"Judiciário",p:"48 Enterprise",ct:"Outros",v24:14933.51,v25:14933.51,v26:49200,mk:1.59,df:"—",st:"—"},
-  {c:"TRE PE",s:"Judiciário",p:"26 Enterprise Plus",ct:"2 Anos",v24:31195.67,v25:32800,v26:49200,mk:1.55,df:"09/01/2028",st:"Prorrogável até 10 anos"},
-  {c:"TRT 22",s:"Judiciário",p:"65 Essencial",ct:"Anual",v24:14280,v25:14280,v26:45692.4,mk:1.55,df:"28/01/2027",st:"60 meses último aditivo"},
-  {c:"TRT 19",s:"Judiciário",p:"60 Enterprise Essencial",ct:"Anual",v24:15960,v25:15960,v26:42180,mk:1.55,df:"19/01/2027",st:"—"},
-  {c:"TRF 3",s:"Judiciário",p:"10 Enterprise",ct:"3 Anos",v24:0,v25:9120,v26:0,mk:0,df:"19/03/2029",st:"Negociando reajustes p/ prorrogação"},
-  {c:"TRT 16",s:"Judiciário",p:"70 Enterprise",ct:"Anual",v24:19782.06,v25:20737.32,v26:49207.2,mk:1.55,df:"26/02/2027",st:"60 MESES último aditivo"},
-  {c:"COSEMS PR",s:"Saúde",p:"25 Business",ct:"Anual",v24:25736.75,v25:31831.43,v26:35650,mk:1.71,df:"17/01/2026",st:"Contrato Anual"},
-  {c:"TRT 21",s:"Judiciário",p:"72 Enterprise + 26 ZR",ct:"Anual",v24:110307.4,v25:110307.4,v26:0,mk:0,df:"10/02/2027",st:"—"},
-  {c:"Casa Civil PR",s:"Governo",p:"3 Enterprise",ct:"3 Anos",v24:7177.02,v25:7177.02,v26:0,mk:0,df:"30/01/2027",st:"—"},
-  {c:"Santa Casa POA",s:"Saúde",p:"5 PRO",ct:"Anual",v24:2580,v25:3005.18,v26:8049,mk:1.88,df:"17/02/2027",st:"Renovação Concluída"},
-  {c:"SINTER MG",s:"Saúde",p:"1 PRO",ct:"Anual",v24:1352.12,v25:1491.49,v26:1585.9,mk:2.36,df:"31/01/2026",st:"—"},
-  {c:"INEA RJ",s:"Governo",p:"5 Enterprise Named",ct:"3 Anos",v24:0,v25:7099.95,v26:0,mk:0,df:"07/11/2027",st:"Contrato 3 anos - pago a vista"},
-  {c:"FIEC / MDR",s:"Governo",p:"10 Business",ct:"Outros",v24:0,v25:0,v26:14245,mk:1.44,df:"19/09/2026",st:"Anual prorrogável até 5 anos"},
-  {c:"Rota das Bandeiras",s:"Privado",p:"1 PRO + 1 ZR + 2 CRC",ct:"Anual",v24:13870,v25:14803.19,v26:15947,mk:1.61,df:"19/02/2026",st:"Pedido OK"},
-  {c:"SIEEG",s:"Outros",p:"1 PRO",ct:"Anual",v24:1308,v25:1448.88,v26:1597.5,mk:1.7,df:"23/02/2026",st:"Pedido OK"},
-  {c:"BRB",s:"Privado",p:"20 Business",ct:"5 Anos",v24:0,v25:21320,v26:21320,mk:1.48,df:"12/01/2028",st:"—"},
-];
+// ── COLUMN INDICES ──────────────────────────────────────────────────────────
+// 0:Q1 1:Cliente 2:DataValidadeZoom 3:DataInicio 4:DataFim 5:Aditivo
+// 6:PgtoZoom 7:PgtoXP 8:AccountOwner 9:AccountNum 10:Produtos 11:Distribuidor
+// 12..17: 2024 (custo u$, custo+wire, custo R$, venda unit, venda total, markup)
+// 18..23: 2025 (custo u$, custo+wire, custo R$, venda unit, venda total, markup)
+// 24..28: 2026 (custo u$, custo+wire, custo R$, venda total, markup)
+// 29..33: 2027 (custo u$, custo+wire, custo R$, venda total, markup)
+// 34: STATUS
+const C_NOME=1, C_VALIDADE=2, C_FIM=4, C_ADITIVO=5, C_PGTO_ZOOM=6;
+const C_PRODUTOS=10, C_V24=16, C_V25=22, C_V26=27, C_MK26=28, C_V27=32, C_STATUS=34;
 
-// ── COLORS ────────────────────────────────────────────────────────────────────
-const C = ['#0E1DAA','#E07B39','#27AE60','#E74C3C','#8E44AD','#F39C12','#17A589','#4DA4C7'];
-const CA = (c,a)=>c+Math.round(a*255).toString(16).padStart(2,'0');
+// ── COLORS ──────────────────────────────────────────────────────────────────
+const C=['#0E1DAA','#E07B39','#27AE60','#E74C3C','#8E44AD','#F39C12','#17A589','#4DA4C7'];
+const CA=(c,a)=>c+Math.round(a*255).toString(16).padStart(2,'0');
 
-// ── FORMAT ────────────────────────────────────────────────────────────────────
+// ── CHART INSTANCES ─────────────────────────────────────────────────────────
+let charts={};
+
+// ── HELPERS ─────────────────────────────────────────────────────────────────
+function parseBRL(s){
+  if(!s||s.trim()==='') return 0;
+  const cleaned=s.replace(/[R$\s]/g,'').replace(/\./g,'').replace(',','.');
+  return parseFloat(cleaned)||0;
+}
+function parseMK(s){
+  if(!s||s.trim()==='') return 0;
+  return parseFloat(s.trim().replace(',','.'))||0;
+}
+function parseDate(s){
+  if(!s||s.trim()==='') return null;
+  const p=s.trim().split('/');
+  if(p.length!==3) return null;
+  return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));
+}
+function daysUntil(dt){
+  if(!dt) return null;
+  return Math.round((dt-TODAY)/(1000*60*60*24));
+}
 function fmtBRL(v){
   if(!v||v===0) return '—';
   if(v>=1e6) return 'R$ '+(v/1e6).toFixed(2)+'M';
   if(v>=1e3) return 'R$ '+(v/1e3).toFixed(0)+'K';
   return 'R$ '+v.toFixed(0);
 }
-function fmtBRLFull(v){ if(!v||v===0) return '—'; return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtBRLFull(v){
+  if(!v||v===0) return '—';
+  return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function urgencyBucket(dias){
+  if(dias===null) return 'Sem Data';
+  if(dias<0) return 'Vencido';
+  if(dias<=30) return 'Crítico';
+  if(dias<=90) return 'Urgente';
+  if(dias<=180) return 'Atenção';
+  if(dias<=365) return 'Planejamento';
+  if(dias<=1095) return 'Longo Prazo';
+  return 'Estratégico';
+}
 
-// ── KPIs ──────────────────────────────────────────────────────────────────────
-document.getElementById('kpi-t24').textContent = fmtBRL(KPIS.t24);
-document.getElementById('kpi-t25').textContent = fmtBRL(KPIS.t25);
-document.getElementById('kpi-t26').textContent = fmtBRL(KPIS.t26);
-const g2425 = ((KPIS.t25/KPIS.t24)-1)*100;
-const el2425 = document.getElementById('kpi-g2425');
-el2425.textContent = `+${g2425.toFixed(0)}% vs 2024`; el2425.className='kpi-change pos';
-const el2526 = document.getElementById('kpi-g2526');
-el2526.textContent = `⚠ Parcial — dados até mar/26`; el2526.className='kpi-change neg';
+// ── SETOR CLASSIFIER ────────────────────────────────────────────────────────
+function classifySetor(nome){
+  const n=nome.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  // Judiciário
+  if(/\bTRT\b|\bTRF\b|\bTST\b|\bSTF\b|\bSTJ\b|\bSTM\b|\bCJF\b/.test(n)) return 'Judiciário';
+  if(/TJ[A-Z]{2}\b|TJAL|TJAP|TJGO|TJMA|TJPB|TJES/.test(n)) return 'Judiciário';
+  if(/\bTRE\b|TRIBUNAL REGIONAL ELEITORAL|TRIBUNAL ELEITORAL/.test(n)) return 'Judiciário';
+  if(/TRIBUNAL REGIONAL FEDERAL|TRIBUNAL REGIONAL DO TRABALHO/.test(n)) return 'Judiciário';
+  if(/TRIBUNAL DE JUSTICA|TRIBUNAL SUPERIOR/.test(n)) return 'Judiciário';
+  if(/JUSTICA FEDERAL|SUPERIOR TRIBUNAL|\bJF[A-Z]{2}\b/.test(n)) return 'Judiciário';
+  // Ministério Público
+  if(/\bMPF\b/.test(n)) return 'Ministério Público';
+  if(/MINISTERIO PUBLICO|MINIST[EÉ]RIO P[ÚU]BLICO/.test(n)) return 'Ministério Público';
+  if(/\bMPAC\b|\bMPAP\b|\bMPAL\b|\bMPGO\b|\bMPES\b/.test(n)) return 'Ministério Público';
+  // Educação
+  if(/UNIVERSIDADE|FACULDADE|ESCOLA NACIONAL/.test(n)) return 'Educação';
+  if(/\bUSP\b|\bUNICAMP\b|\bUNIVAG\b|\bUNIRV\b/.test(n)) return 'Educação';
+  if(/IATEC|ADVENTISTA|ARCO EDUCA|ID TECH|INSTITUTO DE COMPUTA/.test(n)) return 'Educação';
+  if(/POSITIVO TECN|TRILHA CONSUL/.test(n)) return 'Educação';
+  // Saúde
+  if(/HOSPITAL|SANTA CASA|COSEMS|CONASEMS|BENEFICENCIA PORTUGUESA/.test(n)) return 'Saúde';
+  if(/\bHCPA\b|\bSINTER\b|FUNDACAO (BUTANTAN|ZERBINI)|CLINICAS/.test(n)) return 'Saúde';
+  // Governo
+  if(/PREFEITURA|CAMARA (DOS|MUNICIPAL|DE VERE)/.test(n)) return 'Governo';
+  if(/SECRETARIA|CASA CIVIL|\bAGU\b|ADVOCACIA GERAL DA UNIAO/.test(n)) return 'Governo';
+  if(/\bDETRAN\b|\bSANEAGO\b|\bCODEVASF\b|\bIBGE\b|\bINEA\b|\bPRODEST\b/.test(n)) return 'Governo';
+  if(/\bCODEGO\b|\bCAERN\b|\bAGEPAR\b|\bPRODAM\b|\bIPLANRIO\b|\bJUCEPAR\b/.test(n)) return 'Governo';
+  if(/POLICIA|DELEGACIA|BATALH[AO]|MILITAR DO (ESTADO|PARANA)/.test(n)) return 'Governo';
+  if(/\bSEAP\b|\bSEPL\b|\bSESP\b|\bINFRA PR\b|\bSEDEST\b|\bSEUMA\b|\bSGG\b/.test(n)) return 'Governo';
+  if(/\bTCM\b|TRIBUNAL DE CONTAS/.test(n)) return 'Governo';
+  if(/DER-PR|DEPARTAMENTO DE ESTRADAS/.test(n)) return 'Governo';
+  if(/\bBRB\b|BANCO DE BRASILIA/.test(n)) return 'Governo';
+  if(/ENAP\b/.test(n)) return 'Governo';
+  // Outros (associações, sindicatos, conselhos, cooperativas, OAB)
+  if(/SICOOB|COOPERATIVA|\bOAB\b|ORDEM DOS ADVOG/.test(n)) return 'Outros';
+  if(/\bCREA\b|\bCRECI\b|\bCREF\d/.test(n)) return 'Outros';
+  if(/SINDICATO|SINDIFISCO|\bSINAL\b|FETAPE|FIEG|SESI\b/.test(n)) return 'Outros';
+  if(/CONSELHO REGIONAL|CONSELHO NACIONAL|CONSELHO TRIBUT/.test(n)) return 'Outros';
+  if(/ASSOCIA(CAO|ÇÃO)|ASSOC |ABRACO|ABRAAT|SAGA\b/.test(n)) return 'Outros';
+  if(/PARTIDO DOS TRAB|DIRETORIO/.test(n)) return 'Outros';
+  if(/\bSIEEG\b|\bSESC\b/.test(n)) return 'Outros';
+  // Privado (default)
+  return 'Privado';
+}
 
-// ── CHART: MONTHLY ────────────────────────────────────────────────────────────
-new Chart(document.getElementById('chart-monthly').getContext('2d'),{
-  type:'bar',
-  data:{
-    labels:MONTHLY.labels,
-    datasets:[
-      {label:'2025',data:MONTHLY.v25,backgroundColor:CA(C[0],0.7),borderColor:C[0],borderWidth:1,borderRadius:4},
-      {label:'2026',data:MONTHLY.v26,backgroundColor:CA(C[1],0.7),borderColor:C[1],borderWidth:1,borderRadius:4}
-    ]
-  },
-  options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:16,font:{size:11}}},
-      tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmtBRLFull(ctx.parsed.y)}`}}},
-    scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{color:'#F0F4F8'}}}}
-});
+// ── CSV PARSER ───────────────────────────────────────────────────────────────
+function parseCSV(text){
+  const rows=[];
+  const lines=text.split('\n');
+  for(const line of lines){
+    if(!line.trim()) continue;
+    const row=[];
+    let inQuote=false, cell='';
+    for(let i=0;i<line.length;i++){
+      const ch=line[i];
+      if(ch==='"'){
+        if(inQuote&&line[i+1]==='"'){cell+='"';i++;}
+        else inQuote=!inQuote;
+      } else if(ch===','&&!inQuote){
+        row.push(cell.trim());cell='';
+      } else cell+=ch;
+    }
+    row.push(cell.trim());
+    rows.push(row);
+  }
+  return rows;
+}
 
-// ── CHART: YEARS ──────────────────────────────────────────────────────────────
-new Chart(document.getElementById('chart-years').getContext('2d'),{
-  type:'bar',
-  data:{labels:YEARS.labels,datasets:[{
-    label:'Portfólio Total',data:YEARS.vals,
-    backgroundColor:[CA(C[0],0.7),CA(C[2],0.8),CA(C[1],0.7)],
-    borderColor:[C[0],C[2],C[1]],borderWidth:1,borderRadius:6
-  }]},
-  options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${fmtBRLFull(ctx.parsed.y)}`}}},
-    scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{color:'#F0F4F8'}}}}
-});
+// ── SKIP ROW CHECK ───────────────────────────────────────────────────────────
+function isHeaderOrSeparator(row){
+  if(!row[C_NOME]||row[C_NOME].trim()==='') return true;
+  const nome=row[C_NOME].trim();
+  if(MESES_PT.includes(nome)) return true;
+  // skip ATA rows (no financial data and no date)
+  const hasDate=row[C_VALIDADE]&&row[C_VALIDADE].trim();
+  const hasVal=parseBRL(row[C_V25])>0||parseBRL(row[C_V26])>0||parseBRL(row[C_V24])>0;
+  if(!hasDate&&!hasVal) return true;
+  return false;
+}
 
-// ── CHART: TOP12 ──────────────────────────────────────────────────────────────
-new Chart(document.getElementById('chart-top12').getContext('2d'),{
-  type:'bar',
-  data:{labels:TOP12.labels,datasets:[{
-    label:'Venda 2026',data:TOP12.vals,
-    backgroundColor:TOP12.vals.map((_,i)=>i===0?CA(C[3],0.8):CA(C[0],0.7)),
-    borderColor:TOP12.vals.map((_,i)=>i===0?C[3]:C[0]),
-    borderWidth:1,borderRadius:4
-  }]},
-  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${fmtBRLFull(ctx.parsed.x)}`}}},
-    scales:{x:{beginAtZero:true,ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{color:'#F0F4F8'}},y:{grid:{display:false},ticks:{font:{size:11}}}}}
-});
+// ── MAIN DATA LOADER ─────────────────────────────────────────────────────────
+async function loadData(){
+  document.getElementById('loading-wrap').style.display='flex';
+  document.getElementById('main-content').style.display='none';
+  document.getElementById('error-wrap').style.display='none';
+  document.getElementById('hdr-updated').textContent='Atualizando...';
 
-// ── CHART: SETOR BAR ──────────────────────────────────────────────────────────
-new Chart(document.getElementById('chart-setor-bar').getContext('2d'),{
-  type:'bar',
-  data:{labels:SETOR.labels,datasets:[
-    {label:'2025',data:SETOR.v25,backgroundColor:CA(C[0],0.7),borderColor:C[0],borderWidth:1,borderRadius:3},
-    {label:'2026',data:SETOR.v26,backgroundColor:CA(C[1],0.7),borderColor:C[1],borderWidth:1,borderRadius:3}
-  ]},
-  options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14,font:{size:11}}},
-      tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmtBRLFull(ctx.parsed.y)}`}}},
-    scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{color:'#F0F4F8'}}}}
-});
+  try{
+    const res=await fetch(SHEET_URL);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text=await res.text();
+    const rows=parseCSV(text);
+    const clients=[];
+    // rows[0]=header row, rows[1]=year labels row, rows[2+]=data
+    for(let i=2;i<rows.length;i++){
+      const row=rows[i];
+      if(isHeaderOrSeparator(row)) continue;
+      const nome=row[C_NOME].trim();
+      const validadeDate=parseDate(row[C_VALIDADE]);
+      const fimDate=parseDate(row[C_FIM]);
+      const v24=parseBRL(row[C_V24]);
+      const v25=parseBRL(row[C_V25]);
+      const v26=parseBRL(row[C_V26]);
+      const v27=parseBRL(row[C_V27]);
+      const mk26=parseMK(row[C_MK26]);
+      const pgtoZoom=(row[C_PGTO_ZOOM]||'').trim();
+      const aditivo=(row[C_ADITIVO]||'').trim();
+      const produtos=(row[C_PRODUTOS]||'').trim();
+      const status=(row[C_STATUS]||'').trim();
+      const setor=classifySetor(nome);
+      const dias=validadeDate?daysUntil(validadeDate):null;
+      const bucket=urgencyBucket(dias);
+      // Month from validade (0-indexed)
+      const validadeMes=validadeDate?validadeDate.getMonth():null;
+      clients.push({nome,validadeDate,fimDate,v24,v25,v26,v27,mk26,pgtoZoom,aditivo,produtos,status,setor,dias,bucket,validadeMes});
+    }
 
-// ── CHART: SETOR DONUT ────────────────────────────────────────────────────────
-new Chart(document.getElementById('chart-setor-donut').getContext('2d'),{
-  type:'doughnut',
-  data:{labels:SETOR.labels,datasets:[{data:SETOR.count,backgroundColor:C.map(c=>CA(c,0.8)),borderColor:'#fff',borderWidth:2}]},
-  options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
-    plugins:{legend:{position:'right',labels:{usePointStyle:true,padding:12,font:{size:11}}},
-      tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed} clientes`}}}}
-});
+    processAndRender(clients);
+    const now=new Date();
+    const updStr=now.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    document.getElementById('hdr-updated').textContent='Atualizado '+updStr;
+    document.getElementById('hdr-date').textContent=now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+    document.getElementById('footer-date').textContent='Dados: Google Sheets · '+updStr;
+    document.getElementById('loading-wrap').style.display='none';
+    document.getElementById('main-content').style.display='block';
+  } catch(e){
+    document.getElementById('loading-wrap').style.display='none';
+    const eb=document.getElementById('error-wrap');
+    eb.style.display='block';
+    eb.innerHTML=`<div class="error-box"><strong>Erro ao carregar dados</strong><br>${e.message}<br><br>Verifique se a planilha está pública e tente novamente. <button class="refresh-btn" onclick="loadData()" style="margin-left:8px;background:#E74C3C;border-color:#E74C3C">↻ Tentar novamente</button></div>`;
+    document.getElementById('hdr-updated').textContent='Erro ao carregar';
+  }
+}
 
-// ── CHART: CONTRATO ───────────────────────────────────────────────────────────
-new Chart(document.getElementById('chart-contrato').getContext('2d'),{
-  type:'bar',
-  data:{labels:CONTRATO.labels,datasets:[{
-    label:'Contratos',data:CONTRATO.vals,
-    backgroundColor:C.map(c=>CA(c,0.75)),borderColor:C,borderWidth:1,borderRadius:5
-  }]},
-  options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y} contratos`}}},
-    scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:10,font:{size:10}},grid:{color:'#F0F4F8'}}}}
-});
+// ── PROCESS & RENDER ─────────────────────────────────────────────────────────
+let ALL_CLIENTS=[], EXP_DATA=[];
+let tblData=[], tblPage=0, tblSort=6, tblDir=-1;
+let expData=[], expPage=0, expSort=2, expDir=1;
+const PAGE_SZ=15, EXP_PAGE_SZ=20;
 
-// ── CHART: MARKUP ─────────────────────────────────────────────────────────────
-new Chart(document.getElementById('chart-markup').getContext('2d'),{
-  type:'bar',
-  data:{labels:MARKUP_DIST.labels,datasets:[{
-    label:'Contratos',data:MARKUP_DIST.vals,
-    backgroundColor:[CA(C[3],0.7),CA(C[1],0.7),CA(C[2],0.7),CA(C[2],0.85),CA(C[2],0.95)],
-    borderColor:[C[3],C[1],C[2],C[2],C[2]],borderWidth:1,borderRadius:5
-  }]},
-  options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y} contratos`}}},
-    scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:5,font:{size:10}},grid:{color:'#F0F4F8'}}}}
-});
+function processAndRender(clients){
+  ALL_CLIENTS=clients;
 
-// ── TABLE ─────────────────────────────────────────────────────────────────────
-const BADGE_MAP = {
-  'Judiciário':'badge-jud','Ministério Público':'badge-mp','Educação':'badge-edu',
-  'Saúde':'badge-sau','Governo':'badge-gov','Privado':'badge-pri','Outros':'badge-out'
-};
-let currentData = [...TABLE_DATA];
-let currentPage = 0;
-const PAGE_SIZE = 15;
-let sortCol = 6; let sortDir = -1;
+  // ── KPIs ──
+  let t24=0,t25=0,t26=0,t27=0,mkSum=0,mkCount=0;
+  clients.forEach(c=>{
+    t24+=c.v24; t25+=c.v25; t26+=c.v26; t27+=c.v27;
+    if(c.mk26>0){mkSum+=c.mk26;mkCount++;}
+  });
+  const count=clients.length;
+  const count26=clients.filter(c=>c.v26>0).length;
+  const count27=clients.filter(c=>c.v27>0).length;
+  const avgMk=mkCount>0?(mkSum/mkCount):0;
+
+  document.getElementById('kpi-t24').textContent=fmtBRL(t24);
+  document.getElementById('kpi-t25').textContent=fmtBRL(t25);
+  document.getElementById('kpi-t26').textContent=fmtBRL(t26);
+  document.getElementById('kpi-t27').textContent=t27>0?fmtBRL(t27):'—';
+  document.getElementById('kpi-count').textContent=count;
+  document.getElementById('kpi-count-sub').textContent=`${count26} com valor em 2026`;
+  document.getElementById('kpi-mk').textContent=avgMk>0?avgMk.toFixed(2)+'×':'—';
+  document.getElementById('kpi-mk-sub').textContent=mkCount>0?`Baseado em ${mkCount} contratos`:'';
+  document.getElementById('hdr-count').textContent=`${count} clientes`;
+
+  const g2425=t24>0?((t25/t24)-1)*100:null;
+  const g2526=t25>0?((t26/t25)-1)*100:null;
+  const el2425=document.getElementById('kpi-g2425');
+  if(g2425!==null){el2425.textContent=(g2425>=0?'+':'')+g2425.toFixed(0)+'% vs 2024';el2425.className='kpi-change '+(g2425>=0?'pos':'neg');}
+  const el2526=document.getElementById('kpi-g2526');
+  if(g2526!==null){el2526.textContent=(g2526>=0?'+':'')+g2526.toFixed(0)+'% vs 2025';el2526.className='kpi-change '+(g2526>=0?'pos':'warn');}
+
+  // Top client concentration
+  const topClient=clients.reduce((a,b)=>b.v26>a.v26?b:a,{v26:0});
+  const topPct=t26>0?(topClient.v26/t26*100):0;
+
+  // Alert
+  const curYear=TODAY.getFullYear();
+  document.getElementById('alert-text').innerHTML=`<strong>Dados carregados da planilha XP On — ${TODAY.toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}</strong>Os valores de 2026 refletem contratos já registrados na planilha (${count26} de ${count} clientes). Os demais serão atualizados ao longo do ano conforme renovações.`;
+
+  // ── BY SETOR ──
+  const SETORES=['Judiciário','Ministério Público','Educação','Saúde','Governo','Privado','Outros'];
+  const setorData={};
+  SETORES.forEach(s=>{setorData[s]={v24:0,v25:0,v26:0,count:0};});
+  clients.forEach(c=>{
+    const s=setorData[c.setor]||setorData['Outros'];
+    s.v24+=c.v24; s.v25+=c.v25; s.v26+=c.v26; s.count++;
+  });
+
+  // ── MONTHLY ──
+  const monthly25=new Array(12).fill(0);
+  const monthly26=new Array(12).fill(0);
+  clients.forEach(c=>{
+    if(c.validadeMes!==null){
+      monthly25[c.validadeMes]+=c.v25;
+      monthly26[c.validadeMes]+=c.v26;
+    }
+  });
+
+  // ── TOP 12 ──
+  const sorted26=[...clients].filter(c=>c.v26>0).sort((a,b)=>b.v26-a.v26).slice(0,12);
+
+  // ── MARKUP DIST ──
+  const mkBuckets={'< 1.3':0,'1.3–1.5':0,'1.5–1.7':0,'1.7–2.0':0,'> 2.0':0};
+  clients.forEach(c=>{
+    if(c.mk26<=0) return;
+    if(c.mk26<1.3) mkBuckets['< 1.3']++;
+    else if(c.mk26<1.5) mkBuckets['1.3–1.5']++;
+    else if(c.mk26<1.7) mkBuckets['1.5–1.7']++;
+    else if(c.mk26<2.0) mkBuckets['1.7–2.0']++;
+    else mkBuckets['> 2.0']++;
+  });
+
+  // ── PGTO TYPE ──
+  const pgtoMap={};
+  clients.forEach(c=>{
+    const p=c.pgtoZoom||'Outros';
+    pgtoMap[p]=(pgtoMap[p]||0)+1;
+  });
+
+  // ── EXPIRY DATA ──
+  const expClients=clients.filter(c=>c.validadeDate&&c.bucket!=='Sem Data').sort((a,b)=>{
+    const ORDER={Vencido:0,Crítico:1,Urgente:2,Atenção:3,Planejamento:4,'Longo Prazo':5,Estratégico:6};
+    const ao=ORDER[a.bucket]??7, bo=ORDER[b.bucket]??7;
+    if(ao!==bo) return ao-bo;
+    return (a.dias??9999)-(b.dias??9999);
+  });
+  EXP_DATA=expClients;
+
+  // ── EXPIRY KPIs ──
+  ['vencido','critico','urgente','atencao'].forEach(k=>{
+    const bname={'vencido':'Vencido','critico':'Crítico','urgente':'Urgente','atencao':'Atenção'}[k];
+    const group=expClients.filter(c=>c.bucket===bname);
+    const val=group.reduce((s,c)=>s+c.v25,0);
+    document.getElementById(`exp-count-${k}`).textContent=group.length;
+    document.getElementById(`exp-val-${k}`).textContent=val>0?fmtBRL(val)+' em base 2025':'Sem valor registrado';
+  });
+
+  // ── TIMELINE CHART ──
+  buildTimelineChart(expClients);
+
+  // ── INSIGHTS ──
+  buildInsights(clients,t25,t26,topClient,topPct,count,count26);
+
+  // ── CHARTS ──
+  buildCharts({monthly25,monthly26,t24,t25,t26,t27,sorted26,setorData,SETORES,mkBuckets,pgtoMap});
+
+  // ── TABLES ──
+  tblData=[...clients].sort((a,b)=>b.v26-a.v26);
+  tblPage=0; renderTable();
+  expData=[...expClients];
+  expPage=0; renderExpTable();
+}
+
+// ── CHART BUILDER ────────────────────────────────────────────────────────────
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+function buildCharts({monthly25,monthly26,t24,t25,t26,t27,sorted26,setorData,SETORES,mkBuckets,pgtoMap}){
+  // Monthly
+  destroyChart('monthly');
+  charts['monthly']=new Chart(document.getElementById('chart-monthly').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES_ABBR,datasets:[
+      {label:'2025',data:monthly25,backgroundColor:CA(C[0],.7),borderColor:C[0],borderWidth:1,borderRadius:4},
+      {label:'2026',data:monthly26,backgroundColor:CA(C[1],.7),borderColor:C[1],borderWidth:1,borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:16,font:{size:11}}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmtBRLFull(ctx.parsed.y)}`}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{color:'#F0F4F8'}}}}
+  });
+  // Years
+  destroyChart('years');
+  const yVals=[t24,t25,t26]; if(t27>0) yVals.push(t27);
+  const yLabels=['2024','2025','2026']; if(t27>0) yLabels.push('2027*');
+  charts['years']=new Chart(document.getElementById('chart-years').getContext('2d'),{
+    type:'bar',
+    data:{labels:yLabels,datasets:[{label:'Portfólio Total',data:yVals,
+      backgroundColor:[CA(C[0],.7),CA(C[2],.8),CA(C[1],.7),CA(C[7],.8)],
+      borderColor:[C[0],C[2],C[1],C[7]],borderWidth:1,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${fmtBRLFull(ctx.parsed.y)}`}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{color:'#F0F4F8'}}}}
+  });
+  // Top 12
+  destroyChart('top12');
+  charts['top12']=new Chart(document.getElementById('chart-top12').getContext('2d'),{
+    type:'bar',
+    data:{labels:sorted26.map(c=>c.nome.substring(0,30)),datasets:[{label:'Venda 2026',data:sorted26.map(c=>c.v26),
+      backgroundColor:sorted26.map((_,i)=>i===0?CA(C[3],.8):CA(C[0],.7)),
+      borderColor:sorted26.map((_,i)=>i===0?C[3]:C[0]),borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${fmtBRLFull(ctx.parsed.x)}`}}},
+      scales:{x:{beginAtZero:true,ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{color:'#F0F4F8'}},y:{grid:{display:false},ticks:{font:{size:11}}}}}
+  });
+  // Setor bar
+  destroyChart('setor-bar');
+  charts['setor-bar']=new Chart(document.getElementById('chart-setor-bar').getContext('2d'),{
+    type:'bar',
+    data:{labels:SETORES,datasets:[
+      {label:'2025',data:SETORES.map(s=>setorData[s].v25),backgroundColor:CA(C[0],.7),borderColor:C[0],borderWidth:1,borderRadius:3},
+      {label:'2026',data:SETORES.map(s=>setorData[s].v26),backgroundColor:CA(C[1],.7),borderColor:C[1],borderWidth:1,borderRadius:3}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14,font:{size:11}}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmtBRLFull(ctx.parsed.y)}`}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{color:'#F0F4F8'}}}}
+  });
+  // Setor donut
+  destroyChart('setor-donut');
+  charts['setor-donut']=new Chart(document.getElementById('chart-setor-donut').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:SETORES,datasets:[{data:SETORES.map(s=>setorData[s].count),backgroundColor:C.map(c=>CA(c,.8)),borderColor:'#fff',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'right',labels:{usePointStyle:true,padding:12,font:{size:11}}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed} clientes`}}}}
+  });
+  // Pgto type
+  destroyChart('pgto');
+  const pgtoLabels=Object.keys(pgtoMap).filter(k=>k);
+  charts['pgto']=new Chart(document.getElementById('chart-pgto').getContext('2d'),{
+    type:'bar',
+    data:{labels:pgtoLabels,datasets:[{label:'Contratos',data:pgtoLabels.map(k=>pgtoMap[k]),
+      backgroundColor:C.map(c=>CA(c,.75)),borderColor:C,borderWidth:1,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y} contratos`}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{beginAtZero:true,ticks:{stepSize:5,font:{size:10}},grid:{color:'#F0F4F8'}}}}
+  });
+  // Markup dist
+  destroyChart('markup');
+  const mkLabels=Object.keys(mkBuckets);
+  charts['markup']=new Chart(document.getElementById('chart-markup').getContext('2d'),{
+    type:'bar',
+    data:{labels:mkLabels,datasets:[{label:'Contratos',data:mkLabels.map(k=>mkBuckets[k]),
+      backgroundColor:[CA(C[3],.7),CA(C[1],.7),CA(C[2],.7),CA(C[2],.85),CA(C[2],.95)],
+      borderColor:[C[3],C[1],C[2],C[2],C[2]],borderWidth:1,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y} contratos`}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:5,font:{size:10}},grid:{color:'#F0F4F8'}}}}
+  });
+}
+
+function buildTimelineChart(expClients){
+  // Build next 24 months from today
+  const tMonths=[]; const tCounts=[]; const tValues=[];
+  for(let i=0;i<24;i++){
+    const d=new Date(TODAY.getFullYear(),TODAY.getMonth()+i,1);
+    tMonths.push(MESES_ABBR[d.getMonth()]+'/'+String(d.getFullYear()).slice(2));
+    const key=`${d.getFullYear()}-${d.getMonth()}`;
+    const group=expClients.filter(c=>{
+      if(!c.validadeDate) return false;
+      return c.validadeDate.getFullYear()===d.getFullYear()&&c.validadeDate.getMonth()===d.getMonth();
+    });
+    tCounts.push(group.length);
+    tValues.push(group.reduce((s,c)=>s+c.v25,0));
+  }
+  destroyChart('timeline');
+  charts['timeline']=new Chart(document.getElementById('chart-timeline').getContext('2d'),{
+    type:'bar',
+    data:{labels:tMonths,datasets:[
+      {label:'Nº Contratos',type:'bar',data:tCounts,
+        backgroundColor:tMonths.map((_,i)=>{
+          if(i<1) return 'rgba(231,76,60,.75)';
+          if(i<3) return 'rgba(243,156,18,.75)';
+          if(i<6) return 'rgba(41,128,185,.75)';
+          return 'rgba(46,109,164,.45)';
+        }),borderRadius:4,borderWidth:0,yAxisID:'y'},
+      {label:'Valor Base 2025 (R$)',type:'line',data:tValues,
+        borderColor:'#27AE60',backgroundColor:'rgba(39,174,96,.08)',
+        borderWidth:2,fill:true,tension:.3,pointRadius:4,pointHoverRadius:6,yAxisID:'y2'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:16,font:{size:11}}},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.yAxisID==='y2'?`Valor: ${fmtBRLFull(ctx.parsed.y)}`:`Contratos: ${ctx.parsed.y}`}}},
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:10}}},
+        y:{beginAtZero:true,position:'left',title:{display:true,text:'Contratos',font:{size:10}},ticks:{stepSize:2,font:{size:10}},grid:{color:'#F0F4F8'}},
+        y2:{beginAtZero:true,position:'right',title:{display:true,text:'Valor (R$)',font:{size:10}},ticks:{callback:v=>fmtBRL(v),font:{size:10}},grid:{display:false}}
+      }}
+  });
+}
+
+function buildInsights(clients,t25,t26,topClient,topPct,count,count26){
+  const vencidos=clients.filter(c=>c.bucket==='Vencido');
+  const criticos=clients.filter(c=>c.bucket==='Crítico');
+  const urgentes=clients.filter(c=>c.bucket==='Urgente');
+  const setorJud=clients.filter(c=>c.setor==='Judiciário');
+  const mkAlto=clients.filter(c=>c.mk26>=1.7);
+  const g2425=t25&&clients.filter(c=>c.v24>0).reduce((s,c)=>s+c.v24,0)>0?
+    (t25/clients.filter(c=>c.v24>0).reduce((s,c)=>s+c.v24,0)-1)*100:null;
+
+  const items=[
+    topPct>60?{cls:'warn',label:'⚠ Risco de Concentração',text:`${topClient.nome} representa ${topPct.toFixed(0)}% do portfólio 2026 com ${fmtBRL(topClient.v26)}. Concentração elevada exige diversificação de carteira como prioridade estratégica.`}:
+    {cls:'ok',label:'✅ Concentração Saudável',text:`O maior cliente representa ${topPct.toFixed(0)}% do portfólio 2026. A carteira está relativamente diversificada.`},
+    (vencidos.length+criticos.length)>5?{cls:'warn',label:`⚠ ${vencidos.length+criticos.length} Contratos em Risco`,text:`${vencidos.length} contratos vencidos e ${criticos.length} críticos (até 30 dias). ${fmtBRL((vencidos.concat(criticos)).reduce((s,c)=>s+c.v25,0))} em base 2025 em risco imediato. Acionar comercial urgente.`}:
+    {cls:'ok',label:'✅ Vencimentos Controlados',text:`Apenas ${vencidos.length+criticos.length} contratos em estado crítico ou vencido. Pipeline de renovações bem gerenciado.`},
+    {cls:'',label:`📊 Judiciário: ${setorJud.length} clientes`,text:`Setor Judiciário tem ${setorJud.length} clientes, muitos aguardando pregão. Exige acompanhamento próximo e posicionamento técnico antes das licitações.`},
+    {cls:'tip',label:'💡 Oportunidade: Workvivo',text:`Clientes com grande volume de licenças Enterprise são candidatos naturais para expansão com Workvivo e AI Companion. Potencial de upsell relevante.`},
+    mkAlto.length>0?{cls:'ok',label:`✅ Markup Saudável (${mkAlto.length} contratos ≥1.7×)`,text:`${mkAlto.length} contratos com markup acima de 1.7× em 2026. Sinal de boa posição de preço na maior parte da carteira.`}:
+    {cls:'tip',label:'💡 Markup',text:`Monitorar evolução dos markups nos contratos de renovação para manter margens saudáveis.`},
+    {cls:'tip',label:'💡 Setor Privado Subexplorado',text:`Empresas privadas têm ciclo de venda mais rápido sem dependência de licitação. Oportunidade de crescimento com menor lead time comercial.`}
+  ];
+
+  const grid=document.getElementById('insights-grid');
+  grid.innerHTML=items.map(it=>`<div class="insight-item ${it.cls||''}"><div class="insight-label">${it.label}</div><div class="insight-text">${it.text}</div></div>`).join('');
+}
+
+// ── CLIENT TABLE ─────────────────────────────────────────────────────────────
+const BADGE_MAP={'Judiciário':'badge-jud','Ministério Público':'badge-mp','Educação':'badge-edu','Saúde':'badge-sau','Governo':'badge-gov','Privado':'badge-pri','Outros':'badge-out'};
 
 function renderTable(){
-  const tbody = document.getElementById('tableBody');
-  const start = currentPage*PAGE_SIZE;
-  const slice = currentData.slice(start,start+PAGE_SIZE);
-  tbody.innerHTML = slice.map(r=>{
-    const bc = BADGE_MAP[r.s]||'badge-out';
-    const mk = r.mk>0?r.mk.toFixed(2)+'×':'—';
-    const mkColor = r.mk>=1.7?'val-pos':r.mk>0&&r.mk<1.3?'val-neg':'';
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const filtered=q?tblData.filter(c=>c.nome.toLowerCase().includes(q)||c.setor.toLowerCase().includes(q)||c.produtos.toLowerCase().includes(q)):tblData;
+  const start=tblPage*PAGE_SZ;
+  const slice=filtered.slice(start,start+PAGE_SZ);
+  const tbody=document.getElementById('tableBody');
+  tbody.innerHTML=slice.map(c=>{
+    const bc=BADGE_MAP[c.setor]||'badge-out';
+    const mk=c.mk26>0?c.mk26.toFixed(2)+'×':'—';
+    const mkCls=c.mk26>=1.7?'val-pos':c.mk26>0&&c.mk26<1.3?'val-neg':'';
+    const vd=c.validadeDate?c.validadeDate.toLocaleDateString('pt-BR'):'—';
     return `<tr>
-      <td><strong>${r.c}</strong></td>
-      <td><span class="badge ${bc}">${r.s}</span></td>
-      <td style="color:#5A6A7A;font-size:11px;">${r.p.substring(0,35)}</td>
-      <td>${r.ct}</td>
-      <td style="text-align:right">${fmtBRL(r.v24)}</td>
-      <td style="text-align:right">${fmtBRL(r.v25)}</td>
-      <td style="text-align:right;font-weight:600">${fmtBRL(r.v26)}</td>
-      <td style="text-align:right" class="${mkColor}">${mk}</td>
-      <td style="font-size:11px;color:#7A8A9A">${r.df||'—'}</td>
-      <td style="font-size:11px;color:#7A8A9A;max-width:180px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="${r.st}">${r.st.substring(0,40)||'—'}</td>
+      <td><strong>${c.nome}</strong></td>
+      <td><span class="badge ${bc}">${c.setor}</span></td>
+      <td style="color:#5A6A7A;font-size:11px">${c.produtos.substring(0,35)||'—'}</td>
+      <td>${c.pgtoZoom||'—'}</td>
+      <td style="text-align:right">${fmtBRL(c.v24)}</td>
+      <td style="text-align:right">${fmtBRL(c.v25)}</td>
+      <td style="text-align:right;font-weight:600">${fmtBRL(c.v26)}</td>
+      <td style="text-align:right" class="${mkCls}">${mk}</td>
+      <td style="font-size:11px;color:#7A8A9A">${vd}</td>
+      <td style="font-size:11px;color:#7A8A9A;max-width:180px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="${c.aditivo}">${(c.aditivo||c.status||'—').substring(0,40)}</td>
     </tr>`;
   }).join('');
-  const total = currentData.length;
-  document.getElementById('tableInfo').textContent = `Exibindo ${start+1}–${Math.min(start+PAGE_SIZE,total)} de ${total} registros`;
-  renderPagination(total);
+  const total=filtered.length;
+  document.getElementById('tableInfo').textContent=`Exibindo ${start+1}–${Math.min(start+PAGE_SZ,total)} de ${total} registros`;
+  renderPagination('pagination',total,tblPage,PAGE_SZ,p=>{tblPage=p;renderTable();});
 }
 
-function renderPagination(total){
-  const pages = Math.ceil(total/PAGE_SIZE);
-  const div = document.getElementById('pagination');
-  div.innerHTML='';
-  for(let i=0;i<pages;i++){
-    const b=document.createElement('button');
-    b.textContent=i+1;
-    if(i===currentPage) b.className='active';
-    b.onclick=()=>{currentPage=i;renderTable();};
-    div.appendChild(b);
-  }
-}
+function filterTable(){tblPage=0;renderTable();}
 
-function filterTable(){
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  currentData = TABLE_DATA.filter(r=>
-    r.c.toLowerCase().includes(q)||r.s.toLowerCase().includes(q)||r.p.toLowerCase().includes(q)||r.ct.toLowerCase().includes(q)
-  );
-  currentPage=0; renderTable();
-}
-
-const COLS = ['c','s','p','ct','v24','v25','v26','mk','df'];
+const TBL_COLS=['nome','setor','produtos','pgtoZoom','v24','v25','v26','mk26','validadeDate'];
 function sortTable(col){
-  if(sortCol===col) sortDir*=-1; else {sortCol=col;sortDir=-1;}
-  const key=COLS[col];
-  currentData.sort((a,b)=>{
-    const av=a[key]||'', bv=b[key]||'';
-    if(typeof av==='number') return sortDir*(av-bv);
-    return sortDir*(av<bv?-1:av>bv?1:0);
+  if(tblSort===col) tblDir*=-1; else{tblSort=col;tblDir=-1;}
+  const key=TBL_COLS[col];
+  tblData.sort((a,b)=>{
+    const av=a[key],bv=b[key];
+    if(av instanceof Date&&bv instanceof Date) return tblDir*(av-bv);
+    if(typeof av==='number') return tblDir*(av-bv);
+    return tblDir*((av||'')>(bv||'')?1:(av||'')<(bv||'')?-1:0);
   });
-  currentPage=0; renderTable();
+  tblPage=0;renderTable();
 }
 
-// Initial sort by vv_2026 desc
-currentData.sort((a,b)=>b.v26-a.v26);
-renderTable();
+// ── EXPIRY TABLE ─────────────────────────────────────────────────────────────
+const BUCKET_ORDER={Vencido:0,Crítico:1,Urgente:2,Atenção:3,Planejamento:4,'Longo Prazo':5,Estratégico:6,'Sem Data':7};
+const BADGE_URG={Vencido:'urg-vencido',Crítico:'urg-critico',Urgente:'urg-urgente',Atenção:'urg-atencao',Planejamento:'urg-planejamento','Longo Prazo':'urg-longo',Estratégico:'urg-estrategico'};
+const DIAS_COLOR={Vencido:'dias-vencido',Crítico:'dias-critico',Urgente:'dias-urgente',Atenção:'dias-atencao',Planejamento:'dias-ok','Longo Prazo':'dias-ok',Estratégico:'dias-ok'};
+const BUCKET_LABEL={Vencido:'⛔ Vencido',Crítico:'🔴 Crítico',Urgente:'🟡 Urgente',Atenção:'🔵 Atenção',Planejamento:'🟢 Planejamento','Longo Prazo':'🟣 Longo Prazo',Estratégico:'🔷 Estratégico'};
 
-// ── EXPIRATION DATA ──────────────────────────────────────────────────────────
-const TIMELINE = {
-  labels:["Fev/26","Mar/26","Abr/26","Mai/26","Jun/26","Jul/26","Ago/26","Set/26","Out/26","Nov/26","Dez/26","Jan/27","Fev/27","Mar/27","Mai/27","Jun/27","Jul/27","Ago/27","Set/27","Out/27","Nov/27","Dez/27","Jan/28","Fev/28"],
-  counts:[1,1,9,7,13,4,10,7,4,1,6,7,10,2,2,6,5,1,1,3,1,3,1,1],
-  values:[41970,41970,360253,134204,230581,8574,163413,1300686,181063,343810,367867,422139,850757,95270,1284018,19036,5544,0,76780,0,0,0,0,0]
-};
-
-const EXP_TABLE = [
-  {c:"São Martinho",s:"Privado",bucket:"Crítico",dias:2,data_exp:"28/03/2026",v25:41970,ct:"Outros",st:"Pedido Ok"},
-  {c:"Assoc. Nacional Escolas Presbiterianas",s:"Outros",bucket:"Crítico",dias:7,data_exp:"02/04/2026",v25:1373,ct:"Anual",st:""},
-  {c:"CODEVASF",s:"Governo",bucket:"Crítico",dias:9,data_exp:"04/04/2026",v25:165609,ct:"Outros",st:"Pedido Ok."},
-  {c:"Universidade de Rio Verde (UNIRV)",s:"Educação",bucket:"Crítico",dias:9,data_exp:"04/04/2026",v25:67443,ct:"Outros",st:""},
-  {c:"TRT 6",s:"Judiciário",bucket:"Crítico",dias:11,data_exp:"06/04/2026",v25:34335,ct:"Anual",st:"Pedido Ok."},
-  {c:"RIO BRANCO SMGA",s:"Governo",bucket:"Crítico",dias:12,data_exp:"07/04/2026",v25:5160,ct:"Anual",st:"Pedido OK."},
-  {c:"Prefeitura de Assis",s:"Governo",bucket:"Crítico",dias:29,data_exp:"24/04/2026",v25:2874,ct:"Anual",st:""},
-  {c:"IPITEC Santa Casa",s:"Saúde",bucket:"Crítico",dias:30,data_exp:"25/04/2026",v25:1344,ct:"Anual",st:"Pedido Ok"},
-  {c:"Cooperativa de Crédito CREDIALP",s:"Privado",bucket:"Urgente",dias:31,data_exp:"26/04/2026",v25:1980,ct:"Anual",st:"Pedido Ok"},
-  {c:"TRT 8",s:"Judiciário",bucket:"Urgente",dias:31,data_exp:"26/04/2026",v25:80134,ct:"Anual",st:""},
-  {c:"Arco Educação",s:"Educação",bucket:"Urgente",dias:51,data_exp:"16/05/2026",v25:6033,ct:"2 Anos",st:""},
-  {c:"COOP Agroindustrial Produtores Rurais",s:"Privado",bucket:"Urgente",dias:55,data_exp:"20/05/2026",v25:18088,ct:"Anual",st:""},
-  {c:"TI ALGÁS",s:"Outros",bucket:"Urgente",dias:57,data_exp:"22/05/2026",v25:6366,ct:"Anual",st:""},
-  {c:"Sistema FIEG",s:"Outros",bucket:"Urgente",dias:57,data_exp:"22/05/2026",v25:12788,ct:"Anual",st:""},
-  {c:"ENAP — Escola Nacional de Administração",s:"Governo",bucket:"Urgente",dias:61,data_exp:"26/05/2026",v25:78519,ct:"Outros",st:"Autorizado pelo Aguinaldo"},
-  {c:"Assoc. Brasileira de Árbitros de Atletismo",s:"Outros",bucket:"Urgente",dias:65,data_exp:"30/05/2026",v25:1906,ct:"Anual",st:"Pedido Ok."},
-  {c:"Fundação Zerbini",s:"Saúde",bucket:"Urgente",dias:70,data_exp:"04/06/2026",v25:1498,ct:"Anual",st:"Pedido Ok"},
-  {c:"Codeplan-DF",s:"Governo",bucket:"Urgente",dias:72,data_exp:"06/06/2026",v25:7606,ct:"Anual",st:"Pedido OK."},
-  {c:"CSJT",s:"Judiciário",bucket:"Urgente",dias:75,data_exp:"09/06/2026",v25:583,ct:"Anual",st:"Pedido Ok."},
-  {c:"Secretaria Educação Cultura Esporte Lazer GO",s:"Governo",bucket:"Urgente",dias:77,data_exp:"11/06/2026",v25:79090,ct:"Outros",st:""},
-  {c:"Serviço Geológico do Brasil (SGB)",s:"Governo",bucket:"Urgente",dias:78,data_exp:"12/06/2026",v25:4733,ct:"Outros",st:""},
-  {c:"TRT 15",s:"Judiciário",bucket:"Urgente",dias:79,data_exp:"13/06/2026",v25:84543,ct:"Anual",st:""},
-  {c:"INSS",s:"Governo",bucket:"Urgente",dias:83,data_exp:"17/06/2026",v25:67443,ct:"Outros",st:""},
-  {c:"Abs. Brasileira de Televisão",s:"Outros",bucket:"Urgente",dias:84,data_exp:"18/06/2026",v25:990,ct:"Anual",st:""},
-  {c:"CODEVASF (Workvivo)",s:"Governo",bucket:"Urgente",dias:86,data_exp:"20/06/2026",v25:7260,ct:"Outros",st:""},
-  {c:"Companhia Nacional de Abastecimento (CONAB)",s:"Governo",bucket:"Atenção",dias:92,data_exp:"26/06/2026",v25:593,ct:"3 Anos",st:"Contrato 3 anos - 2 pagos 1 free"},
-  {c:"Advocacia Geral da União (AGU)",s:"Governo",bucket:"Atenção",dias:92,data_exp:"26/06/2026",v25:4733,ct:"3 Anos",st:"ATA 2026"},
-  {c:"Prefeitura de Fortaleza (SEUMA)",s:"Governo",bucket:"Atenção",dias:95,data_exp:"29/06/2026",v25:14200,ct:"3 Anos",st:"ATA 2026"},
-  {c:"Câmara de Vereadores da Penha de Santa Cruz",s:"Governo",bucket:"Atenção",dias:97,data_exp:"01/07/2026",v25:1131,ct:"Anual",st:""},
-  {c:"Conselho Regional de Educação Física",s:"Outros",bucket:"Atenção",dias:102,data_exp:"06/07/2026",v25:6360,ct:"Anual",st:""},
-  {c:"Prefeitura Municipal de Blumenau",s:"Governo",bucket:"Atenção",dias:105,data_exp:"09/07/2026",v25:1083,ct:"Anual",st:""},
-  {c:"Ministério Público do Estado do Alagoas",s:"Ministério Público",bucket:"Atenção",dias:120,data_exp:"24/07/2026",v25:10504,ct:"Anual",st:"Contrato 29/05/25"},
-  {c:"TJGO — Tribunal de Justiça de Goiás",s:"Judiciário",bucket:"Atenção",dias:127,data_exp:"31/07/2026",v25:0,ct:"3 Anos",st:""},
-  {c:"Ministério Desenvolvimento e Assistência Social",s:"Governo",bucket:"Atenção",dias:129,data_exp:"02/08/2026",v25:34861,ct:"Outros",st:"Autorizado pelo Aguinaldo"},
-  {c:"IATEC / Adventista",s:"Educação",bucket:"Atenção",dias:147,data_exp:"20/08/2026",v25:1249182,ct:"Outros",st:"Contrato Original 48 meses"},
-  {c:"PRODAM-AM",s:"Governo",bucket:"Atenção",dias:155,data_exp:"28/08/2026",v25:51308,ct:"Anual",st:""},
-  {c:"Rede Adventista de Educação",s:"Educação",bucket:"Atenção",dias:156,data_exp:"27/01/2026",v25:0,ct:"2 Anos",st:"Encerra set/26"},
-  {c:"CONASEMS",s:"Saúde",bucket:"Atenção",dias:157,data_exp:"31/08/2026",v25:36352,ct:"Anual",st:"Contrato Anual"},
-  {c:"IBGE",s:"Governo",bucket:"Atenção",dias:161,data_exp:"04/09/2026",v25:1184940,ct:"Outros",st:""},
-  {c:"Tribunal de Justiça do Amapá (TJAP)",s:"Judiciário",bucket:"Planejamento",dias:203,data_exp:"15/10/2026",v25:157305,ct:"Outros",st:"Renovável até 10 anos"},
-  {c:"Tribunal de Justiça da Paraíba (TJPB)",s:"Judiciário",bucket:"Planejamento",dias:224,data_exp:"05/11/2026",v25:343810,ct:"Outros",st:""},
-  {c:"Tribunal Regional Federal 2ª Região (TRF2)",s:"Judiciário",bucket:"Planejamento",dias:255,data_exp:"06/12/2026",v25:36867,ct:"3 Anos",st:""},
-  {c:"BRF",s:"Privado",bucket:"Planejamento",dias:281,data_exp:"31/12/2026",v25:31331,ct:"3 Anos",st:"Pagamento anual"},
-  {c:"TRT1",s:"Judiciário",bucket:"Planejamento",dias:276,data_exp:"27/12/2026",v25:146336,ct:"Outros",st:"Prorrogação Excepcional 12 meses"},
-  {c:"Departamento de Trânsito do PR (DETRAN-PR)",s:"Governo",bucket:"Planejamento",dias:211,data_exp:"23/10/2026",v25:19936,ct:"Anual",st:""},
-  {c:"FIEC / Ministério Desenvolvimento Regional",s:"Governo",bucket:"Planejamento",dias:177,data_exp:"19/09/2026",v25:14245,ct:"Outros",st:"Prorrogável até 5 anos"},
-  {c:"TRT 23",s:"Judiciário",bucket:"Longo Prazo",dias:301,data_exp:"21/01/2027",v25:31041,ct:"Anual",st:"Último aditivo - aguardando pregão"},
-  {c:"TRT 4",s:"Judiciário",bucket:"Longo Prazo",dias:306,data_exp:"26/01/2027",v25:78729,ct:"Anual",st:""},
-  {c:"TRT 9",s:"Judiciário",bucket:"Longo Prazo",dias:335,data_exp:"24/02/2027",v25:94364,ct:"Anual",st:"Pgto mensal R$16.754,83"},
-  {c:"TRT 3",s:"Judiciário",bucket:"Longo Prazo",dias:343,data_exp:"04/03/2027",v25:90485,ct:"Anual",st:"Último aditivo - aguardando pregão"},
-  {c:"TRT 2",s:"Judiciário",bucket:"Longo Prazo",dias:313,data_exp:"02/02/2027",v25:403323,ct:"Anual",st:"Aguardando novo pregão"},
-  {c:"Ministério Público Estado de Goiás",s:"Ministério Público",bucket:"Longo Prazo",dias:418,data_exp:"18/05/2027",v25:1278642,ct:"Outros",st:"Nova Licitação - ATA TRF4"},
-  {c:"MPF",s:"Ministério Público",bucket:"Estratégico",dias:1518,data_exp:"22/05/2030",v25:8148960,ct:"5 Anos",st:"Contrato 5 anos - Pagamento Mensal"},
-  {c:"Tribunal de Justiça do ES (TJES)",s:"Judiciário",bucket:"Estratégico",dias:1622,data_exp:"03/09/2030",v25:466040,ct:"Outros",st:"Valor ATA TRF4"},
-  {c:"USP",s:"Educação",bucket:"Estratégico",dias:3373,data_exp:"20/06/2035",v25:938000,ct:"Outros",st:"Nova licitação"},
-  {c:"PRODEST — Espírito Santo",s:"Governo",bucket:"Estratégico",dias:1243,data_exp:"20/08/2029",v25:374784,ct:"Outros",st:"ATA 2025"},
-  {c:"TJMA",s:"Judiciário",bucket:"Estratégico",dias:1448,data_exp:"13/03/2030",v25:221595,ct:"Outros",st:"Pedido OK."},
-  {c:"Petrobras Workvivo",s:"Privado",bucket:"Estratégico",dias:1375,data_exp:"30/12/2029",v25:0,ct:"Outros",st:""},
-];
-
-// ── CHART: TIMELINE ──────────────────────────────────────────────────────────
-const timelineCtx = document.getElementById('chart-timeline').getContext('2d');
-const timelineChart = new Chart(timelineCtx, {
-  type: 'bar',
-  data: {
-    labels: TIMELINE.labels,
-    datasets: [
-      {
-        label: 'Nº Contratos', type: 'bar',
-        data: TIMELINE.counts,
-        backgroundColor: TIMELINE.labels.map((l,i) => {
-          const v = TIMELINE.counts[i];
-          if(i<=2) return 'rgba(231,76,60,0.75)';
-          if(i<=4) return 'rgba(243,156,18,0.75)';
-          if(i<=7) return 'rgba(41,128,185,0.75)';
-          return 'rgba(46,109,164,0.45)';
-        }),
-        borderRadius: 4, borderWidth: 0, yAxisID: 'y'
-      },
-      {
-        label: 'Valor Base 2025 (R$)', type: 'line',
-        data: TIMELINE.values,
-        borderColor: '#27AE60', backgroundColor: 'rgba(39,174,96,0.08)',
-        borderWidth: 2, fill: true, tension: 0.3,
-        pointRadius: 4, pointHoverRadius: 6, yAxisID: 'y2'
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { position: 'top', labels: { usePointStyle: true, padding: 16, font: { size: 11 } } },
-      tooltip: { callbacks: {
-        label: ctx => ctx.dataset.yAxisID === 'y2'
-          ? `Valor: ${fmtBRLFull(ctx.parsed.y)}`
-          : `Contratos: ${ctx.parsed.y}`
-      }}
-    },
-    scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-      y: { beginAtZero: true, position: 'left', title: { display: true, text: 'Contratos', font: { size: 10 } }, ticks: { stepSize: 2, font: { size: 10 } }, grid: { color: '#F0F4F8' } },
-      y2: { beginAtZero: true, position: 'right', title: { display: true, text: 'Valor (R$)', font: { size: 10 } }, ticks: { callback: v => fmtBRL(v), font: { size: 10 } }, grid: { display: false } }
-    }
-  }
-});
-
-// ── EXPIRATION TABLE ──────────────────────────────────────────────────────────
-const BUCKET_ORDER = {'Vencido':0,'Crítico':1,'Urgente':2,'Atenção':3,'Planejamento':4,'Longo Prazo':5,'Estratégico':6,'Sem Data':7};
-const BADGE_URG = {
-  'Vencido':'urg-vencido','Crítico':'urg-critico','Urgente':'urg-urgente',
-  'Atenção':'urg-atencao','Planejamento':'urg-planejamento',
-  'Longo Prazo':'urg-longo','Estratégico':'urg-estrategico'
-};
-const DIAS_COLOR = {
-  'Vencido':'dias-vencido','Crítico':'dias-critico','Urgente':'dias-urgente',
-  'Atenção':'dias-atencao','Planejamento':'dias-ok','Longo Prazo':'dias-ok','Estratégico':'dias-ok'
-};
-const BUCKET_LABEL = {
-  'Vencido':'⛔ Vencido','Crítico':'🔴 Crítico','Urgente':'🟡 Urgente',
-  'Atenção':'🔵 Atenção','Planejamento':'🟢 Planejamento',
-  'Longo Prazo':'🟣 Longo Prazo','Estratégico':'🔷 Estratégico'
-};
-
-let expCurrentData = [...EXP_TABLE];
-let expCurrentPage = 0;
-const EXP_PAGE_SIZE = 20;
-let expSortCol = 2; let expSortDir = 1;
-
-function renderExpTable() {
-  const tbody = document.getElementById('expTableBody');
-  const start = expCurrentPage * EXP_PAGE_SIZE;
-  const slice = expCurrentData.slice(start, start + EXP_PAGE_SIZE);
-  tbody.innerHTML = slice.map(r => {
-    const bclass = BADGE_MAP[r.s] || 'badge-out';
-    const urgClass = BADGE_URG[r.bucket] || '';
-    const diasClass = DIAS_COLOR[r.bucket] || '';
-    const diasStr = r.dias < 0 ? `${Math.abs(r.dias)}d atrás` : r.dias === 0 ? 'Hoje!' : `${r.dias}d`;
-    return `<tr>
-      <td><strong>${r.c}</strong></td>
-      <td><span class="badge ${bclass}">${r.s}</span></td>
-      <td><span class="urg-badge ${urgClass}">${BUCKET_LABEL[r.bucket]||r.bucket}</span></td>
-      <td style="font-weight:600">${r.data_exp||'—'}</td>
-      <td class="dias-badge ${diasClass}">${diasStr}</td>
-      <td style="text-align:right;font-weight:600">${fmtBRL(r.v25)}</td>
-      <td style="font-size:11px;color:var(--text2)">${r.ct}</td>
-      <td style="font-size:11px;color:var(--text2);max-width:200px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="${r.st}">${r.st.substring(0,45)||'—'}</td>
-    </tr>`;
-  }).join('');
-  const total = expCurrentData.length;
-  document.getElementById('expTableInfo').textContent = `Exibindo ${start+1}–${Math.min(start+EXP_PAGE_SIZE,total)} de ${total} contratos`;
-  renderExpPagination(total);
-}
-
-function renderExpPagination(total) {
-  const pages = Math.ceil(total / EXP_PAGE_SIZE);
-  const div = document.getElementById('expPagination');
-  div.innerHTML = '';
-  for (let i = 0; i < pages; i++) {
-    const b = document.createElement('button');
-    b.textContent = i + 1;
-    if (i === expCurrentPage) b.className = 'active';
-    b.onclick = () => { expCurrentPage = i; renderExpTable(); };
-    div.appendChild(b);
-  }
-}
-
-function filterExpTable() {
-  const q = document.getElementById('expSearch').value.toLowerCase();
-  const bucket = document.getElementById('expFilter').value;
-  const setor = document.getElementById('expSetor').value;
-  expCurrentData = EXP_TABLE.filter(r => {
-    if (q && !r.c.toLowerCase().includes(q) && !r.s.toLowerCase().includes(q)) return false;
-    if (bucket !== 'all' && r.bucket !== bucket) return false;
-    if (setor !== 'all' && r.s !== setor) return false;
+function renderExpTable(){
+  const q=document.getElementById('expSearch').value.toLowerCase();
+  const bucket=document.getElementById('expFilter').value;
+  const setor=document.getElementById('expSetor').value;
+  const filtered=EXP_DATA.filter(c=>{
+    if(q&&!c.nome.toLowerCase().includes(q)) return false;
+    if(bucket!=='all'&&c.bucket!==bucket) return false;
+    if(setor!=='all'&&c.setor!==setor) return false;
     return true;
   });
-  expCurrentPage = 0;
-  renderExpTable();
+  expData=filtered;
+  const start=expPage*EXP_PAGE_SZ;
+  const slice=filtered.slice(start,start+EXP_PAGE_SZ);
+  const tbody=document.getElementById('expTableBody');
+  tbody.innerHTML=slice.map(c=>{
+    const bc=BADGE_MAP[c.setor]||'badge-out';
+    const urgCls=BADGE_URG[c.bucket]||'';
+    const diasCls=DIAS_COLOR[c.bucket]||'';
+    const diasStr=c.dias===null?'—':c.dias<0?`${Math.abs(c.dias)}d atrás`:c.dias===0?'Hoje!':`${c.dias}d`;
+    const vd=c.validadeDate?c.validadeDate.toLocaleDateString('pt-BR'):'—';
+    return `<tr>
+      <td><strong>${c.nome}</strong></td>
+      <td><span class="badge ${bc}">${c.setor}</span></td>
+      <td><span class="urg-badge ${urgCls}">${BUCKET_LABEL[c.bucket]||c.bucket}</span></td>
+      <td style="font-weight:600">${vd}</td>
+      <td class="dias-badge ${diasCls}">${diasStr}</td>
+      <td style="text-align:right;font-weight:600">${fmtBRL(c.v25)}</td>
+      <td style="font-size:11px;color:var(--text2)">${c.pgtoZoom||'—'}</td>
+      <td style="font-size:11px;color:var(--text2);max-width:200px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="${c.aditivo}">${(c.aditivo||c.status||'—').substring(0,45)}</td>
+    </tr>`;
+  }).join('');
+  const total=filtered.length;
+  document.getElementById('expTableInfo').textContent=`Exibindo ${start+1}–${Math.min(start+EXP_PAGE_SZ,total)} de ${total} contratos`;
+  renderPagination('expPagination',total,expPage,EXP_PAGE_SZ,p=>{expPage=p;renderExpTable();});
 }
 
-const EXP_COLS = ['c','s','bucket','data_exp','dias','v25','ct'];
-function sortExpTable(col) {
-  if (expSortCol === col) expSortDir *= -1; else { expSortCol = col; expSortDir = 1; }
-  const key = EXP_COLS[col];
-  expCurrentData.sort((a, b) => {
-    let av = a[key], bv = b[key];
-    if (key === 'bucket') { av = BUCKET_ORDER[av]??9; bv = BUCKET_ORDER[bv]??9; }
-    if (typeof av === 'number') return expSortDir * (av - bv);
-    return expSortDir * ((av||'') < (bv||'') ? -1 : (av||'') > (bv||'') ? 1 : 0);
+function filterExpTable(){expPage=0;renderExpTable();}
+
+const EXP_COLS=['nome','setor','bucket','validadeDate','dias','v25','pgtoZoom'];
+function sortExpTable(col){
+  if(expSort===col) expDir*=-1; else{expSort=col;expDir=1;}
+  const key=EXP_COLS[col];
+  EXP_DATA.sort((a,b)=>{
+    let av=a[key],bv=b[key];
+    if(key==='bucket'){av=BUCKET_ORDER[av]??9;bv=BUCKET_ORDER[bv]??9;}
+    if(av instanceof Date&&bv instanceof Date) return expDir*(av-bv);
+    if(typeof av==='number') return expDir*(av-bv);
+    return expDir*((av||'')>(bv||'')?1:(av||'')<(bv||'')?-1:0);
   });
-  expCurrentPage = 0;
-  renderExpTable();
+  expPage=0;renderExpTable();
 }
 
-// Default sort: by urgency, then by days
-expCurrentData.sort((a, b) => {
-  const ao = BUCKET_ORDER[a.bucket] ?? 9, bo = BUCKET_ORDER[b.bucket] ?? 9;
-  if (ao !== bo) return ao - bo;
-  return (a.dias ?? 9999) - (b.dias ?? 9999);
-});
-renderExpTable();
+// ── GENERIC PAGINATION ───────────────────────────────────────────────────────
+function renderPagination(containerId,total,current,size,onClick){
+  const pages=Math.ceil(total/size);
+  const div=document.getElementById(containerId);
+  div.innerHTML='';
+  if(pages<=1) return;
+  const start=Math.max(0,current-3), end=Math.min(pages,current+4);
+  if(start>0){const b=document.createElement('button');b.textContent='«';b.onclick=()=>onClick(0);div.appendChild(b);}
+  for(let i=start;i<end;i++){
+    const b=document.createElement('button');b.textContent=i+1;
+    if(i===current) b.className='active';
+    b.onclick=()=>onClick(i);div.appendChild(b);
+  }
+  if(end<pages){const b=document.createElement('button');b.textContent='»';b.onclick=()=>onClick(pages-1);div.appendChild(b);}
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+document.getElementById('hdr-date').textContent=TODAY.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+loadData();
 </script>
 </body>
 </html>
