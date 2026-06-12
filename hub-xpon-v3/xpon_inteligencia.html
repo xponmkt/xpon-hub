@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XP On — Inteligência Comercial</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0F2F5;--bg-alt:#F8F9FB;--surface:#FFFFFF;--surface-2:#F8F9FB;
+  --border:#E2E6ED;--border-h:#0E1DAA;
+  --xp-blue:#0E1DAA;--xp-blue-soft:rgba(14,29,170,0.06);--xp-blue-mid:rgba(14,29,170,0.12);--xp-cyan:#4DA4C7;--grad:linear-gradient(135deg,#4DA4C7 0%,#0E1DAA 100%);
+  --text:#0a0e1f;--text-mid:#4B5563;--text-muted:#9CA3AF;--radius:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+
+/* HEADER */
+header{padding:18px 48px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;background:var(--surface);}
+.back{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+.logo-mark{width:30px;height:30px}
+.logo-text{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.page-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:1px;font-weight:500}
+.back-link{font-size:11px;color:var(--text-muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;font-weight:500;transition:color .2s}
+.back-link:hover{color:var(--xp-blue)}
+
+/* NAV TABS */
+nav.tabs{position:sticky;top:61px;z-index:100;background:var(--surface);;border-bottom:1px solid var(--border);display:flex;gap:0;padding:0 48px;overflow-x:auto}
+.tab{padding:14px 20px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;font-family:inherit}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--xp-blue);border-bottom-color:var(--xp-blue)}
+
+/* MAIN / PANELS */
+main{flex:1;padding:40px 48px;max-width:1200px;margin:0 auto;width:100%}
+.panel{display:none}.panel.active{display:block}
+
+/* SECTION */
+.section-title{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.section-sub{color:var(--text-mid);font-size:14px;margin-bottom:32px;font-weight:300;line-height:1.7}
+
+/* CARD BASE */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--xp-cyan);font-weight:600;margin-bottom:16px}
+
+/* ─── ICP CARDS ─── */
+.icp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+@media(max-width:900px){.icp-grid{grid-template-columns:1fr}}
+.icp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;border-top:3px solid}
+.icp-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.icp-avatar{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.icp-name{font-size:15px;font-weight:700;margin-bottom:2px}
+.icp-role{font-size:11px;color:var(--text-muted);font-weight:500}
+.icp-section{margin-bottom:12px}
+.icp-label{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--text-muted);font-weight:700;margin-bottom:5px}
+.icp-tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{display:inline-block;font-size:10px;padding:3px 9px;border-radius:100px;font-weight:600;background:rgba(9,168,238,0.12);color:var(--xp-cyan);border:1px solid rgba(9,168,238,0.25)}
+.tag.pain{background:rgba(239,68,68,0.1);color:#f87171;border-color:rgba(239,68,68,0.2)}
+.tag.channel{background:rgba(16,185,129,0.1);color:#34d399;border-color:rgba(16,185,129,0.2)}
+.tag.tone{background:rgba(168,85,247,0.1);color:#c084fc;border-color:rgba(168,85,247,0.2)}
+.icp-quote{font-size:12px;color:var(--text-mid);font-style:italic;line-height:1.6;padding:10px 12px;background:rgba(9,168,238,0.05);border-left:3px solid var(--xp-cyan);border-radius:0 5px 5px 0;margin-top:12px}
+
+/* ─── APPROACH ACCORDION ─── */
+.acc-list{display:flex;flex-direction:column;gap:10px}
+.acc-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.acc-header{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .2s}
+.acc-header:hover{background:var(--surface-2)}
+.acc-header.open{background:var(--surface-2)}
+.acc-step{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--xp-cyan);margin-bottom:3px}
+.acc-title{font-size:14px;font-weight:700}
+.acc-icon{font-size:18px;color:var(--text-muted);transition:transform .3s}
+.acc-header.open .acc-icon{transform:rotate(45deg)}
+.acc-body{display:none;padding:0 20px 20px}
+.acc-body.open{display:block}
+.acc-desc{font-size:13px;color:var(--text-mid);line-height:1.8;margin-bottom:14px}
+.acc-tips{display:flex;flex-direction:column;gap:8px}
+.acc-tip{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--text-mid);line-height:1.6}
+.acc-tip-icon{color:var(--xp-cyan);flex-shrink:0;margin-top:1px}
+.acc-phrase{background:rgba(9,168,238,0.06);border:1px solid rgba(14,29,170,0.07);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--text-mid);font-style:italic;margin-top:10px}
+
+/* ─── COMPETITORS ─── */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:800px){.comp-grid{grid-template-columns:1fr}}
+.comp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.comp-card-head{padding:16px 20px;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.comp-type{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--text-muted);font-weight:700;margin-bottom:3px}
+.comp-name{font-size:14px;font-weight:700}
+.comp-body{padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.comp-row{display:flex;flex-direction:column;gap:4px;font-size:12px;line-height:1.65;color:var(--text-mid)}
+.comp-row-label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:3px;padding:2px 8px;border-radius:4px;display:inline-block}
+.comp-row-label.muted{background:rgba(107,114,128,0.15);color:#9ca3af}
+.comp-row-label.xpon{background:rgba(9,168,238,0.12);color:var(--xp-cyan)}
+.comp-row-label.resp{background:rgba(34,197,94,0.12);color:#4ade80}
+.comp-resp{background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:6px;padding:10px 12px;font-style:italic;color:#86efac}
+
+/* ─── PORTFOLIO ─── */
+.eixo-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.eixo-tab{padding:8px 18px;border-radius:100px;font-size:12px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-family:inherit;transition:all .2s}
+.eixo-tab:hover{border-color:var(--xp-cyan);color:var(--xp-cyan)}
+.eixo-tab.active{background:var(--grad-brand);color:#fff;border-color:transparent}
+.eixo-panel{display:none}.eixo-panel.active{display:block}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.product-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.product-grid{grid-template-columns:1fr}}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;transition:all .2s}
+.product-card:hover{border-color:var(--border-h);transform:translateY(-2px);box-shadow:0 6px 24px rgba(14,29,170,0.06)}
+.product-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.product-logo{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.product-name{font-size:14px;font-weight:700;margin-bottom:2px}
+.product-target{font-size:11px;color:var(--text-muted)}
+.product-uses{list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.product-uses li{font-size:12px;color:var(--text-mid);line-height:1.5;padding-left:14px;position:relative}
+.product-uses li::before{content:'›';position:absolute;left:0;color:var(--xp-cyan)}
+.product-link{font-size:11px;color:var(--xp-cyan);text-decoration:none;font-weight:600;letter-spacing:.03em;transition:opacity .2s}
+.product-link:hover{opacity:.7}
+
+/* ─── OBJECTIONS ─── */
+.obj-list{display:flex;flex-direction:column;gap:8px}
+.obj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.obj-header{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:background .2s}
+.obj-header:hover{background:var(--surface-2)}
+.obj-header.open{background:var(--surface-2);border-bottom:1px solid var(--border)}
+.obj-q{font-size:14px;font-weight:600}
+.obj-icon{font-size:20px;color:var(--text-muted);line-height:1;flex-shrink:0;transition:transform .3s}
+.obj-header.open .obj-icon{transform:rotate(45deg)}
+.obj-body{display:none;padding:0 20px 20px}
+.obj-body.open{display:block;padding-top:16px}
+.obj-resp{font-size:13px;color:var(--text-mid);line-height:1.8;margin-bottom:12px;font-style:italic}
+.technique-badge{font-size:10px;padding:3px 10px;border-radius:100px;font-weight:700}
+.tech-custo{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25)}
+.tech-reframe{background:rgba(9,168,238,0.12);color:var(--xp-cyan);border:1px solid rgba(9,168,238,0.25)}
+.tech-facil{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.25)}
+.tech-social{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.25)}
+.tech-recip{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.25)}
+
+/* FOOTER */
+footer{padding:18px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-text{font-size:10px;letter-spacing:.12em;color:var(--text-muted);text-transform:uppercase;font-weight:500}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="back">
+    <svg class="logo-mark" viewBox="340 335 580 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs><linearGradient id="lg" x1="340" y1="540" x2="910" y2="540" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4DA4C7"/><stop offset="1" stop-color="#0E1DAA"/></linearGradient><linearGradient id="lg2" x1="340" y1="424" x2="518" y2="424" xlink:href="#lg"/></defs>
+      <path fill="url(#lg)" d="M380.71,744.87c-10.32,0-20.64-3.94-28.52-11.81-15.75-15.75-15.75-41.28,0-57.03l329.09-329.09c7.56-7.56,17.82-11.81,28.52-11.81s20.95,4.25,28.52,11.81l159.64,159.64c15.75,15.75,15.75,41.28,0,57.03l-168.18,168.18c-7.56,7.56-17.82,11.81-28.52,11.81s-20.95-4.25-28.52-11.81l-84.82-84.82c-15.75-15.75-15.75-41.29,0-57.04,15.75-15.75,41.29-15.75,57.04,0l56.3,56.3,111.15-111.15-102.61-102.61-300.57,300.57c-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+      <path fill="url(#lg2)" d="M477.95,513.02c-10.32,0-20.64-3.94-28.52-11.81l-97.24-97.24c-15.75-15.75-15.75-41.29,0-57.03,15.75-15.75,41.29-15.75,57.04,0l97.24,97.24c15.75,15.75,15.75,41.29,0,57.03-7.87,7.87-18.2,11.81-28.52,11.81Z"/>
+    </svg>
+    <div>
+      <div class="logo-text">XP<span style="background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">ON</span></div>
+      <div class="page-label">Inteligência Comercial</div>
+    </div>
+  </a>
+  <a href="index.html" class="back-link">← Hub</a>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="showPanel('p-icp',this)">👤 ICPs & Personas</button>
+  <button class="tab" onclick="showPanel('p-abordagem',this)">🎯 Abordagem de Vendas</button>
+  <button class="tab" onclick="showPanel('p-concorrentes',this)">⚔ Concorrentes</button>
+  <button class="tab" onclick="showPanel('p-portfolio',this)">📦 Portfólio de Produtos</button>
+  <button class="tab" onclick="showPanel('p-objecoes',this)">💬 Objeções & Respostas</button>
+</nav>
+
+<main>
+
+<!-- ══════════════ PANEL 1 — ICPs ══════════════ -->
+<div id="p-icp" class="panel active">
+  <div class="section-title">ICPs & Personas</div>
+  <div class="section-sub">Perfis de clientes ideais por cargo e contexto — com dores, gatilhos de compra, canais e tom certo de abordagem.</div>
+
+  <div class="icp-grid">
+
+    <!-- ICP 1 -->
+    <div class="icp-card" style="border-top-color:var(--xp-cyan)">
+      <div class="icp-header">
+        <div class="icp-avatar" style="background:rgba(14,29,170,0.07)">👨‍💻</div>
+        <div>
+          <div class="icp-name">CTO / Diretor de TI</div>
+          <div class="icp-role">Médias e grandes empresas · 100–500 funcionários</div>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Dores principais</div>
+        <div class="icp-tags">
+          <span class="tag pain">Custo de incidentes</span>
+          <span class="tag pain">Falta de visibilidade</span>
+          <span class="tag pain">Equipe reduzida</span>
+          <span class="tag pain">SLA não cumprido</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Gatilhos de compra</div>
+        <div class="icp-tags">
+          <span class="tag">Incidente de segurança</span>
+          <span class="tag">Crescimento da empresa</span>
+          <span class="tag">Auditoria / LGPD</span>
+          <span class="tag">Novo CIO/CTO</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Canais & tom</div>
+        <div class="icp-tags">
+          <span class="tag channel">LinkedIn direto</span>
+          <span class="tag channel">Eventos técnicos</span>
+          <span class="tag tone">Tom: técnico, ROI</span>
+        </div>
+      </div>
+      <div class="icp-quote">"Preciso de um parceiro que entenda o meu ambiente e me ajude a escalar sem perder controle."</div>
+    </div>
+
+    <!-- ICP 2 -->
+    <div class="icp-card" style="border-top-color:#10b981">
+      <div class="icp-header">
+        <div class="icp-avatar" style="background:rgba(16,185,129,0.15)">🔧</div>
+        <div>
+          <div class="icp-name">Gerente de Infraestrutura</div>
+          <div class="icp-role">Operacional · Responde ao CTO ou Diretor de TI</div>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Dores principais</div>
+        <div class="icp-tags">
+          <span class="tag pain">Equipamentos legados</span>
+          <span class="tag pain">Falta de redundância</span>
+          <span class="tag pain">Suporte lento do fabricante</span>
+          <span class="tag pain">Falta de monitoramento</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Gatilhos de compra</div>
+        <div class="icp-tags">
+          <span class="tag">Equipamento que falhou</span>
+          <span class="tag">Novo projeto de rede</span>
+          <span class="tag">Expansão de filiais</span>
+          <span class="tag">Migração para nuvem</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Canais & tom</div>
+        <div class="icp-tags">
+          <span class="tag channel">E-mail técnico</span>
+          <span class="tag channel">Webinar de produto</span>
+          <span class="tag tone">Tom: prático, direto</span>
+        </div>
+      </div>
+      <div class="icp-quote">"Quero quem resolva o problema de verdade, não quem só venda hardware."</div>
+    </div>
+
+    <!-- ICP 3 -->
+    <div class="icp-card" style="border-top-color:#8b5cf6">
+      <div class="icp-header">
+        <div class="icp-avatar" style="background:rgba(139,92,246,0.15)">👔</div>
+        <div>
+          <div class="icp-name">CEO / Sócio de PME</div>
+          <div class="icp-role">Empresas 20–100 funcionários · Sem TI interna</div>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Dores principais</div>
+        <div class="icp-tags">
+          <span class="tag pain">TI virou custo sem retorno</span>
+          <span class="tag pain">Dependência de técnico único</span>
+          <span class="tag pain">Medo de ataque / perda de dados</span>
+          <span class="tag pain">Home office descontrolado</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Gatilhos de compra</div>
+        <div class="icp-tags">
+          <span class="tag">Susto com segurança</span>
+          <span class="tag">Crescimento e contratações</span>
+          <span class="tag">Referência de parceiro</span>
+          <span class="tag">Renovação de contrato</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Canais & tom</div>
+        <div class="icp-tags">
+          <span class="tag channel">Indicação</span>
+          <span class="tag channel">WhatsApp / presencial</span>
+          <span class="tag tone">Tom: negócio, simplificado</span>
+        </div>
+      </div>
+      <div class="icp-quote">"Não entendo de TI, mas sei que ela não pode parar. Preciso de alguém de confiança."</div>
+    </div>
+
+    <!-- ICP 4 -->
+    <div class="icp-card" style="border-top-color:#f59e0b">
+      <div class="icp-header">
+        <div class="icp-avatar" style="background:rgba(245,158,11,0.15)">🏥</div>
+        <div>
+          <div class="icp-name">Gestor de TI — Saúde / Indústria</div>
+          <div class="icp-role">Setor regulado · Compliance crítico</div>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Dores principais</div>
+        <div class="icp-tags">
+          <span class="tag pain">LGPD e HIPAA</span>
+          <span class="tag pain">Ransomware em saúde</span>
+          <span class="tag pain">Integração de sistemas legados</span>
+          <span class="tag pain">Downtime crítico</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Gatilhos de compra</div>
+        <div class="icp-tags">
+          <span class="tag">Auditoria de órgão regulador</span>
+          <span class="tag">Incidente de ransomware</span>
+          <span class="tag">Novo hospital / unidade</span>
+          <span class="tag">Parceiro anterior falhou</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Canais & tom</div>
+        <div class="icp-tags">
+          <span class="tag channel">Eventos do setor</span>
+          <span class="tag channel">Cases de segurança</span>
+          <span class="tag tone">Tom: compliance, risco</span>
+        </div>
+      </div>
+      <div class="icp-quote">"Não posso arriscar ter dados de pacientes expostos. Preciso de conformidade e continuidade."</div>
+    </div>
+
+    <!-- ICP 5 -->
+    <div class="icp-card" style="border-top-color:#ec4899">
+      <div class="icp-header">
+        <div class="icp-avatar" style="background:rgba(236,72,153,0.15)">🏛</div>
+        <div>
+          <div class="icp-name">Comprador Público / Servidor</div>
+          <div class="icp-role">Órgãos públicos · Processo formal</div>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Dores principais</div>
+        <div class="icp-tags">
+          <span class="tag pain">Burocracia de compra</span>
+          <span class="tag pain">Orçamento limitado</span>
+          <span class="tag pain">Falta de suporte especializado</span>
+          <span class="tag pain">Conformidade obrigatória</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Gatilhos de compra</div>
+        <div class="icp-tags">
+          <span class="tag">Licitação aberta</span>
+          <span class="tag">Verba disponível</span>
+          <span class="tag">Indicação técnica</span>
+          <span class="tag">Determinação superior</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Canais & tom</div>
+        <div class="icp-tags">
+          <span class="tag channel">Eventos técnicos gov</span>
+          <span class="tag channel">Networking presencial</span>
+          <span class="tag tone">Tom: segurança, conformidade</span>
+        </div>
+      </div>
+      <div class="icp-quote">"Preciso de documentação, SLA contratual e histórico comprovado de entrega."</div>
+    </div>
+
+    <!-- ICP 6 -->
+    <div class="icp-card" style="border-top-color:#34d399">
+      <div class="icp-header">
+        <div class="icp-avatar" style="background:rgba(52,211,153,0.15)">🏪</div>
+        <div>
+          <div class="icp-name">Gerente Administrativo — Varejo</div>
+          <div class="icp-role">Redes de varejo · Múltiplas filiais</div>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Dores principais</div>
+        <div class="icp-tags">
+          <span class="tag pain">Conectividade em filiais</span>
+          <span class="tag pain">TI sem controle centralizado</span>
+          <span class="tag pain">Segurança de PDVs</span>
+          <span class="tag pain">Suporte lento e caro</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Gatilhos de compra</div>
+        <div class="icp-tags">
+          <span class="tag">Nova filial</span>
+          <span class="tag">Contrato vencendo</span>
+          <span class="tag">Incidente em PDV</span>
+          <span class="tag">Black Friday / sazonalidade</span>
+        </div>
+      </div>
+      <div class="icp-section">
+        <div class="icp-label">Canais & tom</div>
+        <div class="icp-tags">
+          <span class="tag channel">Indicação de parceiro</span>
+          <span class="tag channel">LinkedIn corporativo</span>
+          <span class="tag tone">Tom: custo, escala, agilidade</span>
+        </div>
+      </div>
+      <div class="icp-quote">"Preciso que a TI acompanhe o crescimento da rede sem dobrar o custo."</div>
+    </div>
+
+  </div>
+
+  <!-- ── PERSONAS DETALHADAS ── -->
+  <div style="margin-top:32px">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--xp-cyan);font-weight:600;margin-bottom:20px">Personas de Compra Detalhadas</div>
+
+    <!-- Carlos Técnico -->
+    <div class="card" style="border-left:4px solid #09a8ee;margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start">
+        <div style="text-align:center">
+          <div style="width:64px;height:64px;border-radius:16px;background:rgba(14,29,170,0.07);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 8px">🔧</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text)">Carlos Técnico</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Analista / Gerente de TI</div>
+          <div style="margin-top:8px"><span class="tag" style="font-size:9px">Influenciador</span></div>
+        </div>
+        <div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div>
+              <div class="icp-label">Perfil</div>
+              <div style="font-size:12px;color:var(--text-mid);line-height:1.7">Homem, 28–45 anos, formação técnica em TI ou Ciência da Computação. Conhece profundamente o ambiente atual da empresa. É quem vai implementar ou avaliar a solução tecnicamente.</div>
+            </div>
+            <div>
+              <div class="icp-label">Motivações</div>
+              <div style="font-size:12px;color:var(--text-mid);line-height:1.7">Quer soluções que funcionem de verdade. Preza por documentação, suporte técnico ágil e parceiro que fale a mesma língua. Teme proposta de produto que não funciona no seu ambiente.</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+            <div>
+              <div class="icp-label">Dores</div>
+              <div class="icp-tags"><span class="tag pain">Suporte pós-venda falho</span><span class="tag pain" style="margin-top:4px">Implementação complexa</span><span class="tag pain" style="margin-top:4px">Falta de documentação</span></div>
+            </div>
+            <div>
+              <div class="icp-label">Canais</div>
+              <div class="icp-tags"><span class="tag channel">LinkedIn técnico</span><span class="tag channel" style="margin-top:4px">Email direto</span><span class="tag channel" style="margin-top:4px">Webinar de produto</span></div>
+            </div>
+            <div>
+              <div class="icp-label">Tom ideal</div>
+              <div class="icp-tags"><span class="tag tone">Técnico e direto</span><span class="tag tone" style="margin-top:4px">Sem marketing vazio</span><span class="tag tone" style="margin-top:4px">Dados e casos reais</span></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="background:rgba(9,168,238,0.06);border:1px solid rgba(14,29,170,0.07);border-radius:6px;padding:12px">
+              <div class="icp-label" style="color:var(--xp-cyan)">Gatilhos de Engajamento</div>
+              <div style="font-size:11px;color:var(--text-mid);line-height:1.8">Convite para webinar técnico · Demo de produto em laboratório · White paper ou caso técnico detalhado · Visita técnica ao cliente de referência</div>
+            </div>
+            <div style="background:rgba(9,168,238,0.06);border:1px solid rgba(14,29,170,0.07);border-radius:6px;padding:12px">
+              <div class="icp-label" style="color:#34d399">CTA mais eficaz</div>
+              <div style="font-size:11px;color:var(--text-mid);line-height:1.8">"Posso fazer uma PoC (prova de conceito) gratuita de 30 dias no seu ambiente?" · "Tenho um colega que resolveu exatamente isso — posso apresentar?"</div>
+            </div>
+          </div>
+          <div style="background:rgba(9,168,238,0.06);border-left:3px solid var(--xp-cyan);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:12px;font-size:12px;color:var(--text-mid);font-style:italic">
+            Ciclo de compra: Carlos avalia tecnicamente, documenta comparativos e passa a recomendação para a Ana ou para a diretoria. Ele é o guardião técnico — se ele não aprovar, a venda não avança. Invista tempo com ele antes de chegar no decisor.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ana Decisora -->
+    <div class="card" style="border-left:4px solid #a855f7;margin-bottom:0">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start">
+        <div style="text-align:center">
+          <div style="width:64px;height:64px;border-radius:16px;background:rgba(168,85,247,0.15);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 8px">👩‍💼</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text)">Ana Decisora</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">CEO / Diretora / CFO</div>
+          <div style="margin-top:8px"><span class="tag tone" style="font-size:9px">Decisora Final</span></div>
+        </div>
+        <div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div>
+              <div class="icp-label">Perfil</div>
+              <div style="font-size:12px;color:var(--text-mid);line-height:1.7">Mulher ou homem, 35–55 anos, perfil de gestão de negócios. Não entende (nem precisa entender) de tecnologia em detalhe. Decide com base em ROI, risco e confiança no parceiro.</div>
+            </div>
+            <div>
+              <div class="icp-label">Motivações</div>
+              <div style="font-size:12px;color:var(--text-mid);line-height:1.7">Quer que "a TI funcione sem preocupação". Preza por parceiro confiável, preço justo, SLA claro e resultado tangível para o negócio. Não quer ser surpreendida negativamente.</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+            <div>
+              <div class="icp-label">Dores</div>
+              <div class="icp-tags"><span class="tag pain">TI parando o negócio</span><span class="tag pain" style="margin-top:4px">Custo sem ROI claro</span><span class="tag pain" style="margin-top:4px">Risco de vazamento</span></div>
+            </div>
+            <div>
+              <div class="icp-label">Canais</div>
+              <div class="icp-tags"><span class="tag channel">Indicação de pares</span><span class="tag channel" style="margin-top:4px">Evento presencial VIP</span><span class="tag channel" style="margin-top:4px">Executive brief</span></div>
+            </div>
+            <div>
+              <div class="icp-label">Tom ideal</div>
+              <div class="icp-tags"><span class="tag tone">Negócio, não técnico</span><span class="tag tone" style="margin-top:4px">ROI e risco</span><span class="tag tone" style="margin-top:4px">Stories de sucesso</span></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.15);border-radius:6px;padding:12px">
+              <div class="icp-label" style="color:#c084fc">Gatilhos de Engajamento</div>
+              <div style="font-size:11px;color:var(--text-mid);line-height:1.8">Jantar / evento VIP com outros líderes · Case de empresa do mesmo setor · Recomendação de parceiro de confiança · Notícia de incidente no setor</div>
+            </div>
+            <div style="background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.15);border-radius:6px;padding:12px">
+              <div class="icp-label" style="color:#34d399">CTA mais eficaz</div>
+              <div style="font-size:11px;color:var(--text-mid);line-height:1.8">"Posso preparar um executive brief de 2 páginas com o que identificamos no diagnóstico?" · "Outros líderes da sua área estão fazendo isso — posso apresentar em 20 minutos?"</div>
+            </div>
+          </div>
+          <div style="background:rgba(168,85,247,0.06);border-left:3px solid #a855f7;padding:10px 14px;border-radius:0 6px 6px 0;margin-top:12px;font-size:12px;color:var(--text-mid);font-style:italic">
+            Ciclo de compra: A Ana recebe a recomendação do Carlos (ou chega via indicação/evento) e precisa de contexto de negócio, não técnico. Ela assina o contrato. Nunca vá para a Ana sem o aval do Carlos — e quando chegar à Ana, fale em impacto no negócio, não em produto.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════ PANEL 2 — ABORDAGEM ══════════════ -->
+<div id="p-abordagem" class="panel">
+  <div class="section-title">Abordagem de Vendas</div>
+  <div class="section-sub">Metodologia comercial da XPon — da prospecção ao fechamento. Cada etapa com objetivo, dicas e frases recomendadas.</div>
+
+  <div class="acc-list">
+
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div><div class="acc-step">Etapa 01</div><div class="acc-title">🎯 Prospecção & Pesquisa</div></div>
+        <span class="acc-icon">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-desc">Antes do primeiro contato, pesquise a empresa: porte, setor, tecnologias aparentes (via LinkedIn, site, anúncios de emprego TI). Identifique o ICP e o gatilho potencial.</div>
+        <div class="acc-tips">
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Verifique anúncios de emprego — revelam lacunas de TI</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Confira notícias recentes: expansão, fusões, incidentes</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Identifique quem faz decisões de TI via LinkedIn</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Verifique se participaram de eventos XPon ou de parceiros</div>
+        </div>
+        <div class="acc-phrase">"Vi que vocês estão crescendo e contratando para a área de TI — é exatamente o momento em que empresas como a de vocês buscam parceiros que escalem junto."</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div><div class="acc-step">Etapa 02</div><div class="acc-title">📞 Primeiro Contato</div></div>
+        <span class="acc-icon">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-desc">Objetivo: criar curiosidade, não vender. A primeira mensagem/ligação deve despertar interesse e garantir um próximo passo (reunião ou diagnóstico).</div>
+        <div class="acc-tips">
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Personalize sempre — mencione algo específico da empresa</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Foque no problema deles, não na sua solução</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Use prova social do setor deles se disponível</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Limite a mensagem a 3–4 linhas no LinkedIn</div>
+        </div>
+        <div class="acc-phrase">"Trabalho com empresas do setor [X] que enfrentam [dor comum]. Desenvolvemos uma abordagem específica para isso — vale 20 min para eu mostrar o que estamos fazendo?"</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div><div class="acc-step">Etapa 03</div><div class="acc-title">🔍 Diagnóstico Consultivo</div></div>
+        <span class="acc-icon">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-desc">A reunião de diagnóstico é o coração da venda consultiva da XPon. Pergunte mais do que fale. O objetivo é mapear o ambiente atual, dores e prioridades.</div>
+        <div class="acc-tips">
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>"Como está estruturado o ambiente de TI hoje?"</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>"Qual foi o último incidente que mais te preocupou?"</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>"Se você pudesse resolver uma coisa em TI este ano, o que seria?"</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>"Quais são as prioridades de crescimento para 2026?"</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Escute para detectar: urgência, budget, decisor, timeline</div>
+        </div>
+        <div class="acc-phrase">"Antes de mostrar qualquer coisa, quero entender seu contexto. Me conta como está a TI hoje — onde você sente que está perdendo mais tempo ou dinheiro?"</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div><div class="acc-step">Etapa 04</div><div class="acc-title">📝 Proposta Consultiva</div></div>
+        <span class="acc-icon">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-desc">A proposta XPon não é uma lista de produtos com preço. É um documento que mostra o diagnóstico realizado, as dores identificadas e a solução proposta com ROI esperado.</div>
+        <div class="acc-tips">
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Abra com o problema deles (não com a XPon)</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Mostre o custo da inação: o que acontece se nada mudar?</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Apresente 2–3 opções (básico, recomendado, completo)</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Inclua referências de empresas similares</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Proponha um "passo zero": diagnóstico técnico gratuito</div>
+        </div>
+        <div class="acc-phrase">"Baseado no que você me contou, mapeei 3 áreas de risco imediato e preparei uma proposta com o que faz mais sentido para o momento de vocês."</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div><div class="acc-step">Etapa 05</div><div class="acc-title">🤝 Negociação & Fechamento</div></div>
+        <span class="acc-icon">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-desc">Negocie sempre em valor, nunca só em preço. Entenda o que está por trás da objeção — normalmente é incerteza, não orçamento.</div>
+        <div class="acc-tips">
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Antes de dar desconto, pergunte o que está travando</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Ofereça flexibilidade na forma: parcelamento, projeto piloto</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Proponha começar menor e expandir (modelo MSP)</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Crie urgência real: "Temos disponibilidade para começar em [data]"</div>
+        </div>
+        <div class="acc-phrase">"Entendo a preocupação com o valor. Posso propor começarmos com um escopo reduzido no primeiro mês para você ver o resultado antes de ampliar?"</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div><div class="acc-step">Etapa 06</div><div class="acc-title">🔄 Expansão & Recorrência</div></div>
+        <span class="acc-icon">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-desc">O cliente fechado é o início, não o fim. O modelo XPon é de crescimento vertical — expandir na conta através de novos eixos, upgrade de serviços e indicações.</div>
+        <div class="acc-tips">
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>QBR (Quarterly Business Review) trimestral com cada cliente</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Apresente relatório de saúde do ambiente mensalmente</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Identifique novos eixos não cobertos: "E a parte de colaboração?"</div>
+          <div class="acc-tip"><span class="acc-tip-icon">›</span>Peça indicações ativamente: "Tem parceiro ou fornecedor com o mesmo desafio?"</div>
+        </div>
+        <div class="acc-phrase">"Com 3 meses de operação, identificamos 2 oportunidades de melhoria que podem reduzir custo e aumentar a disponibilidade. Posso apresentar?"</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ PANEL 3 — CONCORRENTES ══════════════ -->
+<div id="p-concorrentes" class="panel">
+  <div class="section-title">Análise de Concorrentes</div>
+  <div class="section-sub">Como posicionar a XPon frente a cada categoria de competidor — com argumentos e frases prontas para o campo.</div>
+
+  <div class="comp-grid">
+
+    <div class="comp-card">
+      <div class="comp-card-head">
+        <div><div class="comp-type">Categoria 01</div><div class="comp-name">Revendedores de produto (Box Movers)</div></div>
+      </div>
+      <div class="comp-body">
+        <div class="comp-row">
+          <div class="comp-row-label muted">Posicionamento deles</div>
+          <p>Vendem hardware/software com foco em preço. Sem consultoria, sem implementação especializada, sem suporte contínuo.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label xpon">Diferencial XPon</div>
+          <p>Especialização por eixo, parceiros fabricantes certificados (Fortinet, Cisco, Zoom), metodologia consultiva Diagnóstico → Projeto → Expansão.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label resp">Como responder</div>
+          <div class="comp-resp">"Foco em qualidade de entrega e SLA. Mostre o custo de uma implementação mal-feita versus o diferencial de preço."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-card-head">
+        <div><div class="comp-type">Categoria 02</div><div class="comp-name">Distribuidores (venda direta)</div></div>
+      </div>
+      <div class="comp-body">
+        <div class="comp-row">
+          <div class="comp-row-label muted">Posicionamento deles</div>
+          <p>Grande volume, produto sem serviço, preço de prateleira, sem implementação ou suporte pós-venda.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label xpon">Diferencial XPon</div>
+          <p>Serviço end-to-end: consultoria, implementação, integração com o ambiente existente, recorrência gerenciada e suporte com SLA.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label resp">Como responder</div>
+          <div class="comp-resp">"Produto você encontra em qualquer lugar. O que você precisa é de quem implementa, integra com o seu ambiente e garante que funciona."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-card-head">
+        <div><div class="comp-type">Categoria 03</div><div class="comp-name">TI Interna / "Já temos analista"</div></div>
+      </div>
+      <div class="comp-body">
+        <div class="comp-row">
+          <div class="comp-row-label muted">Posicionamento deles</div>
+          <p>Custo fixo CLT, generalista, não especializado por área, disponível mas sobrecarregado com demandas do dia a dia.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label xpon">Diferencial XPon</div>
+          <p>Especialistas por eixo (ciber, infra, colaboração) sem custo CLT, escala sob demanda, cobertura 24/7 sem adicional de horas extras.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label resp">Como responder</div>
+          <div class="comp-resp">"XPon complementa e libera o analista interno para projetos estratégicos. Não competimos com ele — trabalhamos junto."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-card-head">
+        <div><div class="comp-type">Categoria 04</div><div class="comp-name">Grandes SIs (Stefanini, Totvs, etc.)</div></div>
+      </div>
+      <div class="comp-body">
+        <div class="comp-row">
+          <div class="comp-row-label muted">Posicionamento deles</div>
+          <p>Projeto grande, processo lento e burocrático, custo alto, atenção dividida entre milhares de clientes, conta gerenciada por junior.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label xpon">Diferencial XPon</div>
+          <p>Agilidade de PME, atenção personalizada com acesso direto ao especialista, foco exclusivo em médias empresas com care genuíno.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label resp">Como responder</div>
+          <div class="comp-resp">"Você não vai ser o cliente número 3.000 aqui. Na XPon, você fala direto com quem resolve."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-card-head">
+        <div><div class="comp-type">Categoria 05</div><div class="comp-name">Freelancers / Técnicos autônomos</div></div>
+      </div>
+      <div class="comp-body">
+        <div class="comp-row">
+          <div class="comp-row-label muted">Posicionamento deles</div>
+          <p>Custo baixo, disponibilidade imprevisível, sem SLA formal, sem cobertura de férias/ausência, sem seguro de responsabilidade.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label xpon">Diferencial XPon</div>
+          <p>Equipe estruturada, SLA documentado, cobertura contínua, responsabilidade contratual, escalabilidade quando o negócio crescer.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label resp">Como responder</div>
+          <div class="comp-resp">"Quando ele tirar férias ou ficar doente, quem resolve? Com a XPon, você tem uma equipe — não uma pessoa."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-card-head">
+        <div><div class="comp-type">Categoria 06</div><div class="comp-name">Status quo / "Está funcionando"</div></div>
+      </div>
+      <div class="comp-body">
+        <div class="comp-row">
+          <div class="comp-row-label muted">Posicionamento deles</div>
+          <p>Resistência à mudança, medo do custo da transição, desconhecimento do risco atual, falta de urgência percebida.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label xpon">Diferencial XPon</div>
+          <p>Diagnóstico gratuito que revela riscos invisíveis. Mostre o custo da inação: média de R$350k por incidente de ransomware em PME.</p>
+        </div>
+        <div class="comp-row">
+          <div class="comp-row-label resp">Como responder</div>
+          <div class="comp-resp">"Ótimo que está funcionando. Posso fazer um diagnóstico rápido para confirmar que está funcionando *com segurança*? Sem custo, sem compromisso."</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ PANEL 4 — PORTFÓLIO ══════════════ -->
+<div id="p-portfolio" class="panel">
+  <div class="section-title">Portfólio de Produtos</div>
+  <div class="section-sub">Soluções e fabricantes por eixo estratégico — com casos de uso e links diretos para os fabricantes.</div>
+
+  <div class="eixo-tabs">
+    <button class="eixo-tab active" onclick="switchEixo(0)">🤝 Colaboração</button>
+    <button class="eixo-tab" onclick="switchEixo(1)">🔒 Cibersegurança</button>
+    <button class="eixo-tab" onclick="switchEixo(2)">🌐 Infraestrutura e Redes</button>
+    <button class="eixo-tab" onclick="switchEixo(3)">⚙️ Serviços XPon</button>
+  </div>
+
+  <!-- Colaboração -->
+  <div class="eixo-panel active" id="eixo-0">
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#2D8CFF,#0050ef)">Z</div>
+          <div><div class="product-name">Zoom</div><div class="product-target">Trabalho híbrido e eventos</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Videoconferência corporativa escalável</li>
+          <li>Webinar e eventos online</li>
+          <li>Zoom Phone — PABX em nuvem</li>
+          <li>Zoom Team Chat e colaboração assíncrona</li>
+        </ul>
+        <a class="product-link" href="https://zoom.us/pt-pt" target="_blank" rel="noopener">zoom.us/pt-pt ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#0078d4,#005a9e)">M</div>
+          <div><div class="product-name">Microsoft 365</div><div class="product-target">Qualquer porte de empresa</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Outlook, Teams e SharePoint integrados</li>
+          <li>OneDrive com armazenamento corporativo</li>
+          <li>Copilot com IA generativa integrada</li>
+          <li>Segurança, compliance e gestão de identidade</li>
+        </ul>
+        <a class="product-link" href="https://microsoft.com/pt-br" target="_blank" rel="noopener">microsoft.com/pt-br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#4285F4,#34A853)">G</div>
+          <div><div class="product-name">Google Workspace</div><div class="product-target">PME e startups</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Gmail corporativo com domínio próprio</li>
+          <li>Meet para videoconferências</li>
+          <li>Drive, Docs, Sheets e Slides em nuvem</li>
+          <li>Gemini AI integrado ao workspace</li>
+        </ul>
+        <a class="product-link" href="https://workspace.google.com" target="_blank" rel="noopener">workspace.google.com ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#00b5ad,#007a75)">L</div>
+          <div><div class="product-name">Logitech Business</div><div class="product-target">Salas de reunião</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Câmeras Rally e MeetUp para salas</li>
+          <li>Headsets Zone certificados para UC</li>
+          <li>Rally Bar all-in-one para salas médias</li>
+          <li>Periféricos certificados Teams e Zoom</li>
+        </ul>
+        <a class="product-link" href="https://logitech.com/business" target="_blank" rel="noopener">logitech.com/business ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#0096D6,#005a8e)">HP</div>
+          <div><div class="product-name">HP | Poly</div><div class="product-target">Salas e desktops</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Poly Studio para salas de reunião</li>
+          <li>Savi headsets sem fio para desktops</li>
+          <li>Soluções all-in-one para videoconferência</li>
+          <li>Integração certificada Teams, Zoom, Meet</li>
+        </ul>
+        <a class="product-link" href="https://hp.com" target="_blank" rel="noopener">hp.com ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#1a1a2e,#16213e)">N</div>
+          <div><div class="product-name">Neat</div><div class="product-target">Salas certificadas Zoom</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Neat Bar — dispositivo nativo Zoom para salas</li>
+          <li>Neat Frame — Zoom para espaços individuais</li>
+          <li>Neat Board — colaboração visual interativa</li>
+          <li>Gestão centralizada e atualização automática</li>
+        </ul>
+        <a class="product-link" href="https://neat.no" target="_blank" rel="noopener">neat.no ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cibersegurança -->
+  <div class="eixo-panel" id="eixo-1">
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#e32c2c,#8b0000)">F</div>
+          <div><div class="product-name">Fortinet</div><div class="product-target">Empresas com dados críticos</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>FortiGate Next-Gen Firewall (NGFW)</li>
+          <li>FortiEDR — proteção endpoint avançada</li>
+          <li>FortiSASE — segurança em nuvem e ZTNA</li>
+          <li>FortiAnalyzer e SD-WAN integrado</li>
+        </ul>
+        <a class="product-link" href="https://fortinet.com/br" target="_blank" rel="noopener">fortinet.com/br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#007dc3,#004a8f)">K</div>
+          <div><div class="product-name">Kaspersky</div><div class="product-target">Empresas de todos os portes</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Kaspersky Endpoint Security for Business</li>
+          <li>KES Cloud Plus — gerenciamento em nuvem</li>
+          <li>Kaspersky EDR — detecção e resposta</li>
+          <li>Proteção para servidores e dispositivos móveis</li>
+        </ul>
+        <a class="product-link" href="https://kaspersky.com.br" target="_blank" rel="noopener">kaspersky.com.br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#ffcb00,#cc8800)">P</div>
+          <div><div class="product-name">Palo Alto Networks</div><div class="product-target">Empresas enterprise</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Next-Gen Firewall (NGFW) de alta performance</li>
+          <li>Prisma SASE — segurança cloud-first</li>
+          <li>Cortex XDR — detecção e resposta estendida</li>
+          <li>Zero Trust Network Access (ZTNA)</li>
+        </ul>
+        <a class="product-link" href="https://paloaltonetworks.com" target="_blank" rel="noopener">paloaltonetworks.com ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#fc0000,#8b0000)">CS</div>
+          <div><div class="product-name">CrowdStrike</div><div class="product-target">Ambientes cloud e endpoint</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Falcon EDR — proteção endpoint cloud-native</li>
+          <li>Identity Protection — movimentação lateral</li>
+          <li>Threat Intelligence integrada</li>
+          <li>Resposta a incidentes gerenciada (MDR)</li>
+        </ul>
+        <a class="product-link" href="https://crowdstrike.com" target="_blank" rel="noopener">crowdstrike.com ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#0f4c81,#0a3460)">S</div>
+          <div><div class="product-name">Sophos</div><div class="product-target">PME com MDR gerenciado</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Sophos MDR — detecção e resposta gerenciada 24/7</li>
+          <li>Intercept X — proteção avançada de endpoint</li>
+          <li>XDR — visibilidade estendida do ambiente</li>
+          <li>Sophos Firewall com threat intelligence</li>
+        </ul>
+        <a class="product-link" href="https://sophos.com/pt-br" target="_blank" rel="noopener">sophos.com/pt-br ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Infraestrutura -->
+  <div class="eixo-panel" id="eixo-2">
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#1ba0d7,#00508f)">C</div>
+          <div><div class="product-name">Cisco</div><div class="product-target">Qualquer porte de empresa</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Switches Catalyst — LAN corporativa gerenciada</li>
+          <li>Routers ISR e SD-WAN integrado</li>
+          <li>Wi-Fi Meraki — gestão em nuvem centralizada</li>
+          <li>Cisco Umbrella — DNS security e SASE</li>
+        </ul>
+        <a class="product-link" href="https://cisco.com.br" target="_blank" rel="noopener">cisco.com.br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#00a651,#006633)">I</div>
+          <div><div class="product-name">Intelbras</div><div class="product-target">PME e filiais</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Switches gerenciáveis para redes locais</li>
+          <li>Wi-Fi corporativo com controladora</li>
+          <li>Câmeras IP e sistemas de vigilância</li>
+          <li>Roteadores, PABX IP e ATA</li>
+        </ul>
+        <a class="product-link" href="https://intelbras.com" target="_blank" rel="noopener">intelbras.com ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#01a982,#00634e)">A</div>
+          <div><div class="product-name">HP / Aruba</div><div class="product-target">Infraestrutura local e campus</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Switches HPE para data center e edge</li>
+          <li>Aruba Wi-Fi 6 com Zero Trust integrado</li>
+          <li>HPE ProLiant — servidores rack e tower</li>
+          <li>Aruba ClearPass — controle de acesso NAC</li>
+        </ul>
+        <a class="product-link" href="https://hpe.com/us/en/aruba" target="_blank" rel="noopener">hpe.com/us/en/aruba ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#09a8ee,#1b21a1)">T</div>
+          <div><div class="product-name">TrustedData</div><div class="product-target">Empresas com dados sensíveis</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Cloud privada e infraestrutura dedicada</li>
+          <li>Data center e colocation no Brasil</li>
+          <li>Backup gerenciado e recuperação de desastres</li>
+          <li>Compliance LGPD e certificações de segurança</li>
+        </ul>
+        <a class="product-link" href="https://trusteddata.com.br" target="_blank" rel="noopener">trusteddata.com.br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#2563eb,#1d4ed8)">U</div>
+          <div><div class="product-name">Ubiquiti / UniFi</div><div class="product-target">PME e ambientes distribuídos</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Switches UniFi para redes gerenciadas</li>
+          <li>Access Points Wi-Fi com controladora UniFi</li>
+          <li>UniFi Talk — telefonia IP em nuvem</li>
+          <li>Gestão centralizada via UniFi Console</li>
+        </ul>
+        <a class="product-link" href="https://ui.com" target="_blank" rel="noopener">ui.com ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Serviços XPon -->
+  <div class="eixo-panel" id="eixo-3">
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:var(--grad-brand)">X</div>
+          <div><div class="product-name">MSP 24/7</div><div class="product-target">Qualquer empresa</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Monitoramento contínuo de infraestrutura</li>
+          <li>Alertas proativos antes do incidente</li>
+          <li>Gestão de incidentes com SLA definido</li>
+          <li>Relatórios mensais de saúde do ambiente</li>
+        </ul>
+        <a class="product-link" href="https://xpon.com.br" target="_blank" rel="noopener">xpon.com.br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#ef4444,#991b1b)">vC</div>
+          <div><div class="product-name">vCISO</div><div class="product-target">PME sem CISO interno</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Chief Information Security Officer virtual</li>
+          <li>Políticas de segurança e gestão de riscos</li>
+          <li>Auditorias e gap analysis de segurança</li>
+          <li>Compliance LGPD, ISO 27001, frameworks</li>
+        </ul>
+        <a class="product-link" href="https://xpon.com.br" target="_blank" rel="noopener">xpon.com.br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#8b5cf6,#4c1d95)">vT</div>
+          <div><div class="product-name">vCTO</div><div class="product-target">Startups e PME em crescimento</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Estratégia e roadmap tecnológico</li>
+          <li>Liderança técnica sem custo de CLT sênior</li>
+          <li>Alinhamento de TI com objetivos de negócio</li>
+          <li>Avaliação e curadoria de tecnologias</li>
+        </ul>
+        <a class="product-link" href="https://xpon.com.br" target="_blank" rel="noopener">xpon.com.br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#f59e0b,#b45309)">GA</div>
+          <div><div class="product-name">Gestão de Ativos</div><div class="product-target">Toda empresa com TI</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Inventário completo de hardware e software</li>
+          <li>Controle de licenciamento e conformidade</li>
+          <li>Gestão de renovações e contratos</li>
+          <li>Dashboard de visibilidade de ativos</li>
+        </ul>
+        <a class="product-link" href="https://xpon.com.br" target="_blank" rel="noopener">xpon.com.br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#22c55e,#14532d)">HD</div>
+          <div><div class="product-name">Help Desk</div><div class="product-target">Empresas sem TI interna</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Suporte ao usuário final com SLA</li>
+          <li>Chamados por ticket, telefone e WhatsApp</li>
+          <li>Atendimento remoto e on-site</li>
+          <li>Relatório mensal de produtividade e SLA</li>
+        </ul>
+        <a class="product-link" href="https://xpon.com.br" target="_blank" rel="noopener">xpon.com.br ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-logo" style="background:linear-gradient(135deg,#06b6d4,#0e7490)">D</div>
+          <div><div class="product-name">Diagnóstico Gratuito</div><div class="product-target">Passo zero da venda</div></div>
+        </div>
+        <ul class="product-uses">
+          <li>Assessment de infraestrutura e segurança</li>
+          <li>Identificação de riscos e gaps atuais</li>
+          <li>Relatório executivo com recomendações</li>
+          <li>Proposta consultiva baseada no diagnóstico</li>
+        </ul>
+        <a class="product-link" href="https://xpon.com.br" target="_blank" rel="noopener">xpon.com.br ↗</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════ PANEL 5 — OBJEÇÕES ══════════════ -->
+<div id="p-objecoes" class="panel">
+  <div class="section-title">Objeções & Respostas</div>
+  <div class="section-sub">As 10 principais objeções no processo comercial e como tratá-las com eficácia. Clique para expandir.</div>
+
+  <div class="obj-list">
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Está muito caro."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Entendo. Posso perguntar — você está comparando com o quê? Nosso modelo inclui consultoria, implementação e suporte. O custo de um incidente ou downtime costuma ser bem maior que o investimento preventivo. Posso mostrar um cálculo de ROI?"</p>
+        <span class="technique-badge tech-custo">Custo da Omissão</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Já temos um fornecedor."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Que ótimo — parceiros são fundamentais. Nossa proposta não é substituir, mas complementar. Empresas similares mantinham fornecedores e ainda encontraram valor nas nossas especializações. O que seu fornecedor atual não cobre bem?"</p>
+        <span class="technique-badge tech-reframe">Reframing</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Precisamos de aprovação da diretoria."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Faz todo sentido. Posso preparar um executive brief de 2 páginas para facilitar a aprovação? E se ajudar, posso participar de uma apresentação rápida para a diretoria — 30 minutos."</p>
+        <span class="technique-badge tech-facil">Facilitação</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Não é prioridade agora."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Entendo. O que costuma tornar isso prioritário para empresas similares é um incidente, auditoria ou crescimento acelerado. Posso fazer um diagnóstico rápido sem compromisso para você entender o risco atual?"</p>
+        <span class="technique-badge tech-custo">Custo da Omissão</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Já temos TI interna."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Perfeito — isso é ótimo. Nossa atuação complementa o time interno, liberando o analista para projetos estratégicos enquanto a XPon cuida da operação e especialidades como segurança ou colaboração."</p>
+        <span class="technique-badge tech-reframe">Reframing</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Preciso ver referências primeiro."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Claro! Posso conectar você com um cliente que passou por situação similar. Além disso, nossos parceiros Fortinet, Zoom e Intelbras podem validar nossa certificação. Qual segmento seria mais relevante para você?"</p>
+        <span class="technique-badge tech-social">Prova Social</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Deixa eu pensar e te retorno."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Claro, sem pressão. Para facilitar sua avaliação, posso enviar um comparativo simples e uma proposta de diagnóstico gratuito para você ter em mãos. Isso ajudaria?"</p>
+        <span class="technique-badge tech-recip">Reciprocidade</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Vocês são pequenos, quero algo maior."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Entendo a preocupação. Nosso tamanho é justamente um diferencial: você fala direto com o especialista, não com um atendente de nível 1. Temos Fortinet, Cisco e Zoom como parceiros certificados — estrutura de grandes players com a agilidade de quem te dá atenção real."</p>
+        <span class="technique-badge tech-reframe">Reframing</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Posso comprar direto do fabricante."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Pode, e é uma opção válida para produto. A diferença é que a XPon entrega implementação, integração com seu ambiente atual, treinamento da equipe e suporte contínuo. O fabricante vende o produto; a gente faz funcionar no seu contexto."</p>
+        <span class="technique-badge tech-reframe">Reframing</span>
+      </div>
+    </div>
+
+    <div class="obj-card">
+      <div class="obj-header" onclick="toggleObj(this)"><span class="obj-q">"Quero fazer uma licitação / cotação concorrente."</span><span class="obj-icon">+</span></div>
+      <div class="obj-body">
+        <p class="obj-resp">"Sem problema. Para garantir que a especificação contemple o que você realmente precisa, posso fazer um diagnóstico técnico antes? Assim a proposta fica mais precisa e você evita comparar produtos incompatíveis."</p>
+        <span class="technique-badge tech-facil">Facilitação</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <span class="footer-text">← <a href="index.html" style="color:var(--text-muted);text-decoration:none">Hub</a></span>
+  <span class="footer-text">XP On · Inteligência Comercial · 2026</span>
+</footer>
+
+<script>
+function showPanel(id, btn){
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleAcc(header){
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  header.closest('.acc-list').querySelectorAll('.acc-header').forEach(h => {
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){ header.classList.add('open'); body.classList.add('open'); }
+}
+function switchEixo(idx){
+  document.querySelectorAll('.eixo-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+  document.querySelectorAll('.eixo-tab').forEach((b,i) => b.classList.toggle('active', i===idx));
+}
+function toggleObj(header){
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  document.querySelectorAll('.obj-header').forEach(h => {
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){ header.classList.add('open'); body.classList.add('open'); }
+}
+</script>
+</body>
+</html>

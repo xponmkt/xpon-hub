@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XP On — Hub Estratégico</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --xp-blue:#0E1DAA; --xp-navy:#0a0e2e; --xp-cyan:#4DA4C7;
+  --xp-blue-soft:rgba(14,29,170,.06); --xp-blue-mid:rgba(14,29,170,.12);
+  --xp-cyan-soft:rgba(77,164,199,.14);
+  --grad-brand:linear-gradient(135deg,#4DA4C7 0%,#0E1DAA 100%);
+  --bg:#EDF0F7; --card:#FFFFFF; --card-soft:#F7F9FC;
+  --border:#E3E7F0; --text:#0a0e1f; --text2:#5A6577; --text3:#9AA3B5;
+  --green:#0F9D58;
+  --r-lg:24px; --r-md:18px;
+  --shadow:0 1px 3px rgba(10,14,31,.05),0 8px 24px rgba(10,14,31,.05);
+  --axis-colab:#2980a0; --axis-ciber:#c0392b; --axis-infra:#0d8f50; --axis-serv:#0E1DAA;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:18px 26px 60px}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:10px 18px 10px 20px;box-shadow:var(--shadow);position:sticky;top:12px;z-index:200}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.brand svg{width:30px;height:30px}
+.brand-name{font-size:15px;font-weight:700;letter-spacing:-.02em}
+.brand-name span{background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.brand-tag{font-size:8.5px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase}
+.nav-pills{display:flex;gap:4px;flex-wrap:wrap}
+.nav-pill{padding:8px 16px;border-radius:100px;font-size:12.5px;font-weight:500;color:var(--text2);text-decoration:none;transition:.15s}
+.nav-pill:hover{background:var(--card-soft);color:var(--text)}
+.nav-pill.active{background:var(--xp-navy);color:#fff;font-weight:600}
+.header-badge{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:100px;background:var(--xp-blue-soft);border:1px solid var(--xp-blue-mid);font-size:11px;font-weight:600;color:var(--xp-blue);white-space:nowrap}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@media(max-width:760px){.nav-pills{display:none}}
+
+/* HERO */
+.hero{padding:46px 8px 30px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--xp-cyan);margin-bottom:14px}
+.hero h1{font-size:42px;font-weight:700;letter-spacing:-.035em;line-height:1.08}
+.hero h1 span{background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:14px;color:var(--text2);margin-top:14px;max-width:560px;line-height:1.7}
+.eixos-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.eixo{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;border-radius:100px;padding:7px 15px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow)}
+.eixo i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.eixo-colab i{background:var(--axis-colab)}.eixo-ciber i{background:var(--axis-ciber)}.eixo-infra i{background:var(--axis-infra)}.eixo-serv i{background:var(--axis-serv)}
+
+/* SECTIONS */
+.section-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin:34px 8px 14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.grid,.grid-4{grid-template-columns:1fr}.hero h1{font-size:32px}}
+
+.card{position:relative;display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s,border-color .18s;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--accent,var(--grad-brand));opacity:0;transition:opacity .18s}
+.card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(10,14,31,.08),0 16px 36px rgba(14,29,170,.1);border-color:var(--xp-blue-mid)}
+.card:hover::before{opacity:1}
+.card-icon{width:40px;height:40px;border-radius:13px;background:var(--xp-blue-soft);color:var(--xp-blue);display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:16px}
+.card-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
+.card-title{font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:7px}
+.card-desc{font-size:12.5px;color:var(--text2);line-height:1.65}
+.card-arrow{position:absolute;bottom:20px;right:20px;color:var(--text3);font-size:14px;transition:.15s}
+.card:hover .card-arrow{color:var(--xp-blue);transform:translateX(3px)}
+.card.dark{background:var(--xp-navy);border-color:var(--xp-navy);color:#fff}
+.card.dark .card-title{color:#fff}
+.card.dark .card-desc{color:rgba(255,255,255,.6)}
+.card.dark .card-label{color:rgba(255,255,255,.45)}
+.card.dark .card-icon{background:rgba(255,255,255,.1);color:#fff}
+.card.brand{background:var(--grad-brand);border-color:transparent;color:#fff}
+.card.brand .card-title{color:#fff}
+.card.brand .card-desc{color:rgba(255,255,255,.75)}
+.card.brand .card-label{color:rgba(255,255,255,.55)}
+.card.brand .card-icon{background:rgba(255,255,255,.16);color:#fff}
+.card.brand .card-arrow,.card.dark .card-arrow{color:rgba(255,255,255,.6)}
+.tag-new{position:absolute;top:18px;right:18px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(15,157,88,.12);color:var(--green);border-radius:100px;padding:4px 10px}
+.card.brand .tag-new,.card.dark .tag-new{background:rgba(255,255,255,.16);color:#fff}
+
+/* small cards */
+.card-sm{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);padding:18px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:.15s}
+.card-sm:hover{border-color:var(--xp-blue-mid);transform:translateY(-2px)}
+.card-sm-icon{width:30px;height:30px;border-radius:9px;background:var(--xp-blue-soft);display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:10px}
+.card-sm-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.card-sm-desc{font-size:11.5px;color:var(--text2);line-height:1.6}
+
+footer{margin-top:48px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 8px}
+.footer-text{font-size:10.5px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:7px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<nav class="topbar">
+  <a class="brand" href="index.html">
+    <svg viewBox="310 185 610 610" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#09a8ee"/><stop offset="0.45" stop-color="#0E1DAA"/><stop offset="1" stop-color="#050a4d"/></linearGradient></defs><rect x="310" y="185" width="610" height="610" rx="122" fill="url(#bg1)"/><path fill="white" d="M380.11,670.86c-10.32,0-20.64-3.94-28.52-11.81-15.75-15.75-15.75-41.28,0-57.03l329.09-329.09c7.56-7.56,17.82-11.81,28.52-11.81s20.95,4.25,28.52,11.81l159.64,159.64c15.75,15.75,15.75,41.28,0,57.03l-168.18,168.18c-7.56,7.56-17.82,11.81-28.52,11.81s-20.95-4.25-28.52-11.81l-84.82-84.82c-15.75-15.75-15.75-41.29,0-57.04,15.75-15.75,41.29-15.75,57.04,0l56.3,56.3,111.15-111.15-102.61-102.61-300.57,300.57c-7.87,7.87-18.2,11.81-28.52,11.81Z"/><path fill="white" d="M477.35,439.01c-10.32,0-20.64-3.94-28.52-11.81l-97.24-97.24c-15.75-15.75-15.75-41.29,0-57.03,15.75-15.75,41.29-15.75,57.04,0l97.24,97.24c15.75,15.75,15.75,41.29,0,57.03-7.87,7.87-18.2,11.81-28.52,11.81Z"/></svg>
+    <div><div class="brand-name">XP<span>ON</span></div><div class="brand-tag">Intelligent Collaboration Services</div></div>
+  </a>
+  <div class="nav-pills">
+    <a class="nav-pill active" href="#">Home</a>
+    <a class="nav-pill" href="#paineis">Painéis</a>
+    <a class="nav-pill" href="#mudanca">Mudança</a>
+    <a class="nav-pill" href="#bi">BI</a>
+    <a class="nav-pill" href="#recursos">Recursos</a>
+  </div>
+  <span class="header-badge"><span class="status-dot"></span>Hub Estratégico · 2026</span>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">Hub Digital — Planejamento Estratégico 2026 · v3</div>
+  <h1>Seus painéis,<br><span>num só lugar.</span></h1>
+  <p>Central estratégica da XP On. KPIs, BI da carteira Zoom, gestão comercial, projeto de mudança e identidade visual em painéis interativos prontos para uso.</p>
+  <div class="eixos-row">
+    <span class="eixo eixo-colab"><i></i>Colaboração</span>
+    <span class="eixo eixo-ciber"><i></i>Cibersegurança</span>
+    <span class="eixo eixo-infra"><i></i>Infraestrutura e Redes</span>
+    <span class="eixo eixo-serv"><i></i>Serviços</span>
+  </div>
+</div>
+
+<div class="section-label" id="bi">Business Intelligence</div>
+<div class="grid">
+  <a href="bi_xpon_clientes.html" class="card brand">
+    <span class="tag-new">Atualizado jun/26</span>
+    <div class="card-icon">📊</div>
+    <div class="card-label">BI · Carteira Zoom</div>
+    <div class="card-title">Clientes & Renovação</div>
+    <div class="card-desc">162 clientes, R$ 14,1M em 2026, radar de renovações e upload de CSV para atualizar os dados na hora.</div>
+    <span class="card-arrow">→</span>
+  </a>
+  <a href="xpon_kpis.html" class="card" style="--accent:var(--grad-brand)">
+    <div class="card-icon">📈</div>
+    <div class="card-label">Performance · 2026</div>
+    <div class="card-title">KPIs & Calendário de Eventos</div>
+    <div class="card-desc">16 eventos mapeados — 12 webinars e 4 presenciais. Datas, status e metas.</div>
+    <span class="card-arrow">→</span>
+  </a>
+  <a href="xpon_inteligencia.html" class="card" style="--accent:linear-gradient(135deg,#ec4899,#9333ea)">
+    <div class="card-icon" style="background:rgba(236,72,153,.07);color:#9333ea">💡</div>
+    <div class="card-label">Comercial · Estratégia</div>
+    <div class="card-title">Inteligência Comercial</div>
+    <div class="card-desc">ICPs por segmento, portfólio por eixo, concorrentes e resposta a objeções.</div>
+    <span class="card-arrow">→</span>
+  </a>
+</div>
+
+<div class="section-label" id="mudanca">Projeto de Mudança</div>
+<div class="grid">
+  <a href="comercial_em_acao.html" class="card dark">
+    <span class="tag-new">Novo</span>
+    <div class="card-icon">🚀</div>
+    <div class="card-label">Comercial</div>
+    <div class="card-title">Comercial em Ação</div>
+    <div class="card-desc">O plano comercial em movimento: frentes de atuação, responsáveis e próximos passos.</div>
+    <span class="card-arrow">→</span>
+  </a>
+  <a href="roadmap_mudanca.html" class="card" style="--accent:linear-gradient(135deg,#0d8f50,#0F9D58)">
+    <span class="tag-new">Novo</span>
+    <div class="card-icon" style="background:rgba(15,157,88,.08);color:#0d8f50">🗺️</div>
+    <div class="card-label">Transformação</div>
+    <div class="card-title">Roadmap da Mudança</div>
+    <div class="card-desc">Fases, marcos e cronograma do projeto de mudança da XP On.</div>
+    <span class="card-arrow">→</span>
+  </a>
+  <a href="apresentacao_mudanca.html" class="card" style="--accent:linear-gradient(135deg,#f59e0b,#d97706)">
+    <span class="tag-new">Novo</span>
+    <div class="card-icon" style="background:rgba(245,158,11,.08);color:#d97706">🎤</div>
+    <div class="card-label">Apresentação</div>
+    <div class="card-title">Apresentação da Mudança</div>
+    <div class="card-desc">Material de apresentação do projeto de mudança para o time e a liderança.</div>
+    <span class="card-arrow">→</span>
+  </a>
+</div>
+
+<div class="section-label" id="paineis">Painéis Operacionais</div>
+<div class="grid">
+  <a href="xpon_gestao.html" class="card" style="--accent:linear-gradient(135deg,#10b981,#059669)">
+    <div class="card-icon" style="background:rgba(16,185,129,.07);color:#059669">🧩</div>
+    <div class="card-label">Comercial</div>
+    <div class="card-title">Gestão Comercial</div>
+    <div class="card-desc">Fluxo B2B completo, detalhamento por nicho e modelo MSP de recorrência.</div>
+    <span class="card-arrow">→</span>
+  </a>
+  <a href="xpon_crm.html" class="card" style="--accent:linear-gradient(135deg,#f59e0b,#d97706)">
+    <div class="card-icon" style="background:rgba(245,158,11,.07);color:#d97706">📋</div>
+    <div class="card-label">Pipeline · Leads</div>
+    <div class="card-title">CRM Kanban</div>
+    <div class="card-desc">Pipeline drag-and-drop, 6 etapas do funil e integração Google Sheets.</div>
+    <span class="card-arrow">→</span>
+  </a>
+  <a href="xpon_marketing.html" class="card" style="--accent:linear-gradient(135deg,#7c3aed,#a855f7)">
+    <div class="card-icon" style="background:rgba(124,58,237,.07);color:#7c3aed">🎯</div>
+    <div class="card-label">Planejamento</div>
+    <div class="card-title">Marketing</div>
+    <div class="card-desc">Mídias sociais, orçamento R$30k, mídia paga, newsletter e campanhas Q1–Q4.</div>
+    <span class="card-arrow">→</span>
+  </a>
+</div>
+
+<div class="section-label">Estratégia & Marca</div>
+<div class="grid">
+  <a href="xpon_visao.html" class="card" style="--accent:var(--grad-brand)">
+    <div class="card-icon">🧭</div>
+    <div class="card-label">Empresa</div>
+    <div class="card-title">Visão Geral Estratégica</div>
+    <div class="card-desc">Os 4 eixos, modelo de negócio, jornada do cliente e crescimento.</div>
+    <span class="card-arrow">→</span>
+  </a>
+  <a href="xpon_visao.html#identidade" class="card" style="--accent:linear-gradient(135deg,#f59e0b,#d97706)">
+    <div class="card-icon" style="background:rgba(245,158,11,.07);color:#d97706">📖</div>
+    <div class="card-label">Marca</div>
+    <div class="card-title">Identidade Visual</div>
+    <div class="card-desc">Logos SVG, paleta oficial #0E1DAA, gradiente e tipografia do design system.</div>
+    <span class="card-arrow">→</span>
+  </a>
+  <a href="xpon_midias.html" class="card" style="--accent:linear-gradient(135deg,#ec4899,#9333ea)">
+    <div class="card-icon" style="background:rgba(236,72,153,.07);color:#9333ea">📱</div>
+    <div class="card-label">Canais</div>
+    <div class="card-title">Mídias Sociais</div>
+    <div class="card-desc">LinkedIn e Instagram, pauta editorial, personas ICP e estrutura de conteúdo.</div>
+    <span class="card-arrow">→</span>
+  </a>
+</div>
+
+<div class="section-label" id="recursos">Ferramentas & Recursos</div>
+<div class="grid-4">
+  <a href="xpon_eventos.html" class="card-sm">
+    <div class="card-sm-icon">📅</div>
+    <div class="card-sm-title">Registro de Eventos</div>
+    <div class="card-sm-desc">Input de participantes, contatos e segmentos por perfil.</div>
+  </a>
+  <a href="xpon_downloads.html" class="card-sm">
+    <div class="card-sm-icon">⬇️</div>
+    <div class="card-sm-title">Downloads & Recursos</div>
+    <div class="card-sm-desc">Logos SVG, documentos estratégicos e identidade visual.</div>
+  </a>
+  <a href="https://xpon-design-system.netlify.app/" target="_blank" class="card-sm">
+    <div class="card-sm-icon">🎨</div>
+    <div class="card-sm-title">Design System</div>
+    <div class="card-sm-desc">Marca, cores, tipografia, componentes e voz da XP On.</div>
+  </a>
+  <a href="https://www.xpon.com.br" target="_blank" class="card-sm">
+    <div class="card-sm-icon">🌐</div>
+    <div class="card-sm-title">Site XP On</div>
+    <div class="card-sm-desc">xpon.com.br — institucional, blog, cases e contato.</div>
+  </a>
+</div>
+
+<footer>
+  <span class="footer-text"><span class="status-dot"></span>Todos os painéis operacionais</span>
+  <span class="footer-text">XP On · Hub Estratégico · v3 · 2026</span>
+</footer>
+</div>
+</body>
+</html>
