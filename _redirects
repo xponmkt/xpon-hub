@@ -1,0 +1,4 @@
+# Proxy: serve o painel Inteligência XP sob o domínio do hub
+# (o site xpon-inteligencia.netlify.app continua funcionando direto)
+/inteligencia/*  https://xpon-inteligencia.netlify.app/:splat  200
+/inteligencia    /inteligencia/  301
