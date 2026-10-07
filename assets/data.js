@@ -13,7 +13,7 @@ window.HUB = {
   },
 
   /* Cole aqui o link da pasta do Time de Marketing no SharePoint */
-  sharepoint: '',
+  sharepoint: 'https://netorg763405.sharepoint.com/sites/timedemarketing/Documentos%20Compartilhados/Forms/AllItems.aspx?id=%2Fsites%2Ftimedemarketing%2FDocumentos%20Compartilhados%2FMARKETING',
 
   secoes: [
     { id: 'sites', tecla: '1', nome: 'Site e landing pages', curto: 'Site e LPs',
