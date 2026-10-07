@@ -193,7 +193,7 @@
         '<div class="post-tema">' + esc(p.tema) + '</div><div class="post-meta">' + esc(p.formato) + ', ' + e.nome + '</div></div></li>';
     }).join('');
     var total = H.posts.length;
-    main.innerHTML = cabeca(secao('redes'), 'Calendário do último trimestre de 2026: ' + total + ' publicações no feed, de terça a quinta, às 11h30, no Instagram e no Facebook. O LinkedIn recebe o mesmo conteúdo no mesmo dia.') +
+    main.innerHTML = cabeca(secao('redes'), 'Calendário de outubro de 2026 a março de 2027: ' + total + ' publicações no feed, de terça a quinta, às 11h30, no Instagram e no Facebook. O LinkedIn recebe os posts de terça e quinta. Os arquivos ficam em MIDIAS SOCIAIS, uma pasta por trimestre.') +
       '<div class="seg" role="group" aria-label="Mês">' + seg + '</div><ul class="posts">' + cards + '</ul>' +
       '<div class="redes-info"><span>Perfis: ' + H.redesPerfis.map(function (r) { return '<a href="' + r.url + '" target="_blank" rel="noopener">' + r.nome + '</a>'; }).join(' e ') + '</span>' +
       '<span>Arquivos e legendas de cada post ficam no SharePoint do marketing, em Mídias Sociais.</span></div>' + rodape();
