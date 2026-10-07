@@ -1,4 +1,18 @@
-# Proxy: serve o painel Inteligência XP sob o domínio do hub
-# (o site xpon-inteligencia.netlify.app continua funcionando direto)
+# Inteligência XP On servida também pelo domínio do Hub
 /inteligencia/*  https://xpon-inteligencia.netlify.app/:splat  200
 /inteligencia    /inteligencia/  301
+
+# Páginas do Hub antigo (até out/2026) levam para o lugar novo
+/bi_xpon_clientes.html     https://xpon-inteligencia.netlify.app/  301
+/xpon_inteligencia.html    https://xpon-inteligencia.netlify.app/  301
+/xpon_crm.html             https://crm-xpon.netlify.app/  301
+/comercial_em_acao.html    https://xpon-comercial-acao.netlify.app/  301
+/apresentacao_mudanca.html https://xpon-mudanca.netlify.app/  301
+/roadmap_mudanca.html      https://xpon-mudanca-roadmap.netlify.app/  301
+/xpon_eventos.html         /#/eventos  301
+/xpon_kpis.html            /#/eventos  301
+/xpon_midias.html          /#/redes  301
+/xpon_marketing.html       /#/redes  301
+/xpon_downloads.html       /#/marca  301
+/xpon_visao.html           /  301
+/xpon_gestao.html          /#/ferramentas  301
