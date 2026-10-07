@@ -72,6 +72,8 @@ window.HUB = {
       desc: 'Leads, funis e kanban do marketing, com o que chega pelo site, LPs e eventos. O CRM oficial da empresa continua sendo o CIGAM.' },
     { secao: 'ferramentas', grupo: 'Gestão', nome: 'Inteligência XP On', url: 'https://xpon-inteligencia.netlify.app', publico: 'login',
       desc: 'Painéis de gestão com dados do CIGAM, atualizados a cada 6 horas. Cada diretoria entra com o próprio login.' },
+    { secao: 'ferramentas', grupo: 'Gestão', nome: 'Carteira CX', url: 'https://xpon-inteligencia.netlify.app/pages/cx.html', publico: 'login',
+      desc: 'Renovações, receita e risco dos contratos Zoom, lidos a partir da planilha do CX. Cada gráfico explica o que o número quer dizer.' },
     { secao: 'ferramentas', grupo: 'Comercial', nome: 'Comercial em Ação', url: 'https://xpon-comercial-acao.netlify.app', publico: 'interno',
       desc: 'Portal do time comercial com pipeline e rotina de prospecção.' },
     { secao: 'ferramentas', grupo: 'Comercial', nome: 'Plano Comercial 2026', url: 'https://comercial-xpon.netlify.app', publico: 'interno',
