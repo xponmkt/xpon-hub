@@ -238,7 +238,7 @@
     }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (rows) {
         var tipos = {}, pags = {};
-        rows.forEach(function (r) { tipos[r.tipo] = (tipos[r.tipo] || 0) + 1; if (r.pagina) pags[r.pagina] = (pags[r.pagina] || 0) + 1; });
+        rows.forEach(function (r) { tipos[r.tipo] = (tipos[r.tipo] || 0) + 1; if (r.pagina) { var pg = r.pagina.replace(/^[0-9a-f]{24}--/, ''); pags[pg] = (pags[pg] || 0) + 1; } });
         var ordem = ['visita', 'whatsapp', 'formulario', 'cta_contato'];
         var tiles = ordem.map(function (k) { return '<div class="tile"><b>' + (tipos[k] || 0).toLocaleString('pt-BR') + '</b><span>' + ROT[k] + '</span></div>'; }).join('');
         var top = Object.keys(pags).sort(function (a, b) { return pags[b] - pags[a]; }).slice(0, 6);
